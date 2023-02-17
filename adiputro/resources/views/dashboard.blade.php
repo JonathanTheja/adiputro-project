@@ -10,9 +10,9 @@
     @vite('resources/js/app.js')
 </head>
 
-<body onclick="closeSidebar();">
+<body>
     @include('sidebar')
-    <div class="lg:ml-[250px] mt-12 lg:mt-6 p-4">
+    <div class="lg:ml-[250px] mt-12 lg:mt-6 p-4" onclick="closeSidebar();">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi quaerat a ipsum alias magni eius et dicta, natus adipisci aut, nam atque rem delectus aspernatur incidunt quibusdam ea eaque minima.
         Animi sequi corrupti illo. Illo maxime voluptatem quas porro modi, asperiores excepturi corrupti in incidunt, placeat eius aperiam voluptates eum culpa esse error commodi maiores vitae provident cupiditate molestiae nostrum!
         Alias sint cumque minima! Neque eligendi repellendus nihil excepturi voluptate eum, illo totam quas iste sed magnam velit repellat quia nulla vero pariatur. Eligendi unde reprehenderit vitae, nisi neque nulla!

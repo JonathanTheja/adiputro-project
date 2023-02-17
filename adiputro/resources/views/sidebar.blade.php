@@ -1,4 +1,4 @@
-<span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="Open();">
+<span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="Open();" id="openSidebar">
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
 <div
@@ -76,7 +76,7 @@
             document.querySelector(".sidebar").classList.toggle("left-[-250px]");
         }
 
-        function closeSidebar(boleh) {
+        function closeSidebar() {
             document.querySelector(".sidebar").classList.add("left-[-250px]");
         }
 
