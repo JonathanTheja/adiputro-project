@@ -25,7 +25,8 @@
                         />
                         {{-- <h1 class="text-lg font-semibold mt-1 mb-12 pb-1">ADIPUTRO</h1> --}}
                       </div>
-                      <form>
+                      <form action="{{ url('doLogin') }}" method="POST">
+                        @csrf
                         <p class="my-6">Please login to your account</p>
                         <div class="mb-4">
                           <input
@@ -46,7 +47,7 @@
                         <div class="text-center pt-1 mb-12 pb-1">
                           <button
                             class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-200 hover:text-black hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3 bg-gray-800"
-                            type="button"
+                            type="submit"
                             data-mdb-ripple="true"
                             data-mdb-ripple-color="light"
                             style=""
