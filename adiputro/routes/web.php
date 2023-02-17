@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [AuthController::class,'index']);
+Route::get('/login', [AuthController::class,'index']);
 Route::post('/doLogin', [AuthController::class,'doLogin']);
 
 Route::get('/dashboard', function () {

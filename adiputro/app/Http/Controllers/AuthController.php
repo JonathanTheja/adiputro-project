@@ -11,6 +11,12 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+
+    function dashboard()
+    {
+        return view('dashboard');
+    }
+
     function doLogin(Request $request)
     {
         $username = $request->username;
@@ -23,6 +29,6 @@ class AuthController extends Controller
             "password.required" => "Password is required!"
         ]);
 
-        return view('dashboard');
+        return redirect('dashboard');
     }
 }
