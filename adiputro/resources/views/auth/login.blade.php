@@ -9,10 +9,16 @@
     @vite('resources/js/app.js')
 </head>
 <body>
+
     <section class="h-full gradient-form bg-slate-300 md:h-screen">
+
         <div class="container py-12 px-6 h-full">
+
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
             <div class="xl:w-10/12">
+
+              @include('includes.alert')
+
               <div class="block bg-white shadow-lg rounded-lg">
                 <div class="lg:flex lg:flex-wrap g-0">
                   <div class="lg:w-6/12 px-4 md:px-0">
@@ -22,18 +28,20 @@
                           class="mx-auto w-48"
                           src={{ asset('img/adiputro_logo.svg') }}
                           alt="logo"
+                          style="width:180px;height:180px"
                         />
                         {{-- <h1 class="text-lg font-semibold mt-1 mb-12 pb-1">ADIPUTRO</h1> --}}
                       </div>
                       <form action="{{ url('doLogin') }}" method="POST">
                         @csrf
-                        <p class="my-6">Please login to your account</p>
+                        <p class="my-6">LOGIN</p>
                         <div class="mb-4">
                           <input
                             type="text"
                             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             id="exampleFormControlInput1"
                             placeholder="Username"
+                            name="username"
                           />
                         </div>
                         <div class="mb-4">
@@ -42,6 +50,7 @@
                             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             id="exampleFormControlInput1"
                             placeholder="Password"
+                            name="password"
                           />
                         </div>
                         <div class="text-center pt-1 mb-12 pb-1">
