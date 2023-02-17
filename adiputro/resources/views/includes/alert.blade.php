@@ -4,5 +4,3 @@
         <p>{{ $errors->all()[0] }}</p>
     </div>
 @endif
-
-

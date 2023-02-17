@@ -1,4 +1,4 @@
-<span class="absolute text-white text-4xl top-5 left-4 cursor-pointer" onclick="Open();">
+<span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="Open();">
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
 <div
@@ -6,18 +6,19 @@
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">
-                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }}
-                    alt="logo" style="width:80px;height:80px" />
+                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }} alt="logo"
+                    style="width:80px;height:80px" />
                 {{-- <h1 class="text-lg font-semibold mt-1 mb-12 pb-1">ADIPUTRO</h1> --}}
             </div>
-            <i class="absolute bi bi-x ml-48 cursor-pointer lg:hidden bg-blue-600 px-1 rounded-md" onclick="Open();"></i>
+            <i class="absolute bi bi-x ml-48 cursor-pointer lg:hidden bg-blue-600 px-1 rounded-md"
+                onclick="Open();"></i>
         </div>
         <hr class="my-2 text-gray-600">
     </div>
-    {{-- <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer bg-gray-700 text-white">
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer bg-gray-700 text-white">
         <i class="bi bi-search text-sm"></i>
         <input type="text" placeholder="Search" class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
-    </div> --}}
+    </div>
     <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         onclick="changeSideMenu(this)">
         <i class="bi bi-people"></i>
@@ -57,7 +58,8 @@
     </div>
 
     <a href="/login">
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <div
+            class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
             <i class="bi bi-box-arrow-in-right"></i>
             <span class="text-[15px] ml-4 text-gray-200">Logout</span>
         </div>
@@ -74,7 +76,7 @@
             document.querySelector(".sidebar").classList.toggle("left-[-250px]");
         }
 
-        function closeSidebar() {
+        function closeSidebar(boleh) {
             document.querySelector(".sidebar").classList.add("left-[-250px]");
         }
 

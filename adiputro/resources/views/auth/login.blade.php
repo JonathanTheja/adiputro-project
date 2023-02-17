@@ -11,12 +11,12 @@
 
 <body>
 
-    <section class="h-full gradient-form bg-slate-300 md:h-screen">
+    <section class="gradient-form bg-slate-300 min-h-screen flex justify-center items-center">
 
-        <div class="container py-12 px-6 h-full">
+        <div class="container h-full justify-center items-center">
 
             <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-                <div class="xl:w-10/12">
+                <div class="lg:w-10/12">
 
                     @include('includes.alert')
 
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                             <div
-                                class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none bg-[url('/img/bus_wall_1.jpg')] bg-cover">
+                                class="lg:w-6/12 items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none bg-[url('/img/bus_wall_1.jpg')] bg-cover lg:block hidden">
                             </div>
                         </div>
                     </div>
