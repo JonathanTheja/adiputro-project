@@ -19,9 +19,11 @@ return new class extends Migration
             $table->text('password');
             $table->string('full_name',100);
             $table->unsignedBigInteger('department_id');
-            $table->tinyInteger('role');
+            $table->tinyInteger('gender');
+            $table->tinyInteger('role_id');
             $table->tinyInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
