@@ -12,68 +12,27 @@
             </div>
             <div class="flex lg:flex-row flex-col">
                 <div class="mb-4 w-full">
-                    <input type="text"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        id="exampleFormControlInput1" placeholder="Nama" />
+                    <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                    <input type="text" id="full_name" name="full_name"
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                        placeholder="Name" required>
                 </div>
                 <div class="w-4"></div>
                 <div class="mb-4 w-full">
-                    <div class="w-full">
-                        <div>
-                            <div class="dropup relative w-full">
-                                <button
-                                    class="dropdown-toggle px-6 py-2.5 bg-blue-600 text-white text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap w-full"
-                                    type="button" id="dropdownMenuButton1u" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Pilih Akses Database
-                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-up"
-                                        class="w-2 ml-2" role="img" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 320 512">
-                                        <path fill="currentColor"
-                                            d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
-                                        </path>
-                                    </svg>
-                                </button>
-                                <ul class="
-                                dropdown-menu
-                                min-w-max
-                                absolute
-                                hidden
-                                bg-white
-                                text-base
-                                z-50
-                                float-left
-                                py-2
-                                list-none
-                                text-left
-                                rounded-lg
-                                shadow-lg
-                                mt-1
-                                m-0
-                                bg-clip-padding
-                                border-none
-                                "
-                                    aria-labelledby="dropdownMenuButton1u">
-                                    <li>
-                                        <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-black hover:bg-blue-500 hover:text-white p-2"
-                                            href="#">SPK MINI BUS</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-black hover:bg-blue-500 hover:text-white p-2"
-                                            href="#">SPK BUS</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900">Access Database</label>
+                    <select id="role_id" name="role_id"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tidak ada</option>
+                        {{-- @foreach ($roles as $role)
+                            <option value="{{ $role->role_id }}">{{ $role->name }}</option>
+                        @endforeach --}}
+                    </select>
                 </div>
             </div>
-            <div class="text-center pt-1 mb-12 pb-1">
-                <button
-                    class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-200 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3 hover:text-black bg-gray-900"
-                    type="button" data-mdb-ripple="true" data-mdb-ripple-color="light">
-                    Tambah
-                </button>
+            <div class="text-left pt-1 mb-12 pb-1">
+                <button type="submit"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah
+                    departemen baru</button>
             </div>
         </form>
         <div class="py-4 flex">
