@@ -7,30 +7,41 @@
             Tambah user
         </h1>
     </div>
-    <div class="px-3 py-4 w-6/12">
-        <form action="{{ url('doRegister') }}" method="POST">
-            <div class="mb-6">
-            <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
-            <input type="text" id="full_name" name="full_name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John Doe" required>
-            </div>
-            <div class="mb-6">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-            <input type="text" id="username" name="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
-            </div>
-            <div class="mb-6">
-                <label for="department_id" class="block mb-2 text-sm font-medium text-gray-900">Department</label>
-                <select id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
-                </select>
+    <div class="px-3 py-4">
+        <form action="{{ url('doRegister') }}" method="POST">
+            <div class="flex lg:flex-row flex-col">
+                <div class="mb-6 w-full">
+                    <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John Doe" required>
+                </div>
+                <div class="w-4"></div>
+                <div class="mb-6 w-full">
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                    <input type="text" id="username" name="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+                </div>
             </div>
-             <div class="mb-6">
-                <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
-                <select id="role_id" name="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    @foreach ($roles as $role)
-                        <option value="{{ $role->role_id }}">{{ $role->name }}</option>
-                     @endforeach
-                </select>
+
+            <div class="flex lg:flex-row flex-col">
+                <div class="mb-6 w-full">
+                    <label for="department_id" class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+                    <select id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->department_id }}">{{ $department->name }}</option>
+                         @endforeach
+                    </select>
+                </div>
+                <div class="w-4"></div>
+                 <div class="mb-6 w-full">
+                    <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
+                    <select id="role_id" name="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->role_id }}">{{ $role->name }}</option>
+                         @endforeach
+                    </select>
+                </div>
             </div>
+
             <div class="mb-6">
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
             <input type="password" name="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
