@@ -25,6 +25,7 @@ class MasterUserController extends Controller
         $user->full_name = $request->full_name;
         $user->department_id = $request->department_id;
         $user->role_id = $request->role_id;
+
         if($request->status != null){
             $user->status = $request->status;
         }
