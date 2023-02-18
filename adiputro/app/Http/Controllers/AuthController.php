@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     function dashboard()
     {
-        return view('dashboard');
+        return view('master.user');
     }
 
     function doLogin(Request $request)
@@ -29,6 +29,6 @@ class AuthController extends Controller
             "password.required" => "Password is required!"
         ]);
 
-        return redirect('dashboard');
+        return redirect('/master/user');
     }
 }

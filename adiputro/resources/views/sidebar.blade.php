@@ -2,45 +2,55 @@
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
 <div
-    class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-250px left-[-250px] overflow-y-auto text-center bg-gray-900 duration-300">
+    class="sidebar fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">
-                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }} alt="logo"
-                    style="width:80px;height:80px" />
+                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }}
+                    alt="logo" style="width:80px;height:80px" />
                 {{-- <h1 class="text-lg font-semibold mt-1 mb-12 pb-1">ADIPUTRO</h1> --}}
             </div>
-            <i class="absolute bi bi-x ml-48 cursor-pointer lg:hidden bg-blue-600 px-1 rounded-md"
+            <i class="absolute bi bi-x ml-40 cursor-pointer bg-blue-600 px-1 rounded-md"
                 onclick="Open();"></i>
         </div>
         <hr class="my-2 text-gray-600">
     </div>
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer bg-gray-700 text-white">
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer bg-gray-700 text-white">
         <i class="bi bi-search text-sm"></i>
-        <input type="text" placeholder="Search" class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
+        <input type="text" placeholder="Search"
+            class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
     </div>
-    <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this,'masterUser')" id="sidemenuUser">
-        <i class="bi bi-people"></i>
-        <span class="text-[15px] ml-4 text-gray-200">Master User</span>
-    </div>
-    <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this,'masterDepartemen')" id="sidemenuDepartemen">
-        <i class="bi bi-people"></i>
-        <span class="text-[15px] ml-4 text-gray-200">Master Departemen</span>
-    </div>
-    <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this,'masterStall')" id="sidemenuStall">
-        <i class="bi bi-people"></i>
-        <span class="text-[15px] ml-4 text-gray-200">Master Stall</span>
-    </div>
-    <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this,'masterLevel')" id="sidemenuLevel">
-        <i class="bi bi-people"></i>
-        <span class="text-[15px] ml-4 text-gray-200">Master Level</span>
-    </div>
+    <a href="{{ url('/master/user') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            onclick="changeSideMenu(this,'masterUser')" id="sidemenuUser">
+            <i class="bi bi-people"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master User</span>
+        </div>
+    </a>
+
+    <a href="{{ url('/master/departemen') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            onclick="changeSideMenu(this,'masterDepartemen')" id="sidemenuDepartemen">
+            <i class="bi bi-house"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master Departemen</span>
+        </div>
+    </a>
+    <a href="{{ url('/master/stall') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            onclick="changeSideMenu(this,'masterStall')" id="sidemenuStall">
+            <i class="bi bi-house-door"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master Stall</span>
+        </div>
+    </a>
+    <a href="{{ url('/master/level') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            onclick="changeSideMenu(this,'masterLevel')" id="sidemenuLevel">
+            <i class="bi bi-tools"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master Level</span>
+        </div>
+    </a>
     <hr class="my-4 text-gray-600">
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
         onclick="dropdown();">
         <i class="bi bi-chat-left-text-fill"></i>
         <div class="flex justify-between w-full items-center">
@@ -59,7 +69,7 @@
 
     <a href="/login">
         <div
-            class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white">
             <i class="bi bi-box-arrow-in-right"></i>
             <span class="text-[15px] ml-4 text-gray-200">Logout</span>
         </div>

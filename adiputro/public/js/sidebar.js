@@ -6,10 +6,12 @@ dropdown();
 
 function Open() {
     document.querySelector(".sidebar").classList.toggle("left-[-250px]");
+    document.querySelector("#container").classList.toggle("ml-[250px]");
 }
 
 function closeSidebar() {
     document.querySelector(".sidebar").classList.add("left-[-250px]");
+    document.querySelector("#container").classList.remove("ml-[250px]");
 }
 
 function changeSideMenu(e, master) {
@@ -38,22 +40,16 @@ function changeSideMenu(e, master) {
 }
 
 let url = window.location.href;
-let master = url.substring(url.indexOf("/master"), url.length);
-document.getElementById("masterDepartemen").classList.remove("hidden");
-// alert(url.substring(url.indexOf("master/"), url.length));
-if (master == "master/user") {
-    document.getElementById("masterUser").classList.remove("hidden");
+var master = url.substring(url.indexOf("/master"), url.length);
+if (master.includes("master/user")) {
     document.getElementById("sidemenuUser").classList.add("bg-blue-600");
 }
-else if (master == "master/departemen") {
-    document.getElementById("masterDepartemen").classList.remove("hidden");
+else if (master.includes("master/departemen")) {
     document.getElementById("sidemenuDepartemen").classList.add("bg-blue-600");
 }
-else if (master == "master/stall") {
-    document.getElementById("masterStall").classList.remove("hidden");
+else if (master.includes("master/stall")) {
     document.getElementById("sidemenuStall").classList.add("bg-blue-600");
 }
-else if (master == "master/level") {
-    document.getElementById("masterLevel").classList.remove("hidden");
+else if (master.includes("master/level")) {
     document.getElementById("sidemenuLevel").classList.add("bg-blue-600");
 }

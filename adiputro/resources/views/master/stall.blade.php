@@ -1,7 +1,7 @@
-@extends('main')
+@extends("main")
 
-@section('container')
-<h1 class="text-center text-5xl font-semibold">Master User</h1>
+@section("container")
+<h1 class="text-center text-5xl font-semibold">Master Stall</h1>
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi quaerat a ipsum alias magni eius et dicta, natus
 adipisci aut, nam atque rem delectus aspernatur incidunt quibusdam ea eaque minima.
 Animi sequi corrupti illo. Illo maxime voluptatem quas porro modi, asperiores excepturi corrupti in incidunt,

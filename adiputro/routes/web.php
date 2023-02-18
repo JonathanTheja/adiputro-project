@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MasterDepartemenController;
+use App\Http\Controllers\MasterLevelController;
+use App\Http\Controllers\MasterStallController;
+use App\Http\Controllers\MasterUserController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\AssignOp\Concat;
 
@@ -19,18 +23,9 @@ Route::get('/', [AuthController::class,'index']);
 Route::get('/login', [AuthController::class,'index']);
 Route::post('/doLogin', [AuthController::class,'doLogin']);
 
-Route::get('/dashboard', function () {
-    $masterNow = "masterUser";
-    return view('dashboard', compact("masterNow"));
-});
-
 Route::prefix('master')->group(function () {
-    Route::get('/user', function () {
-        $masterNow = "masterUser";
-        return view('dashboard', compact("masterNow"));
-    });
-    Route::get('/departemen', function () {
-        $masterNow = "masterDepartemen";
-        return view('dashboard', compact("masterNow"));
-    });
+    Route::get('/user', [MasterUserController::class,'masterUser']);
+    Route::get('/departemen', [MasterDepartemenController::class,'masterDepartemen']);
+    Route::get('/stall', [MasterStallController::class,'masterStall']);
+    Route::get('/level', [MasterLevelController::class,'masterLevel']);
 });
