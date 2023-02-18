@@ -17,7 +17,11 @@
         <div class="bg-white p-10 rounded-md">
             @yield('container')
         </div>
+    </div>
+    @include('sweetalert::alert')
 </body>
 <script src="{{ asset('js/sidebar.js') }}"></script>
+
+<script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
 </html>

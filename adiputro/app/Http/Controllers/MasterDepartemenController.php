@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterDepartemenController extends Controller
 {
@@ -15,6 +16,7 @@ class MasterDepartemenController extends Controller
 
     function addDepartment(Request $request)
     {
+        alert()->question('Title','Lorem Lorem Lorem');
         $request->validate([
             "name" => ["required"],
         ]);

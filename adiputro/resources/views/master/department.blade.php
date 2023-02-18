@@ -4,7 +4,7 @@
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master Departemen</h1>
     <div class="text-gray-900">
-        <form action="{{ url("/master/departemen/add") }}" method="post">
+        <form action="{{ url('/master/departemen/add') }}" method="post">
             @csrf
             <div class="py-4 flex">
                 <h1 class="text-3xl">
@@ -46,24 +46,69 @@
                 <tbody>
                     <tr class="border-b">
                         <th class="text-left p-3 px-5">Department ID</th>
-                        <th class="text-left p-3 px-5">Department</th>
-                        <th class="text-center p-3 px-5">Action</th>
+                        <th class="text-left p-3 px-5">Name</th>
+                        <th class="text-center p-3 px-5" colspan="2">Action</th>
                     </tr>
                     @foreach ($departments as $department)
                         <tr class="border-b hover:bg-orange-100 bg-gray-100">
-                            <td class="p-3 px-5"><input type="text" value="{{ $department->department_id }}"
-                                    class="bg-transparent"></td>
-                            <td class="p-3 px-5"><input type="text" value="{{ $department->name }}"
-                                    class="bg-transparent"></td>
-                            <td class="p-3 px-5 flex justify-center"><button type="button"
-                                    class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Save</button><button
-                                    type="button"
-                                    class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
-                            </td>
+                            <form action="/master/departemen/update" method="post">
+                                @csrf
+                                <td class="p-3 px-5"><input type="text" value="{{ $department->department_id }}"
+                                        class="bg-transparent" name="department_id"></td>
+                                <td class="p-3 px-5"><input type="text" value="{{ $department->name }}"
+                                        class="bg-transparent" name="name"></td>
+                                <td class="p-3 flex justify-end"><button type="button"
+                                        class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                                        onclick="confirmUpdate();">Update</button>
+                                </td>
+                                <button type="submit" class="hidden" id="btnUpdate"></button>
+                            </form>
+                            <form action="/master/departemen/delete" method="post">
+                                @csrf
+                                <td class="p-3 px-5">
+                                    <button type="button"
+                                        class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                                        onclick="confirmDelete();">Delete</button>
+                                </td>
+                                <button type="submit" class="hidden" id="btnDelete"></button>
+                            </form>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <script>
+        function confirmUpdate() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("btnUpdate").click();
+                }
+            })
+        }
+
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("btnDelete").click();
+                }
+            })
+        }
+    </script>
 @endsection
