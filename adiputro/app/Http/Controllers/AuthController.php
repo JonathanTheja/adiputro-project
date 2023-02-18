@@ -58,7 +58,7 @@ class AuthController extends Controller
                 "password"=>$password,
                 "gender"=>$gender,
                 "role"=>$role_id,
-                "department_id"=>1,
+                "department_id"=>$department_id,
                 "status"=>$status
             ]);
 

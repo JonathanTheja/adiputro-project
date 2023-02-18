@@ -23,4 +23,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class,'role_id','role_id');
     }
+    function department()
+    {
+        # code...
+        return $this->belongsTo(Department::class,'department_id','department_id');
+    }
 }

@@ -18,6 +18,6 @@ class Department extends Model
 
     function user()
     {
-        
+        return $this->hasMany(User::class,"department_id","department_id");
     }
 }
