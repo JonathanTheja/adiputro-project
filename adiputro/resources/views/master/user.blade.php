@@ -55,29 +55,25 @@
                     </div>
                 </div>
 
-                <div class="mb-6">
-                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                    <input type="password" name="password" id="password"
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Password"
-                        required>
-                    @error('password')
-                        <span class="text-sm text-red-600">{{ $message }}</span>
-                    @enderror
-                </div>
 
-                <div class="mb-6">
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
-                    <div class="flex">
-                        <div class="flex items-center mr-4">
-                            <input id="inline-radio" type="radio" value="" name="inline-radio-group"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="inline-radio" class="ml-2 text-sm font-medium text-gray-900">Male</label>
-                        </div>
-                        <div class="flex items-center mr-4">
-                            <input id="inline-2-radio" type="radio" value="" name="inline-radio-group"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900">Female</label>
-                        </div>
+            <div class="mb-6">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                <input type="password" name="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                @error('password')
+                <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+                <div class="flex">
+                    <div class="flex items-center mr-4">
+                        <input id="inline-radio" type="radio" value="0" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="inline-radio" class="ml-2 text-sm font-medium text-gray-900">Male</label>
+                    </div>
+                    <div class="flex items-center mr-4">
+                        <input id="inline-2-radio" type="radio" value="1" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900">Female</label>
                     </div>
                     @error('gender')
                         <span class="text-sm text-red-600">{{ $message }}</span>
@@ -85,7 +81,7 @@
                 </div>
 
                 <button type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Tambah
                     user baru</button>
             </form>
         </div>
