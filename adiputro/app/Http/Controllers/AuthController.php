@@ -31,4 +31,9 @@ class AuthController extends Controller
 
         return redirect('/master/user');
     }
+
+    function doRegister(Request $request)
+    {
+        
+    }
 }

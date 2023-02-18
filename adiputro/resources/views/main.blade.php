@@ -17,7 +17,6 @@
         <div class="bg-white p-10 rounded-md">
             @yield('container')
         </div>
-    </div>
 </body>
 <script src="{{ asset('js/sidebar.js') }}"></script>
 
