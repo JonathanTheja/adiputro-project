@@ -22,7 +22,7 @@ class MasterDepartemenController extends Controller
         Department::create([
             "name" => $request->name,
         ]);
-        Alert::info('Sukses!', 'Berhasil Tambah Departemen!');
+        Alert::success('Sukses!', 'Berhasil Tambah Departemen!');
         return back();
     }
 
@@ -34,14 +34,14 @@ class MasterDepartemenController extends Controller
         ]);
         $department->name = $request->name;
         $department->save();
-        Alert::info('Sukses!', 'Berhasil Update Departemen!');
+        Alert::success('Sukses!', 'Berhasil Update Departemen!');
         return back();
     }
 
     function deleteDepartment(Request $request)
     {
         $department = Department::find($request->department_id)->delete();
-        Alert::info('Sukses!', 'Berhasil Delete Departemen!');
+        Alert::success('Sukses!', 'Berhasil Delete Departemen!');
         return back();
     }
 }

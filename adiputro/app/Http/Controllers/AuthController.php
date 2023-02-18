@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -63,6 +64,7 @@ class AuthController extends Controller
             ]);
 
         $message = "Berhasil tambah user baru!";
+        Alert::success('Sukses!', 'Berhasil Tambah User!');
         return redirect('/master/user')->with("message",[
             "content"=>$message,
             "type"=>1

@@ -32,14 +32,14 @@ class MasterUserController extends Controller
             $user->status = 0;
         }
         $user->save();
-        Alert::info('Sukses!', 'Berhasil Update User!');
+        Alert::success('Sukses!', 'Berhasil Update User!');
         return back();
     }
 
     function deleteUser(Request $request)
     {
         $user = User::find($request->user_id)->delete();
-        Alert::info('Sukses!', 'Berhasil Delete User!');
+        Alert::success('Sukses!', 'Berhasil Delete User!');
         return back();
     }
 }
