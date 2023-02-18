@@ -1,5 +1,6 @@
 @extends('main')
 @section('container')
+<<<<<<< Updated upstream
     <h1 class="text-center text-5xl font-semibold mb-4">Master User</h1>
     <div class="text-gray-900">
         <div class="p-4 flex">
@@ -43,6 +44,58 @@
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required>
                 </div>
+=======
+<h1 class="text-center text-5xl font-semibold">Master User</h1>
+<div>
+    <div class="p-4 flex">
+        <h1 class="text-3xl">
+            Tambah user
+        </h1>
+    </div>
+    <div class="px-3 py-4 w-6/12">
+        <form action="{{ url('doRegister') }}" method="POST">
+            <div class="mb-6">
+            <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
+            <input type="text" id="full_name" name="full_name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John Doe" required>
+            </div>
+            <div class="mb-6">
+            <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+            <input type="text" id="username" name="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+            </div>
+            <div class="mb-6">
+                <label for="department_id" class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+                <select id="department_id" name="department_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                </select>
+            </div>
+             <div class="mb-6">
+                <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
+                <select id="role_id" name="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->role_id }}">{{ $role->name }}</option>
+                     @endforeach
+                </select>
+            </div>
+            <div class="mb-6">
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+            <input type="password" name="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+                <div class="flex">
+                    <div class="flex items-center mr-4">
+                        <input id="inline-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="inline-radio" class="ml-2 text-sm font-medium text-gray-900">Inline 1</label>
+                    </div>
+                    <div class="flex items-center mr-4">
+                        <input id="inline-2-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900">Inline 2</label>
+                    </div>
+
+                </div>
+            </div>
+>>>>>>> Stashed changes
 
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah
