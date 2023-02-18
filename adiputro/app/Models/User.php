@@ -17,5 +17,10 @@ class User extends Authenticatable
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['username','password','full_name','department_id','gender','role','status'];
+    protected $fillable = ['username','password','full_name','department_id','gender','role_id','status'];
+
+    function role()
+    {
+        return $this->belongsTo(Role::class,'role_id','role_id');
+    }
 }
