@@ -20,22 +20,22 @@
         <input type="text" placeholder="Search" class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
     </div>
     <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this)">
+        onclick="changeSideMenu(this,'masterUser')" id="sidemenuUser">
         <i class="bi bi-people"></i>
         <span class="text-[15px] ml-4 text-gray-200">Master User</span>
     </div>
     <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this)">
+        onclick="changeSideMenu(this,'masterDepartemen')" id="sidemenuDepartemen">
         <i class="bi bi-people"></i>
         <span class="text-[15px] ml-4 text-gray-200">Master Departemen</span>
     </div>
     <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this)">
+        onclick="changeSideMenu(this,'masterStall')" id="sidemenuStall">
         <i class="bi bi-people"></i>
         <span class="text-[15px] ml-4 text-gray-200">Master Stall</span>
     </div>
     <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-        onclick="changeSideMenu(this)">
+        onclick="changeSideMenu(this,'masterLevel')" id="sidemenuLevel">
         <i class="bi bi-people"></i>
         <span class="text-[15px] ml-4 text-gray-200">Master Level</span>
     </div>
@@ -64,28 +64,4 @@
             <span class="text-[15px] ml-4 text-gray-200">Logout</span>
         </div>
     </a>
-
-    <script type="text/javascript">
-        function dropdown() {
-            document.querySelector("#submenu").classList.toggle("hidden");
-            document.querySelector("#arrow").classList.toggle("rotate-180");
-        }
-        dropdown();
-
-        function Open() {
-            document.querySelector(".sidebar").classList.toggle("left-[-250px]");
-        }
-
-        function closeSidebar() {
-            document.querySelector(".sidebar").classList.add("left-[-250px]");
-        }
-
-        function changeSideMenu(e) {
-            let sidemenu = document.getElementsByClassName("sidemenu");
-            for (let i = 0; i < sidemenu.length; i++) {
-                sidemenu[i].classList.remove("bg-blue-600");
-            }
-            e.classList.add("bg-blue-600");
-        }
-    </script>
 </div>
