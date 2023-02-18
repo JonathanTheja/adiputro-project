@@ -13,7 +13,7 @@
 <body>
     @include('sidebar')
 
-    <div class="ml-[250px] mt-12 lg:mt-6 p-4" id="container">
+    <div class="ml-[250px] p-6 bg-slate-300" id="container">
         @yield('container')
     </div>
 </body>

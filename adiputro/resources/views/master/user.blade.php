@@ -1,10 +1,49 @@
 @extends('main')
 @section('container')
 <h1 class="text-center text-5xl font-semibold">Master User</h1>
+<div>
+    <div class="p-4 flex">
+        <h1 class="text-3xl">
+            Tambah user
+        </h1>
+    </div>
+    <div class="px-3 py-4">
+        <form action="{{ url('doRegister') }}" method="POST">
+            <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
+            <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John Doe" required>
+            </div>
+            <div class="mb-6">
+            <label for="text" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+            <input type="text" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+            </div>
+            <div class="mb-6">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                </select>
+            </div>
+             <div class="mb-6">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
+                <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->role_id }}">{{ $role->name }}</option>
+                     @endforeach
+                </select>
+            </div>
+            <div class="mb-6">
+            <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+            <input type="password" id="repeat-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+            </div>
+
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah user baru</button>
+        </form>
+    </div>
+</div>
 <div class="text-gray-900">
     <div class="p-4 flex">
         <h1 class="text-3xl">
-            Users List
+            List User
         </h1>
     </div>
     <div class="px-3 py-4 flex justify-center">

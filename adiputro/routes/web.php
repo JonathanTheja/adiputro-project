@@ -22,6 +22,7 @@ use PhpParser\Node\Expr\AssignOp\Concat;
 Route::get('/', [AuthController::class,'index']);
 Route::get('/login', [AuthController::class,'index']);
 Route::post('/doLogin', [AuthController::class,'doLogin']);
+Route::post('/doRegister', [AuthController::class,'doRegister']);
 
 Route::prefix('master')->group(function () {
     Route::get('/user', [MasterUserController::class,'masterUser']);
@@ -29,3 +30,4 @@ Route::prefix('master')->group(function () {
     Route::get('/stall', [MasterStallController::class,'masterStall']);
     Route::get('/level', [MasterLevelController::class,'masterLevel']);
 });
+
