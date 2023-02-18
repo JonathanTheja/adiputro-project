@@ -11,7 +11,7 @@
 
 <body>
 
-    <section class="gradient-form bg-slate-300 min-h-screen flex justify-center items-center">
+    <section class="gradient-form bg-gradient-to-r from-slate-900 to-transparent min-h-screen flex justify-center items-center">
 
         <div class="container h-full justify-center items-center">
 
@@ -20,7 +20,7 @@
 
                     @include('includes.alert')
 
-                    <div class="block bg-white shadow-lg rounded-lg">
+                    <div class="block bg-white shadow-2xl rounded-lg">
                         <div class="lg:flex lg:flex-wrap g-0">
                             <div class="lg:w-6/12 px-4 md:px-0">
                                 <div class="md:p-12 md:mx-6">
@@ -31,7 +31,7 @@
                                     </div>
                                     <form action="{{ url('doLogin') }}" method="POST">
                                         @csrf
-                                        <p class="my-6">LOGIN</p>
+                                        <p class="my-6">Login to Adiputro</p>
                                         <div class="mb-4">
                                             <input type="text"
                                                 class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
