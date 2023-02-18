@@ -54,6 +54,11 @@
     </div>
 
     <div class="text-gray-900">
+        <div class="p-4 flex">
+            <h1 class="text-3xl">
+                Daftar Departemen
+            </h1>
+        </div>
         <div class="py-4 flex justify-center overflow-auto">
             <table class="w-full text-md bg-white shadow-md rounded mb-4">
                 <tbody>
