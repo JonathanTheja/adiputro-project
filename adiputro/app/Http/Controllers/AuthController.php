@@ -47,8 +47,8 @@ class AuthController extends Controller
         $request->validate([
             "username"=>["required","min:8","alpha","unique:users,username"],
             "gender"=>"required",
-            "password"=>["required","confirmed","min:8"],
-            "full_name"=>["required"]
+            "password"=>["required","min:8"],
+            "full_name"=>["required"],
         ]);
 
         //insert into users

@@ -10,15 +10,22 @@
 
     <div class="px-3 py-4">
         <form action="{{ url('doRegister') }}" method="POST">
+            @csrf
             <div class="flex lg:flex-row flex-col">
                 <div class="mb-6 w-full">
                     <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
                     <input type="text" id="full_name" name="full_name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John Doe" required>
+                    @error('full_name')
+                        <span class="text-sm text-red-600">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="w-4"></div>
                 <div class="mb-6 w-full">
                     <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
                     <input type="text" id="username" name="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+                    @error('username')
+                    <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
                 </div>
             </div>
 
@@ -43,8 +50,11 @@
             </div>
 
             <div class="mb-6">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-            <input type="password" name="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                <input type="password" name="password" id="password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                @error('password')
+                <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="mb-6">
@@ -58,8 +68,10 @@
                         <input id="inline-2-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900">Female</label>
                     </div>
-
                 </div>
+                @error('gender')
+                    <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
             </div>
 
                 <button type="submit"
