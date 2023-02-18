@@ -25,7 +25,11 @@ Route::post('/doLogin', [AuthController::class,'doLogin']);
 Route::post('/doRegister', [AuthController::class,'doRegister']);
 
 Route::prefix('master')->group(function () {
-    Route::get('/user', [MasterUserController::class,'masterUser']);
+    Route::prefix('user')->group(function () {
+        Route::get('/', [MasterUserController::class,'masterUser']);
+        Route::post('/update', [MasterUserController::class,'updateUser']);
+        Route::post('/delete', [MasterUserController::class,'deleteUser']);
+    });
 
     Route::prefix('departemen')->group(function () {
         Route::get('/', [MasterDepartemenController::class,'masterDepartemen']);
