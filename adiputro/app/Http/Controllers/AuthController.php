@@ -63,7 +63,7 @@ class AuthController extends Controller
             ]);
 
         $message = "Berhasil tambah user baru!";
-        return redirect('/dashboard')->with("message",[
+        return redirect('/master/user')->with("message",[
             "content"=>$message,
             "type"=>1
         ]);
