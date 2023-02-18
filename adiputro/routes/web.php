@@ -26,7 +26,12 @@ Route::post('/doRegister', [AuthController::class,'doRegister']);
 
 Route::prefix('master')->group(function () {
     Route::get('/user', [MasterUserController::class,'masterUser']);
-    Route::get('/departemen', [MasterDepartemenController::class,'masterDepartemen']);
+
+    Route::prefix('departemen')->group(function () {
+        Route::get('/', [MasterDepartemenController::class,'masterDepartemen']);
+        Route::post('add', [MasterDepartemenController::class,'addDepartment']);
+    });
+
     Route::get('/stall', [MasterStallController::class,'masterStall']);
     Route::get('/level', [MasterLevelController::class,'masterLevel']);
 });
