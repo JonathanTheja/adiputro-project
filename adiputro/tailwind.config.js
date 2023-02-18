@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
+        './src/**/*.{html,js}',
+        './node_modules/tw-elements/dist/js/**/*.js',
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
         "./resources/**/*.vue",
@@ -159,7 +161,10 @@ module.exports = {
             }],
         },
     },
-    plugins: [require("daisyui")],
+    plugins: [
+        require("daisyui"),
+        require('tw-elements/dist/plugin'),
+    ],
     daisyui: {
     themes: false,
     },

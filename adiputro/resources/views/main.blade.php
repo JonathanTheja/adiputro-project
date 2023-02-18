@@ -13,7 +13,7 @@
 <body>
     @include('sidebar')
 
-    <div class="ml-[250px] mt-12 lg:mt-6 p-4" onclick="closeSidebar();" id="container">
+    <div class="ml-[250px] mt-12 lg:mt-6 p-4" id="container">
         @yield('container')
     </div>
 </body>
