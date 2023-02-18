@@ -59,6 +59,20 @@ class SpkSeeder extends Seeder
                 'item_description'=>null,
                 'parent_id'=>2
             ],
+            [
+                // 'role_id' => 1,
+                'name'=>'Elf Short 4P',
+                'item_number'=>null,
+                'item_description'=>null,
+                'parent_id'=>5
+            ],
+            [
+                // 'role_id' => 1,
+                'name'=>'Body Welding',
+                'item_number'=>null,
+                'item_description'=>null,
+                'parent_id'=>7
+            ],
 
         ]);
     }
