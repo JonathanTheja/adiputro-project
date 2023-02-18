@@ -2,7 +2,7 @@
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
 <div
-    class="sidebar fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900">
+    class="sidebar fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">

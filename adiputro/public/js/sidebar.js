@@ -5,7 +5,7 @@ function dropdown() {
 dropdown();
 
 function Open() {
-    document.querySelector(".sidebar").classList.toggle("left-[-250px]");
+    document.querySelector("#sidebar").classList.toggle("left-[-250px]");
     document.querySelector("#container").classList.toggle("ml-[250px]");
 }
 
