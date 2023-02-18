@@ -1,10 +1,10 @@
 @extends('main')
 @section('container')
-<h1 class="text-center text-5xl font-semibold">Master User</h1>
+<h1 class="text-center text-5xl font-semibold mb-4">Master User</h1>
 <div class="text-gray-900">
     <div class="p-4 flex">
         <h1 class="text-3xl">
-            Users List
+            Tambah User
         </h1>
     </div>
     <div class="px-3 py-4 flex justify-center">

@@ -1,51 +1,123 @@
-@extends("main")
+@extends('main')
 
-@section("container")
-<h1 class="text-center text-5xl font-semibold">Master Departemen</h1>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi quaerat a ipsum alias magni eius et dicta, natus
-adipisci aut, nam atque rem delectus aspernatur incidunt quibusdam ea eaque minima.
-Animi sequi corrupti illo. Illo maxime voluptatem quas porro modi, asperiores excepturi corrupti in incidunt,
-placeat eius aperiam voluptates eum culpa esse error commodi maiores vitae provident cupiditate molestiae nostrum!
-Alias sint cumque minima! Neque eligendi repellendus nihil excepturi voluptate eum, illo totam quas iste sed magnam
-velit repellat quia nulla vero pariatur. Eligendi unde reprehenderit vitae, nisi neque nulla!
-Optio vitae eius quis voluptate consequuntur a eaque? Doloremque dignissimos commodi, est saepe corrupti, deleniti
-officiis doloribus possimus ipsum enim adipisci non hic similique suscipit. Omnis, accusantium. Officia, cupiditate
-itaque!
-Facilis expedita vitae quod. Tenetur aspernatur ipsam velit provident omnis quibusdam porro consequuntur quos
-maiores minus, eligendi perspiciatis recusandae qui ducimus nisi quo expedita, temporibus error quaerat.
-Voluptatibus, commodi quasi.
-Adipisci fugit id quaerat quis optio hic perferendis aut, nobis fuga nostrum. Ullam temporibus, similique porro
-soluta tempore nulla, magni doloremque voluptas officiis omnis possimus voluptatem fugit. Mollitia, quas iusto!
-Molestias id numquam dolor, facere suscipit quod vero ipsam fugit nostrum in natus, consectetur quibusdam nam!
-Blanditiis veniam placeat dignissimos non, omnis soluta! Omnis fugiat doloribus neque placeat. Dicta, possimus!
-Incidunt, laudantium reprehenderit pariatur eligendi temporibus nesciunt soluta similique libero, veniam doloremque
-labore voluptatibus aut, at vel adipisci excepturi magni illum provident facere non architecto suscipit veritatis
-repellat. Debitis, ex!
-Nemo rerum a enim ratione perferendis nihil illo natus fugit tempora similique exercitationem iste eos fugiat,
-laboriosam quod molestiae earum repellat aut nobis sint vero perspiciatis dolore eius. Repellendus, nam!
-Quae aut laboriosam corrupti rem placeat officiis pariatur ullam non. Autem eaque enim ut blanditiis fugit
-doloremque perferendis, suscipit velit. Voluptatem autem molestias sit officiis laboriosam similique reiciendis est
-voluptatum.
-Saepe similique fuga ab maxime animi perferendis mollitia. Saepe, laudantium sint facere eligendi natus, atque
-excepturi iste consequuntur quae tenetur assumenda et hic veniam quibusdam laboriosam odit culpa deleniti eveniet.
-Modi commodi quibusdam, nulla voluptates, velit vero ratione quisquam labore adipisci magni accusantium. Consequatur
-veniam nostrum voluptatum pariatur, culpa modi quos neque cumque ut minus, alias dolorum inventore assumenda error.
-Et velit sapiente commodi iure veniam a doloremque distinctio, quis quaerat, ex magni blanditiis, quidem temporibus
-ratione voluptas dolorem sequi nostrum molestiae consectetur maxime neque fuga. Libero maiores beatae saepe.
-Quis libero tempore ea aut illo. Fugit ab suscipit, doloremque sit vitae nulla laboriosam pariatur fuga animi nemo
-culpa praesentium blanditiis enim deserunt iste ullam totam in iusto ipsa magnam?
-Molestias velit nisi, fugiat enim officia dicta dolores eos quam labore nesciunt nostrum dolore laboriosam, quo,
-soluta obcaecati expedita vero? Perspiciatis earum omnis, officia sed est itaque ipsum praesentium non?
-Voluptates hic neque itaque natus corrupti dignissimos a non sunt beatae consequatur sequi, repellat adipisci eius
-laudantium quo voluptate enim excepturi soluta architecto ipsum corporis nisi repudiandae! Laborum, quam modi.
-Id excepturi debitis mollitia tenetur, cupiditate ratione odio autem explicabo velit temporibus natus ut? Laboriosam
-adipisci cupiditate maxime aut mollitia corrupti assumenda et! Illum veritatis facere nostrum delectus optio dolor?
-Sunt rerum perspiciatis dolores dignissimos, tempora quia perferendis aspernatur odio, porro accusamus tenetur quae
-illo esse, quo magni soluta cupiditate eaque ea consectetur? Ullam voluptatem magnam inventore ea, odio illo.
-Quaerat rem numquam, eum architecto ex vero tenetur aliquam nesciunt sequi, excepturi voluptatum molestias molestiae
-dolorem quas incidunt maxime laborum. Deleniti voluptatem tenetur voluptatibus porro quis. Magnam veniam nostrum
-itaque.
-Repellendus reprehenderit sapiente magni eveniet pariatur dolore dicta incidunt, neque fugit quo quidem, enim
-aspernatur quisquam aperiam voluptas, expedita adipisci consectetur? Ipsam quas facilis est modi eum sunt quod
-reiciendis?
+
+@section('container')
+    <h1 class="text-center text-5xl font-semibold mb-4">Master Departemen</h1>
+    <div class="text-gray-900">
+        <form>
+            <div class="py-4 flex">
+                <h1 class="text-3xl">
+                    Add Department
+                </h1>
+            </div>
+            <div class="flex lg:flex-row flex-col">
+                <div class="mb-4 w-full">
+                    <input type="text"
+                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        id="exampleFormControlInput1" placeholder="Nama" />
+                </div>
+                <div class="w-4"></div>
+                <div class="mb-4 w-full">
+                    <div class="w-full">
+                        <div>
+                            <div class="dropup relative w-full">
+                                <button
+                                    class="dropdown-toggle px-6 py-2.5 bg-blue-600 text-white text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap w-full"
+                                    type="button" id="dropdownMenuButton1u" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Pilih Akses Database
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-up"
+                                        class="w-2 ml-2" role="img" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 320 512">
+                                        <path fill="currentColor"
+                                            d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <ul class="
+                                dropdown-menu
+                                min-w-max
+                                absolute
+                                hidden
+                                bg-white
+                                text-base
+                                z-50
+                                float-left
+                                py-2
+                                list-none
+                                text-left
+                                rounded-lg
+                                shadow-lg
+                                mt-1
+                                hidden
+                                m-0
+                                bg-clip-padding
+                                border-none
+                                "
+                                    aria-labelledby="dropdownMenuButton1u">
+                                    <li>
+                                        <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-black hover:bg-blue-500 hover:text-white p-2"
+                                            href="#">SPK MINI BUS</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-black hover:bg-blue-500 hover:text-white p-2"
+                                            href="#">SPK BUS</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-1 mb-12 pb-1">
+                <button
+                    class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-slate-200 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3 hover:text-black bg-gray-900"
+                    type="button" data-mdb-ripple="true" data-mdb-ripple-color="light">
+                    Tambah
+                </button>
+            </div>
+        </form>
+        <div class="py-4 flex">
+            <h1 class="text-3xl">
+                Daftar Departemen
+            </h1>
+        </div>
+        <div class="py-4 flex justify-center overflow-auto">
+            <table class="w-full text-md bg-white shadow-md rounded mb-4">
+                <tbody>
+                    <tr class="border-b">
+                        <th class="text-left p-3 px-5">Name</th>
+                        <th class="text-left p-3 px-5">Department</th>
+                        <th class="text-center p-3 px-5">Role</th>
+                        <th class="text-center p-3 px-5">Status</th>
+                        <th class="text-center p-3 px-5">Action</th>
+                    </tr>
+                    <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                        <td class="p-3 px-5"><input type="text" value="user.name" class="bg-transparent"></td>
+                        <td class="p-3 px-5"><input type="text" value="user.email" class="bg-transparent"></td>
+                        <td class="p-3 px-5">
+                            <select value="user.role" class="bg-transparent">
+                                <option value="user">user</option>
+                                <option value="admin">admin</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                </div>
+                                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Active</span>
+                            </label>
+                        </td>
+                        <td class="p-3 px-5 flex justify-end"><button type="button"
+                                class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Update</button><button
+                                type="button"
+                                class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

@@ -10,11 +10,13 @@
     @vite('resources/js/app.js')
 </head>
 
-<body>
+<body class="bg-gray-100">
     @include('sidebar')
 
-    <div class="ml-[250px] mt-12 lg:mt-6 p-4" id="container">
-        @yield('container')
+    <div class="ml-[250px] p-10" id="container" class="">
+        <div class="bg-white p-10 rounded-md">
+            @yield('container')
+        </div>
     </div>
 </body>
 <script src="{{ asset('js/sidebar.js') }}"></script>
