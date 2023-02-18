@@ -49,7 +49,7 @@
                         <th class="text-left p-3 px-5">Name</th>
                         <th class="text-center p-3 px-5" colspan="2">Action</th>
                     </tr>
-                    @foreach ($departments as $department)
+                    @foreach ($departments as $key => $department)
                         <tr class="border-b hover:bg-orange-100 bg-gray-100">
                             <form action="/master/departemen/update" method="post">
                                 @csrf
@@ -59,18 +59,20 @@
                                         class="bg-transparent" name="name"></td>
                                 <td class="p-3 flex justify-end"><button type="button"
                                         class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                                        onclick="confirmUpdate();">Update</button>
+                                        onclick="confirmUpdate({{ $key }});">Update</button>
                                 </td>
-                                <button type="submit" class="hidden" id="btnUpdate"></button>
+                                <button type="submit" class="hidden" id="btnUpdate{{ $key }}"></button>
                             </form>
                             <form action="/master/departemen/delete" method="post">
                                 @csrf
+                                <input type="text" value="{{ $department->department_id }}" class="bg-transparent hidden"
+                                    name="department_id">
                                 <td class="p-3 px-5">
                                     <button type="button"
                                         class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                                        onclick="confirmDelete();">Delete</button>
+                                        onclick="confirmDelete({{ $key }});">Delete</button>
                                 </td>
-                                <button type="submit" class="hidden" id="btnDelete"></button>
+                                <button type="submit" class="hidden" id="btnDelete{{ $key }}"></button>
                             </form>
                         </tr>
                     @endforeach
@@ -79,7 +81,7 @@
         </div>
     </div>
     <script>
-        function confirmUpdate() {
+        function confirmUpdate(key) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -90,12 +92,12 @@
                 confirmButtonText: 'Yes, Update it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById("btnUpdate").click();
+                    document.getElementById(`btnUpdate${key}`).click();
                 }
             })
         }
 
-        function confirmDelete() {
+        function confirmDelete(key) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -106,7 +108,7 @@
                 confirmButtonText: 'Yes, Delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById("btnDelete").click();
+                    document.getElementById(`btnDelete${key}`).click();
                 }
             })
         }

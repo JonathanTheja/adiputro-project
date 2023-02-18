@@ -30,6 +30,8 @@ Route::prefix('master')->group(function () {
     Route::prefix('departemen')->group(function () {
         Route::get('/', [MasterDepartemenController::class,'masterDepartemen']);
         Route::post('add', [MasterDepartemenController::class,'addDepartment']);
+        Route::post('update', [MasterDepartemenController::class,'updateDepartment']);
+        Route::post('delete', [MasterDepartemenController::class,'deleteDepartment']);
     });
 
     Route::get('/stall', [MasterStallController::class,'masterStall']);
