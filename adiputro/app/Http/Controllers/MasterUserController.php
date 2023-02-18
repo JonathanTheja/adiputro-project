@@ -10,4 +10,5 @@ class MasterUserController extends Controller
     {
         return view("master.user");
     }
+
 }

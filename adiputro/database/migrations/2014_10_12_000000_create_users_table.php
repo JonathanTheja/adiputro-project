@@ -22,6 +22,7 @@ return new class extends Migration
             $table->tinyInteger('role');
             $table->tinyInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
