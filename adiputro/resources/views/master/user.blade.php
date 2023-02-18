@@ -7,7 +7,7 @@
             Tambah user
         </h1>
     </div>
-    <div class="px-3 py-4">
+    <div class="px-3 py-4 w-6/12">
         <form action="{{ url('doRegister') }}" method="POST">
             <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
