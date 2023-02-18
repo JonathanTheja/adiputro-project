@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('password');
             $table->string('full_name',100);
             $table->unsignedBigInteger('department_id')->unique();
-            $table->string('role')->unique();
+            $table->integer('role');
             $table->timestamps();
         });
     }
