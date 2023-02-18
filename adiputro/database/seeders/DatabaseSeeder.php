@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([RoleSeeder::class,UserSeeder::class,DepartmentSeeder::class]);
+        $this->call([RoleSeeder::class,UserSeeder::class,DepartmentSeeder::class,SpkSeeder::class]);
     }
 }
