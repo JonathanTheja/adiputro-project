@@ -40,7 +40,7 @@ class AuthController extends Controller
         $department_id = $request->department_id;
         $role_id = $request->role_id;
         $password = $request->password;
-        $status = $request->status;
+        $status = 1;
         $gender = $request->gender;
         $message = "";
 
@@ -57,13 +57,13 @@ class AuthController extends Controller
                 "username"=>$username,
                 "password"=>$password,
                 "gender"=>$gender,
-                "role"=>$role_id,
+                "role_id"=>$role_id,
                 "department_id"=>$department_id,
                 "status"=>$status
             ]);
 
         $message = "Berhasil tambah user baru!";
-        return redirect()->route('login')->with("message",[
+        return redirect('/dashboard')->with("message",[
             "content"=>$message,
             "type"=>1
         ]);
