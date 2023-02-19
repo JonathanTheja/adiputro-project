@@ -2,13 +2,12 @@
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
 <div
-    class="sidebar fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
+    class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">
                 <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }}
                     alt="logo" style="width:80px;height:80px" />
-                {{-- <h1 class="text-lg font-semibold mt-1 mb-12 pb-1">ADIPUTRO</h1> --}}
             </div>
             <i class="absolute bi bi-x ml-40 cursor-pointer bg-blue-600 px-1 rounded-md"
                 onclick="Open();"></i>

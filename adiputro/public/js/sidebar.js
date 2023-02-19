@@ -10,7 +10,7 @@ function Open() {
 }
 
 function closeSidebar() {
-    document.querySelector(".sidebar").classList.add("left-[-250px]");
+    document.querySelector("#sidebar").classList.add("left-[-250px]");
     document.querySelector("#container").classList.remove("ml-[250px]");
 }
 
