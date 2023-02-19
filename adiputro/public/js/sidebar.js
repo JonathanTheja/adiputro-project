@@ -4,7 +4,7 @@ function dropdown() {
 }
 dropdown();
 
-function Open() {
+function openSidebar() {
     document.querySelector("#sidebar").classList.toggle("left-[-250px]");
     document.querySelector("#container").classList.toggle("ml-[250px]");
 }

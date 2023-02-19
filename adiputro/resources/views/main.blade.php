@@ -20,8 +20,6 @@
     </div>
     @include('sweetalert::alert')
 </body>
-<script src="{{ asset('js/sidebar.js') }}"></script>
-
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
 </html>

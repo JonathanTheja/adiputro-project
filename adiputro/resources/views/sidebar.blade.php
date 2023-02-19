@@ -1,23 +1,20 @@
-<span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="Open();" id="openSidebar">
+<span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="openSidebar();" id="openSidebar">
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
-<div
-    class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
+<div class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">
-                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }}
-                    alt="logo" style="width:80px;height:80px" />
+                <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }} alt="logo"
+                    style="width:80px;height:80px" />
             </div>
-            <i class="absolute bi bi-x ml-40 cursor-pointer bg-blue-600 px-1 rounded-md"
-                onclick="Open();"></i>
+            <i class="absolute bi bi-x ml-40 cursor-pointer bg-blue-600 px-1 rounded-md" onclick="openSidebar();"></i>
         </div>
         <hr class="my-2 text-gray-600">
     </div>
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer bg-gray-700 text-white">
         <i class="bi bi-search text-sm"></i>
-        <input type="text" placeholder="Search"
-            class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
+        <input type="text" placeholder="Search" class="text-[15px] ml-4 w-full bg-transparent focus:outline-none">
     </div>
     <a href="{{ url('/master/user') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
@@ -67,10 +64,10 @@
     </div>
 
     <a href="/login">
-        <div
-            class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white">
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white">
             <i class="bi bi-box-arrow-in-right"></i>
             <span class="text-[15px] ml-4 text-gray-200">Logout</span>
         </div>
     </a>
 </div>
+<script src="{{ asset('js/sidebar.js') }}"></script>
