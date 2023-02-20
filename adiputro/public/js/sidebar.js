@@ -4,11 +4,6 @@ function dropdown() {
 }
 dropdown();
 
-function openSidebar() {
-    document.querySelector("#sidebar").classList.toggle("left-[-250px]");
-    document.querySelector("#container").classList.toggle("ml-[250px]");
-}
-
 function closeSidebar() {
     document.querySelector("#sidebar").classList.add("left-[-250px]");
     document.querySelector("#container").classList.remove("ml-[250px]");
@@ -26,16 +21,6 @@ function changeSideMenu(e, master) {
     e.classList.add("bg-blue-600");
     if (document.getElementById(master).classList.contains("hidden")) {
         document.getElementById(master).classList.remove("hidden");
-    }
-
-    if (master == "masterUser") {
-        window.history.replaceState('page', 'Title', "/master/user");
-    } else if (master == "masterDepartemen") {
-        window.history.replaceState('page', 'Title', "/master/departemen");
-    } else if (master == "masterStall") {
-        window.history.replaceState('page', 'Title', "/master/stall");
-    } else if (master == "masterLevel") {
-        window.history.replaceState('page', 'Title', "/master/level");
     }
 }
 
