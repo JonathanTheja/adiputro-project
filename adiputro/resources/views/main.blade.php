@@ -22,4 +22,5 @@
 </body>
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
+{{-- <script src="{{ asset('js/sidebar.js') }}"></script> --}}
 </html>

@@ -71,3 +71,9 @@
     </a>
 </div>
 <script src="{{ asset('js/sidebar.js') }}"></script>
+<script>
+    function openSidebar() {
+        document.querySelector("#sidebar").classList.toggle("left-[-250px]");
+        document.querySelector("#container").classList.toggle("ml-[250px]");
+    }
+</script>
