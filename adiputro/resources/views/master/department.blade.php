@@ -75,7 +75,7 @@
                                         class="bg-transparent" name="department_id"></td>
                                 <td class="p-3 px-5"><input type="text" value="{{ $department->name }}"
                                         class="bg-transparent" name="name"></td>
-                                <td class="p-3 flex justify-end"><button type="button"
+                                <td class="p-3"><button type="button"
                                         class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                                         onclick="confirmUpdate({{ $key }});">Update</button>
                                 </td>

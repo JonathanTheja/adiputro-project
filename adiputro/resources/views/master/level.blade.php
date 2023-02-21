@@ -93,7 +93,7 @@
     <script>
         function openMenu(sideNav, btnDown) {
             document.getElementById(sideNav).classList.toggle("hidden");
-            document.getElementById(btnDown).classList.toggle("rotate-180");
+            // document.getElementById(btnDown).classList.toggle("rotate-180");
         }
     </script>
 @endsection

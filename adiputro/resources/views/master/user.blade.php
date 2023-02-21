@@ -72,7 +72,7 @@
                             @error('password')
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
-                            <div class="mb-6">
+                            <div class="mb-6 mt-6">
                                 <label class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
                                 <div class="flex">
                                     <div class="flex items-center mr-4">
@@ -123,10 +123,19 @@
                             <form action="/master/user/update" method="post">
                                 @csrf
                                 <input class="hidden" type="text" name="user_id" value="{{ $user->user_id }}">
-                                <td class="p-3 px-5"><input type="text" value="{{ $user->full_name }}"
-                                        class="bg-transparent" name="full_name"></td>
-                                <td class="p-3 px-5"><input type="text" value="{{ $user->department_id }}"
-                                        class="bg-transparent" name="department_id"></td>
+                                <td class="p-3 px-5">
+                                    <input type="text" value="{{ $user->full_name }}" class="bg-transparent"
+                                        name="full_name">
+                                </td>
+                                <td class="p-3 px-5">
+                                    <select value="1" class="bg-transparent" name="department_id">
+                                        @foreach ($departments as $department)
+                                            <option value="{{ $department->department_id }}"
+                                                @if ($department->department_id == $user->department_id) selected @endif>{{ $department->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
                                 <td class="p-3 px-5">
                                     <select value="1" class="bg-transparent" name="role_id">
                                         @foreach ($roles as $role)
@@ -155,7 +164,7 @@
                                         </span>
                                     </label>
                                 </td>
-                                <td class="p-3 px-5 flex justify-end"><button type="button"
+                                <td class="p-3 px-5"><button type="button"
                                         class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                                         onclick="confirmUpdate({{ $key }});">Update</button>
                                 </td>

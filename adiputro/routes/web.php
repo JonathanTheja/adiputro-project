@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
 use App\Http\Controllers\MasterLevelController;
 use App\Http\Controllers\MasterStallController;
@@ -40,5 +41,6 @@ Route::prefix('master')->group(function () {
 
     Route::get('/stall', [MasterStallController::class,'masterStall']);
     Route::get('/level', [MasterLevelController::class,'masterLevel']);
+    Route::get('/data', [MasterDataController::class,'masterData']);
 });
 

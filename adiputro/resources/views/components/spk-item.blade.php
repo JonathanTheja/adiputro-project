@@ -28,7 +28,7 @@
     @endforeach
 </div> --}}
 
-<div class="border border-collapse w-fit">
+<div class="w-fit">
     <div class="flex items-center min-w-[200px]">
         <a class="flex items-center pl-4 text-sm py-2 text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-200 transition duration-300 ease-in-out cursor-pointer min-w-[150px]"
             data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse"
@@ -51,7 +51,7 @@
         @endforeach
         @if ($count > 0)
             <svg aria-hidden="true" focusable="false" data-prefix="fas"
-                class="rounded-md w-6 h-6 ml-2 mr-4 bg-gray-200 hover:bg-gray-400 cursor-pointer rotate-180"
+                class="rounded-md w-6 h-6 ml-2 mr-4 bg-gray-200 hover:bg-gray-400 cursor-pointer -rotate-90"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" id="btnDown{{ $spk->spk_id }}"
                 onclick="openMenu('sideNav{{ $spk->spk_id }}', 'btnDown{{ $spk->spk_id }}')">
                 <path fill="currentColor"
@@ -60,7 +60,7 @@
             </svg>
         @endif
     </div>
-    <div class="pl-4 hidden" id="sideNav{{ $spk->spk_id }}">
+    <div class="pl-6 hidden" id="sideNav{{ $spk->spk_id }}">
         @foreach ($spk->children as $sp)
             <x-spk-item :spk="$sp" />
         @endforeach
