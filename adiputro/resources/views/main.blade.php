@@ -10,8 +10,6 @@
     @vite('resources/js/app.js')
 </head>
 
-@include("modal.add.data")
-@include("modal.update.data")
 <body class="bg-gray-200 min-h-screen">
     @include('sidebar')
 

@@ -25,6 +25,8 @@
         </table>
     </div>
 
+    @include("modal.add.data")
+    @include("modal.update.data")
     <label for="my-modal-add" class="btn hidden" id="modal">open modal</label>
     <label for="my-modal-update" class="btn hidden" id="modal">open modal</label>
 @endsection
@@ -32,6 +34,8 @@
 <script>
     function tambah(id, name, level) {
         if (id == undefined) {
+            document.getElementById("spk_id").value = "";
+            document.getElementById("name").innerText = "";
             document.getElementById("titleModal").innerText = `Tambah Komponen Baru`;
             document.getElementById("bodyModal").innerText = `Tambah Komponen Level 0`;
             document.getElementById("my-modal-add").click();
