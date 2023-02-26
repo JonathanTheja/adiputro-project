@@ -25,12 +25,12 @@
         </table>
     </div>
 
-    <div style="display: none" id="showModal">
+    {{-- <div style="display: none" id="showModal">
         @include('modal.add.data')
         @include('modal.update.data')
     </div>
     <label for="my-modal-add" class="btn hidden" id="modal">open modal</label>
-    <label for="my-modal-update" class="btn hidden" id="modal">open modal</label>
+    <label for="my-modal-update" class="btn hidden" id="modal">open modal</label> --}}
 @endsection
 
 <script>

@@ -8,7 +8,7 @@ use App\Models\item_level;
 use App\Models\ItemComponent;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Illuminate\Support\Str;
 class MasterDataController extends Controller
 {
     function masterData(Request $request)
@@ -42,9 +42,21 @@ class MasterDataController extends Controller
     {
         $item_level = ItemLevel::find($request->item_level_id);
         $item_level->name = $request->name;
+        $item_level->departments()->detach();
         $item_level->save();
+        //update departments
+        foreach ($request->departments as $department) {
+            # code...
+        }
+
+        foreach($request->file("photos") as $photo){
+            #code ..
+            $namafile = Str::random(8).".".$photo->getClientOriginalExtension();
+            $namafolder = "gambar_komponen/".$request->item_level_id;
+            $photo->storeAs($namafolder,$namafile,'public');
+        }
         Alert::success('Sukses!', 'Berhasil Update Komponen!');
-        return back();
+        return redirect('master/data');
     }
 
     function deleteData(Request $request)
