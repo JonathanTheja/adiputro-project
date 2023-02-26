@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Spk;
+use App\Models\ItemLevel;
 use Illuminate\Http\Request;
 
 class MasterLevelController extends Controller
 {
     function masterLevel()
     {
-        $spks = Spk::tree()->get()->toTree();
-        return view("master.level",compact("spks"));
+        $item_levels = ItemLevel::tree()->get()->toTree();
+        return view("master.level",compact("item_levels"));
+
     }
 }

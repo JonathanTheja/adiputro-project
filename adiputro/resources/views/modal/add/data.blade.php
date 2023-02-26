@@ -6,7 +6,7 @@
             @csrf
             <h3 class="text-lg font-bold" id="titleModal"></h3>
             <div class="py-4" id="bodyModal"></div>
-            <input type="text" class="hidden" id="spk_id" name="spk_id">
+            <input type="text" class="hidden" id="item_level_id" name="item_level_id">
             <input type="text" name="name" id="name"
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Name" required>

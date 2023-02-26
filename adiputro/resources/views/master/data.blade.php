@@ -12,7 +12,7 @@
                     </button>
                 </td>
             </tr>
-            @foreach ($spks as $spk)
+            @foreach ($item_levels as $item_level)
                 <tr class="border-2 border-collapse w-32 border-gray-300">
                     <td class="">
                         <button type="submit"
@@ -20,7 +20,7 @@
                         </button>
                     </td>
                 </tr>
-                <x-data-item :spk="$spk" :level=0></x-data-item>
+                <x-data-item :item="$item_level" :level=0></x-data-item>
             @endforeach
         </table>
     </div>
@@ -34,7 +34,7 @@
 <script>
     function tambah(id, name, level) {
         if (id == undefined) {
-            document.getElementById("spk_id").value = "";
+            document.getElementById("item_level_id").value = "";
             document.getElementById("name").innerText = "";
             document.getElementById("titleModal").innerText = `Tambah Komponen Baru`;
             document.getElementById("bodyModal").innerText = `Tambah Komponen Level 0`;
@@ -43,7 +43,7 @@
             // alert(id);
             // alert(name);
             // alert(level);
-            document.getElementById("spk_id").value = id;
+            document.getElementById("item_level_id").value = id;
             document.getElementById("titleModal").innerText = `Tambah Komponen Pada ${name} Level ${(level)}`;
             document.getElementById("bodyModal").innerText = `Tambah Komponen Level ${(parseInt(level)+1)}`;
             document.getElementById("my-modal-add").click();
@@ -51,7 +51,7 @@
     }
 
     function update(id, name, level) {
-        document.getElementById("spk_id_update").value = id;
+        document.getElementById("item_level_id_update").value = id;
         document.getElementById("nameUpdate").value = name;
         document.getElementById("titleModalUpdate").innerText = `Update Komponen Pada ${name} Level ${(level)}`;
         document.getElementById("bodyModalUpdate").innerText = `Update Nama Komponen`;

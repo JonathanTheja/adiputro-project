@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\ItemLevel;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +23,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([RoleSeeder::class,UserSeeder::class,DepartmentSeeder::class,SpkSeeder::class]);
+        $this->call([RoleSeeder::class,UserSeeder::class,DepartmentSeeder::class,ItemLevelSeeder::class]);
     }
 }

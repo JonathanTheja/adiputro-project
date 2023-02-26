@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Models\Spk;
+use App\Models\ItemLevel;
 use Illuminate\View\Component;
 
 class DataItem extends Component
@@ -12,7 +12,7 @@ class DataItem extends Component
      *
      * @return void
      */
-    public function __construct(public Spk $spk, public $level)
+    public function __construct(public ItemLevel $item, public $level)
     {
         //
     }

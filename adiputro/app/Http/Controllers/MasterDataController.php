@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Spk;
+use App\Models\ItemLevel;
+use App\Models\item_level;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -10,17 +11,17 @@ class MasterDataController extends Controller
 {
     function masterData(Request $request)
     {
-        $spks = Spk::tree()->get()->toTree();
-        // $spks = Spk::find(3)->descendantsAndSelf()->delete();
-        // dd($spks);
-        return view("master.data", compact("spks"));
+        $item_levels = ItemLevel::tree()->get()->toTree();
+        // $item_levels = item_level::find(3)->descendantsAndSelf()->delete();
+        // dd($item_levels);
+        return view("master.data", compact("item_levels"));
     }
 
     function addData(Request $request)
     {
-        $spk = Spk::create([
+        $item_level = ItemLevel::create([
             "name" => $request->name,
-            "parent_id" => $request->spk_id,
+            "parent_id" => $request->item_level_id,
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Komponen Baru!');
         return back();
@@ -28,16 +29,16 @@ class MasterDataController extends Controller
 
     function updateData(Request $request)
     {
-        $spk = Spk::find($request->spk_id);
-        $spk->name = $request->name;
-        $spk->save();
+        $item_level = ItemLevel::find($request->item_level_id);
+        $item_level->name = $request->name;
+        $item_level->save();
         Alert::success('Sukses!', 'Berhasil Update Komponen!');
         return back();
     }
 
     function deleteData(Request $request)
     {
-        $spks = Spk::find($request->spk_id)->descendantsAndSelf()->delete();
+        $item_levels = ItemLevel::find($request->item_level_id)->descendantsAndSelf()->delete();
         Alert::success('Sukses!', 'Berhasil Delete Komponen!');
         return back();
     }
