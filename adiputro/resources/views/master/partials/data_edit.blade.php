@@ -10,7 +10,7 @@
             <div class="py-4" id="bodyModalUpdate"></div>
             <input type="text" class="hidden" id="item_level_id_update" name="item_level_id">
             <label for="nameUpdate" class="block my-2 text-gray-900">Nama Komponen</label>
-            <input type="text" name="name" id="nameUpdate"
+            <input type="text" name="name" id="nameUpdate" value="{{ $item_level->name }}"
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Name" required>
 
