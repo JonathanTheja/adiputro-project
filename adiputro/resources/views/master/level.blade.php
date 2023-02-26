@@ -36,8 +36,8 @@
                 <x-level-item :item="$item_level"/>
             @endforeach
         </div>
-        <div class="w-9/12 bg-slate-400 rounded-lg">
-            <img src="{{ asset('img/bus_wall_1.jpg') }}" alt="" style="width:70%" class="mx-auto mt-10 rounded-lg">
+        <div class="w-9/12 bg-slate-200 rounded-lg">
+
         </div>
     </div>
 

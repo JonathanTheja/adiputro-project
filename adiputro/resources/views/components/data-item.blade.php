@@ -28,6 +28,17 @@
             class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center w-32">Edit
         </button>
     </td>
+    <form action="/master/data/update" method="get">
+        <td class="border-2 border-collapse border-gray-300">
+            {{-- <button onclick="update('{{ $item->item_level_id }}', '{{ $item->name }}', '{{ $level }}');" type="submit"
+                class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center w-32">Edit
+            </button> --}}
+            <input type="text" class="hidden" value="{{ $item->item_level_id }}" name="item_level_id">
+            <button type="submit"
+                class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center w-32">Edit
+            </button>
+        </td>
+    </form>
     <form action="/master/data/delete" method="post">
         <td class="border-2 border-collapse border-gray-300">
             @csrf

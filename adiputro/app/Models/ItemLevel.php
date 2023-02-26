@@ -23,4 +23,8 @@ class ItemLevel extends Model
         # code...
         return $this->belongsToMany(ItemLevel::class,'department_item_level','item_level_id','department_id')->withPivot('department_id','item_level_id');
     }
+    function itemComponents()
+    {
+        return $this->belongsToMany(ItemComponent::class,'item_component_item_level','item_level_id','item_component_id')->withPivot('item_component_id','item_level_id');
+    }
 }
