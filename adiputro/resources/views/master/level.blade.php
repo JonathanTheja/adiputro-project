@@ -36,12 +36,64 @@
                 <x-level-item :item="$item_level"/>
             @endforeach
         </div>
-        <div class="w-9/12 bg-slate-200 rounded-lg">
+        <div class="w-9/12 bg-slate-200 rounded-lg p-5">
+            <h1 class="text-lg" id="component_name">Name</h1>
+            <div id="table_container">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    No
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Kode Komponen
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama Komponen
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableCol">
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        function updateLevelData(item_level_id){
+            //ajax call
+                $.ajax({
+                url: `/master/data/getData`,
+                type: "POST",
+                cache: false,
+                data:{
+                    "item_level_id":item_level_id
+                },
+                success:function(response){
+                    // //fill data to form
+                    $('#component_name').text(response.data.item_level.name);
+                    $("#tableCol").html("");
+                    $.each(response.data.item_components, function (key, value) {
+							$('#tableCol').append(`<tr class="bg-white border-b">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    `+(key+1)+`
+                                </th>
+                                <td class="px-6 py-4">
+                                    `+value.item_number+`
+                                </td>
+                                <td class="px-6 py-4">
+                                    `+value.item_description+`
+                                </td>
+                            </tr>`);
+					})
+                }
+            });
+
+        }
         function openMenu(sideNav, btnDown) {
             document.getElementById(sideNav).classList.toggle("hidden");
             // document.getElementById(btnDown).classList.toggle("rotate-180");

@@ -35,6 +35,7 @@ class MasterDataController extends Controller
         $departments = Department::all();
         $item_components = ItemComponent::all();
         $item_level = ItemLevel::find($item_level_id);
+
         return view('master.partials.data_edit',compact("item_level","departments","item_components"));
     }
 
@@ -69,5 +70,21 @@ class MasterDataController extends Controller
         $item_levels = ItemLevel::find($request->item_level_id)->descendantsAndSelf()->delete();
         Alert::success('Sukses!', 'Berhasil Delete Komponen!');
         return back();
+    }
+
+    function getData(Request $request)
+    {
+        $item_level_id = $request->item_level_id;
+        $item_level = ItemLevel::find($item_level_id);
+        $item_components = $item_level->itemComponents;
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                "item_level"=>$item_level,
+                "item_components"=>$item_components
+            ],
+
+        ]);
     }
 }
