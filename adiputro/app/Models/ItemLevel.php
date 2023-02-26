@@ -18,4 +18,9 @@ class ItemLevel extends Model
 
     protected $fillable = ['name','item_number','item_description','parent_id'];
 
+    function departments()
+    {
+        # code...
+        return $this->belongsToMany(ItemLevel::class,'department_item_level','item_level_id','department_id')->withPivot('department_id','item_level_id');
+    }
 }

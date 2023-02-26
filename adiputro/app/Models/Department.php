@@ -20,4 +20,9 @@ class Department extends Model
     {
         return $this->hasMany(User::class,"department_id","department_id");
     }
+
+    function itemLevels()
+    {
+        return $this->belongsToMany(ItemLevel::class,'department_item_level','department_id','item_level_id')->withPivot('department_id','item_level_id');
+    }
 }
