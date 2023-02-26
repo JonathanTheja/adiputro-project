@@ -53,6 +53,13 @@
         </div>
     </a>
     <hr class="my-4 text-gray-600">
+    <a href="{{ url('/master/form/report') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            onclick="changeSideMenu(this,'masterLevel')" id="sidemenuFormReport">
+            <i class="bi bi-stack"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master Form Report</span>
+        </div>
+    </a>
     {{-- <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
         onclick="dropdown();">
         <i class="bi bi-chat-left-text-fill"></i>
@@ -117,5 +124,7 @@
         document.getElementById("sidemenuLevel").classList.add("bg-blue-600");
     } else if (master.includes("master/data")) {
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
+    } else if (master.includes("master/form")) {
+        document.getElementById("sidemenuFormReport").classList.add("bg-blue-600");
     }
 </script>
