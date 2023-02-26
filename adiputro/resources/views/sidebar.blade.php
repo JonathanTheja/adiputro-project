@@ -56,7 +56,7 @@
     <a href="{{ url('/master/form/report') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
             onclick="changeSideMenu(this,'masterLevel')" id="sidemenuFormReport">
-            <i class="bi bi-stack"></i>
+            <i class="bi bi-envelope-open"></i>
             <span class="text-[15px] ml-4 text-gray-200">Master Form Report</span>
         </div>
     </a>
