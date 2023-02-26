@@ -23,9 +23,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class,'role_id','role_id');
     }
+
     function department()
     {
-        # code...
         return $this->belongsTo(Department::class,'department_id','department_id');
+    }
+
+    function form_report(){
+        return $this->hasMany(FormReport::class,"user_id","user_id");
     }
 }

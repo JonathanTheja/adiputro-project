@@ -55,6 +55,7 @@ Route::prefix('master')->group(function () {
     Route::prefix('form')->group(function () {
         Route::prefix('report')->group(function () {
             Route::get('/', [MasterFormReportController::class,'formReport']);
+            Route::post('/add', [MasterFormReportController::class,'addReport']);
         });
     });
 });

@@ -107,7 +107,7 @@
                 Daftar User
             </h1>
         </div>
-        <div class="px-3 py-4 flex justify-center">
+        <div class="py-4 flex justify-start overflow-x-auto">
 
             <table class="w-full text-md bg-white shadow-md rounded mb-4">
                 <tbody>
