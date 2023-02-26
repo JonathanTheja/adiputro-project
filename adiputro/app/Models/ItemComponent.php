@@ -11,10 +11,10 @@ class ItemComponent extends Model
     use HasFactory,SoftDeletes;
     protected $table = 'item_component';
     protected $primaryKey = 'item_number';
-    public $incrementing = false;
+    public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['item_number','item_description'];
 
 
 }

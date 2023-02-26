@@ -54,7 +54,7 @@
         document.getElementById("item_level_id_update").value = id;
         document.getElementById("nameUpdate").value = name;
         document.getElementById("titleModalUpdate").innerText = `Update Komponen Pada ${name} Level ${(level)}`;
-        document.getElementById("bodyModalUpdate").innerText = `Update Nama Komponen`;
+        // document.getElementById("bodyModalUpdate").innerText = `Update Nama Komponen`;
         document.getElementById("my-modal-update").click();
     }
 

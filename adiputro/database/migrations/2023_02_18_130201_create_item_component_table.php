@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('item_component', function (Blueprint $table) {
-            $table->string('item_number',100)->primary();
+            $table->id('item_component_id');
+            $table->string('item_number',100);
             $table->text('item_description');
-            $table->text('item_type');
             $table->timestamps();
             $table->softDeletes();
         });

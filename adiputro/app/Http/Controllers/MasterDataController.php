@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\ItemLevel;
 use App\Models\item_level;
+use App\Models\ItemComponent;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -14,7 +16,9 @@ class MasterDataController extends Controller
         $item_levels = ItemLevel::tree()->get()->toTree();
         // $item_levels = item_level::find(3)->descendantsAndSelf()->delete();
         // dd($item_levels);
-        return view("master.data", compact("item_levels"));
+        $departments = Department::all();
+        $item_components = ItemComponent::all();
+        return view("master.data", compact("item_levels","departments","item_components"));
     }
 
     function addData(Request $request)
