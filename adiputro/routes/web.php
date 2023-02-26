@@ -46,7 +46,8 @@ Route::prefix('master')->group(function () {
     Route::prefix('data')->group(function () {
         Route::get('/', [MasterDataController::class,'masterData']);
         Route::post('/add', [MasterDataController::class,'addData']);
-        Route::post('/update', [MasterDataController::class,'updateData']);
+        Route::post('/update', [MasterDataController::class,'toUpdate']);
+        Route::post('/doUpdate', [MasterDataController::class,'updateData']);
         Route::post('/delete', [MasterDataController::class,'deleteData']);
     });
 
