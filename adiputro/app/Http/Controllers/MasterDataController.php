@@ -49,6 +49,10 @@ class MasterDataController extends Controller
             # code...
             $item_level->departments()->attach($department);
         }
+        foreach ($request->components as $component) {
+            # code...
+            $item_level->itemComponents()->attach($component);
+        }
         $item_level->save();
         foreach($request->file("photos") as $photo){
             #code ..
