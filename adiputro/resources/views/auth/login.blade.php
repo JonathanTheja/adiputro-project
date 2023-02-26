@@ -9,7 +9,8 @@
     @vite('resources/js/app.js')
 </head>
 
-<body>
+@include('loading')
+<body onload="loadingOff()">
 
     <section class="gradient-form bg-gradient-to-r from-slate-900 to-transparent min-h-screen flex justify-center items-center">
 

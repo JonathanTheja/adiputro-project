@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
+use App\Http\Controllers\MasterFormReportController;
 use App\Http\Controllers\MasterLevelController;
 use App\Http\Controllers\MasterStallController;
 use App\Http\Controllers\MasterUserController;
@@ -47,6 +48,12 @@ Route::prefix('master')->group(function () {
         Route::post('/add', [MasterDataController::class,'addData']);
         Route::post('/update', [MasterDataController::class,'updateData']);
         Route::post('/delete', [MasterDataController::class,'deleteData']);
+    });
+
+    Route::prefix('form')->group(function () {
+        Route::prefix('report')->group(function () {
+            Route::get('/', [MasterFormReportController::class,'formReport']);
+        });
     });
 });
 

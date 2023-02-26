@@ -10,7 +10,9 @@
     @vite('resources/js/app.js')
 </head>
 
-<body class="bg-gray-200 min-h-screen">
+@include('loading')
+
+<body class="bg-gray-200 min-h-screen" onload="loadingOff()">
     @include('sidebar')
 
     <div class="ml-[250px] p-10" id="container" class="">
