@@ -22,7 +22,7 @@ class FormReportSeeder extends Seeder
                     'tanggal'=>now(),
                     'user_id'=>$i+1,
                     'kategori'=>"lorem",
-                    'temuan'=>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, excepturi magni? Distinctio nesciunt quia, iure corporis id dolores voluptate, aspernatur cum optio quibusdam quaerat sequi adipisci perspiciatis impedit ratione dolorem.",
+                    'temuan'=>"temuan".($i+1),
                 ],
             ]);
         }
