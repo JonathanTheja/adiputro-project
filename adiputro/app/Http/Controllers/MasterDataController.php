@@ -43,12 +43,13 @@ class MasterDataController extends Controller
         $item_level = ItemLevel::find($request->item_level_id);
         $item_level->name = $request->name;
         $item_level->departments()->detach();
-        $item_level->save();
+
         //update departments
         foreach ($request->departments as $department) {
             # code...
+            $item_level->departments()->attach($department);
         }
-
+        $item_level->save();
         foreach($request->file("photos") as $photo){
             #code ..
             $namafile = Str::random(8).".".$photo->getClientOriginalExtension();
