@@ -10,7 +10,7 @@ class ItemComponent extends Model
 {
     use HasFactory,SoftDeletes;
     protected $table = 'item_component';
-    protected $primaryKey = 'item_number';
+    protected $primaryKey = 'item_component_id';
     public $incrementing = true;
     public $timestamps = true;
 

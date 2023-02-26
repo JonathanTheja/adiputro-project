@@ -16,9 +16,7 @@ class MasterDataController extends Controller
         $item_levels = ItemLevel::tree()->get()->toTree();
         // $item_levels = item_level::find(3)->descendantsAndSelf()->delete();
         // dd($item_levels);
-        $departments = Department::all();
-        $item_components = ItemComponent::all();
-        return view("master.data", compact("item_levels","departments","item_components"));
+        return view("master.data", compact("item_levels"));
     }
 
     function addData(Request $request)
@@ -29,6 +27,15 @@ class MasterDataController extends Controller
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Komponen Baru!');
         return back();
+    }
+
+    function toUpdate(Request $request)
+    {
+        $item_level_id = $request->item_level_id;
+        $departments = Department::all();
+        $item_components = ItemComponent::all();
+        $item_level = ItemLevel::find($item_level_id);
+        return view('master.partials.data_edit',compact("item_level","departments","item_components"));
     }
 
     function updateData(Request $request)
