@@ -7,6 +7,7 @@ use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 class MasterDataController extends Controller
@@ -58,7 +59,7 @@ class MasterDataController extends Controller
         foreach($request->file("photos") as $photo){
             #code ..
             $namafile = Str::random(8).".".$photo->getClientOriginalExtension();
-            $namafolder = "gambar_komponen/".$request->item_level_id;
+            $namafolder = "images/".$request->item_level_id;
             $photo->storeAs($namafolder,$namafile,'public');
         }
         Alert::success('Sukses!', 'Berhasil Update Komponen!');
@@ -77,12 +78,15 @@ class MasterDataController extends Controller
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
         $item_components = $item_level->itemComponents;
+        //get pictures
+        $allPhotos = Storage::disk('public')->files("images/$item_level_id");
 
         return response()->json([
             'success' => true,
             'data'    => [
                 "item_level"=>$item_level,
-                "item_components"=>$item_components
+                "item_components"=>$item_components,
+                "all_photos"=>$allPhotos
             ],
 
         ]);

@@ -60,6 +60,8 @@
                     </table>
                 </div>
             </div>
+            <h1>Gambar Komponen</h1>
+            <div id="photosLoader"></div>
         </div>
     </div>
 
@@ -90,6 +92,12 @@
                                 </td>
                             </tr>`);
 					})
+
+                    $("#photosLoader").html("");
+                    $.each(response.data.all_photos, function (key, value) {
+							$('#photosLoader').append(`<img src="{{ asset("storage/`+value+`") }}" alt="" style="width:200px;height:200px">`);
+					})
+
                 }
             });
 
