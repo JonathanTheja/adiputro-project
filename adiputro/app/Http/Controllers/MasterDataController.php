@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bom;
 use App\Models\Department;
 use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
+use App\Models\ItemKit;
+use App\Models\ProcessEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -36,8 +39,10 @@ class MasterDataController extends Controller
         $departments = Department::all();
         $item_components = ItemComponent::all();
         $item_level = ItemLevel::find($item_level_id);
-
-        return view('master.partials.data_edit',compact("item_level","departments","item_components"));
+        $item_kit = ItemKit::all();
+        $bom = Bom::all();
+        $process_entry = ProcessEntry::all();
+        return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry"));
     }
 
     function updateData(Request $request)

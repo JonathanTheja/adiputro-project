@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('process_entry', function (Blueprint $table) {
-            $table->id('proccess_entry_id');
+            $table->id('process_entry_id');
             $table->string('spk_type',100);
             $table->text('process_name');
             $table->integer('process_number');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('work_description');
             $table->text('pic');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

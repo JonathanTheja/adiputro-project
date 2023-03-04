@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('component_item_qty');
             $table->text('component_item_uofm');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

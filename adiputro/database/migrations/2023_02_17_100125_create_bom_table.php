@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('consumed_uofm');
             $table->bigInteger('consumed_qty');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
