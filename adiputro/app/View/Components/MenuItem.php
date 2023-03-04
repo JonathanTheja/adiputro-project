@@ -5,14 +5,14 @@ namespace App\View\Components;
 use App\Models\ItemLevel;
 use Illuminate\View\Component;
 
-class DataItem extends Component
+class MenuItem extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(public ItemLevel $item, public $level, public $max)
+    public function __construct(public ItemLevel $item, public $level)
     {
         //
     }
@@ -24,6 +24,6 @@ class DataItem extends Component
      */
     public function render()
     {
-        return view('components.data-item');
+        return view('components.menu-item');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\DepartmentItemLevel;
 use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
@@ -10,14 +11,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\Builder;
+
 class MasterDataController extends Controller
 {
     function masterData(Request $request)
     {
         $item_levels = ItemLevel::tree()->get()->toTree();
+        // $item_levels = ItemLevel::whereIn("item_level_id",[1,3])->tree()->get();
+        // dump($item_levels->toTree());
+        // dd($item_levels);
+        // $item_levels = ItemLevel::all();
+        $max = 0;
+
+        $item_level_id = array();
+
+        $department_id = 1;
+        $department_item_level = DepartmentItemLevel::where("department_id","=",$department_id)->get();
+        foreach ($department_item_level as $key => $item) {
+            $item_level_id[] = $item->item_level_id;
+        }
+
+        // $constraint = function ($query) {
+        //     $department_id = 1;
+        //     $department_item_level = DepartmentItemLevel::where("department_id","=",$department_id)->get();
+        //     foreach ($department_item_level as $key => $item) {
+        //         $item_level_id[] = $item->item_level_id;
+        //     }
+        //     // dump($item_level_id);
+        //     $query->whereNull('parent_id')->where('item_level_id', [1,9]);
+        // };
+
+        // $item_levels = ItemLevel::treeOf($constraint)->get()->toTree();
+
+        foreach ($item_levels as $key => $item_level) {
+            if($item_level->getMaxChildrenDepth() > $max){
+                $max = $item_level->getMaxChildrenDepth();
+            }
+        }
+
+        // dump($tree);
+
         // $item_levels = item_level::find(3)->descendantsAndSelf()->delete();
         // dd($item_levels);
-        return view("master.data", compact("item_levels"));
+        return view("master.data", compact("item_levels","max"));
     }
 
     function addData(Request $request)

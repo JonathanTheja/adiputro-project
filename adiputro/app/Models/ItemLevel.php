@@ -27,4 +27,32 @@ class ItemLevel extends Model
     {
         return $this->belongsToMany(ItemComponent::class,'item_component_item_level','item_level_id','item_component_id')->withPivot('item_component_id','item_level_id');
     }
+
+    public function getMaxChildrenDepth()
+    {
+        $maxDepth = 0;
+        $children = $this->descendants()->get();
+
+        foreach ($children as $child) {
+            $depth = $this->getDepth($child);
+            if ($depth > $maxDepth) {
+                $maxDepth = $depth;
+            }
+        }
+
+        return $maxDepth;
+    }
+
+    protected function getDepth(ItemLevel $item_level)
+    {
+        $depth = 0;
+        $parent = $item_level->parent;
+
+        while ($parent) {
+            $depth++;
+            $parent = $parent->parent;
+        }
+
+        return $depth;
+    }
 }

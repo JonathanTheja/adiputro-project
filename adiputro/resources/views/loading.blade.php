@@ -28,9 +28,13 @@
 </div>
 
 <script>
-    function loadingOff(){
+    function loadingOff() {
         // alert("apwoiejf");
         document.getElementById("loading").style.display = "none";
-        document.getElementById("showModal").style.display = "block";
+        try {
+            document.getElementById("showModal").style.display = "block";
+        } catch (error) {
+
+        }
     }
 </script>

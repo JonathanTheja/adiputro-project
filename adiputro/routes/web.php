@@ -41,7 +41,6 @@ Route::prefix('master')->group(function () {
     });
 
     Route::get('/stall', [MasterStallController::class,'masterStall']);
-    Route::get('/level', [MasterLevelController::class,'masterLevel']);
 
     Route::prefix('data')->group(function () {
         Route::get('/', [MasterDataController::class,'masterData']);
@@ -60,3 +59,6 @@ Route::prefix('master')->group(function () {
     });
 });
 
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', [MasterLevelController::class,'dashboard']);
+});

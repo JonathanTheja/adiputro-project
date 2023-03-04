@@ -18,7 +18,7 @@ class MasterFormReportController extends Controller
         $form_report = $form_report[count($form_report)-1];
         $tanggal = date('d-m-Y');
         $tanggal = date('d-m-Y', strtotime($tanggal));
-        echo substr($form_report->nomor_laporan,4,4);
+        // echo substr($form_report->nomor_laporan,4,4);
         $nomor_laporan = "LAP/".str_pad(intval(substr($form_report->nomor_laporan,4,4))+1, 4, "0", STR_PAD_LEFT)."/BW/AP/".$bulan[intval(date('m'))]."/".date('Y');
         return view("master.form.report", compact("form_reports","nomor_laporan","tanggal"));
     }
