@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 
 class MasterLevelController extends Controller
 {
-    function masterLevel()
+    function dashboard()
     {
         $item_levels = ItemLevel::tree()->get()->toTree();
         return view("master.level",compact("item_levels"));
-
     }
 }

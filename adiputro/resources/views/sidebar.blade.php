@@ -8,7 +8,7 @@
                 <img class="mx-auto w-48 bg-white rounded-md" src={{ asset('img/adiputro_logo.svg') }} alt="logo"
                     style="width:80px;height:80px" />
             </div>
-            <i class="absolute bi bi-x ml-40 cursor-pointer bg-blue-600 px-1 rounded-md" onclick="openSidebar();"></i>
+            <div class="absolute ml-40 cursor-pointer bg-blue-600 px-3 py-1 rounded-md" onclick="openSidebar();">x</div>
         </div>
         <hr class="my-2 text-gray-600">
     </div>
@@ -18,7 +18,7 @@
     </div>
     <a href="{{ url('/master/user') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            onclick="changeSideMenu(this,'masterUser')" id="sidemenuUser">
+            id="sidemenuUser">
             <i class="bi bi-people"></i>
             <span class="text-[15px] ml-4 text-gray-200">Master User</span>
         </div>
@@ -26,7 +26,7 @@
 
     <a href="{{ url('/master/departemen') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            onclick="changeSideMenu(this,'masterDepartemen')" id="sidemenuDepartemen">
+            id="sidemenuDepartemen">
             <i class="bi bi-house"></i>
             <span class="text-[15px] ml-4 text-gray-200">Master Departemen</span>
         </div>
@@ -38,16 +38,16 @@
             <span class="text-[15px] ml-4 text-gray-200">Master Stall</span>
         </div>
     </a> --}}
-    <a href="{{ url('/master/level') }}">
+    <a href="{{ url('/dashboard') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            onclick="changeSideMenu(this,'masterLevel')" id="sidemenuLevel">
+            id="sidemenuDashboard">
             <i class="bi bi-tools"></i>
-            <span class="text-[15px] ml-4 text-gray-200">Master Level</span>
+            <span class="text-[15px] ml-4 text-gray-200">Dashboard</span>
         </div>
     </a>
     <a href="{{ url('/master/data') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            onclick="changeSideMenu(this,'masterLevel')" id="sidemenuData">
+            id="sidemenuData">
             <i class="bi bi-stack"></i>
             <span class="text-[15px] ml-4 text-gray-200">Master Data</span>
         </div>
@@ -55,7 +55,7 @@
     <hr class="my-4 text-gray-600">
     <a href="{{ url('/master/form/report') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            onclick="changeSideMenu(this,'masterLevel')" id="sidemenuFormReport">
+            id="sidemenuFormReport">
             <i class="bi bi-envelope-open"></i>
             <span class="text-[15px] ml-4 text-gray-200">Master Form Report</span>
         </div>
@@ -96,20 +96,20 @@
         document.querySelector("#container").classList.remove("ml-[250px]");
     }
 
-    function changeSideMenu(e, master) {
-        let sidemenu = document.getElementsByClassName("sidemenu");
-        for (let i = 0; i < sidemenu.length; i++) {
-            sidemenu[i].classList.remove("bg-blue-600");
-            let containerMaster = document.getElementsByClassName("containerMaster");
-            for (let j = 0; j < containerMaster.length; j++) {
-                containerMaster[j].classList.add("hidden");
-            }
-        }
-        e.classList.add("bg-blue-600");
-        if (document.getElementById(master).classList.contains("hidden")) {
-            document.getElementById(master).classList.remove("hidden");
-        }
-    }
+    // function changeSideMenu(e, master) {
+    //     let sidemenu = document.getElementsByClassName("sidemenu");
+    //     for (let i = 0; i < sidemenu.length; i++) {
+    //         sidemenu[i].classList.remove("bg-blue-600");
+    //         let containerMaster = document.getElementsByClassName("containerMaster");
+    //         for (let j = 0; j < containerMaster.length; j++) {
+    //             containerMaster[j].classList.add("hidden");
+    //         }
+    //     }
+    //     e.classList.add("bg-blue-600");
+    //     if (document.getElementById(master).classList.contains("hidden")) {
+    //         document.getElementById(master).classList.remove("hidden");
+    //     }
+    // }
 
     let url = window.location.href;
     var master = url;
@@ -120,8 +120,12 @@
         document.getElementById("sidemenuDepartemen").classList.add("bg-blue-600");
     } else if (master.includes("master/stall")) {
         document.getElementById("sidemenuStall").classList.add("bg-blue-600");
-    } else if (master.includes("master/level")) {
-        document.getElementById("sidemenuLevel").classList.add("bg-blue-600");
+    }
+    // else if (master.includes("master/level")) {
+    //     document.getElementById("sidemenuLevel").classList.add("bg-blue-600");
+    // }
+    else if (master.includes("dashboard")) {
+        document.getElementById("sidemenuDashboard").classList.add("bg-blue-600");
     } else if (master.includes("master/data")) {
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
     } else if (master.includes("master/form")) {

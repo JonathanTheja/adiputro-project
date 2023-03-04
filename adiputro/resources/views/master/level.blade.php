@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('container')
-    <h1 class="text-center text-5xl font-semibold mb-4">Master Level</h1>
+    <h1 class="text-center text-5xl font-semibold mb-4">Dashboard</h1>
 
     <form class="flex items-center my-4">
         <label for="simple-search" class="sr-only">Search</label>
@@ -33,7 +33,7 @@
     <div class="w-full flex h-screen">
         <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
             @foreach ($item_levels as $item_level)
-                <x-level-item :item="$item_level"/>
+                <x-level-item :item="$item_level" />
             @endforeach
         </div>
         <div class="w-9/12 bg-slate-200 rounded-lg p-5">
@@ -61,47 +61,51 @@
                 </div>
             </div>
             <h1>Gambar Komponen</h1>
+
             <div id="photosLoader"></div>
         </div>
     </div>
 
     <script>
-        function updateLevelData(item_level_id){
+        function updateLevelData(item_level_id) {
             //ajax call
-                $.ajax({
+            $.ajax({
                 url: `/master/data/getData`,
                 type: "POST",
                 cache: false,
-                data:{
-                    "item_level_id":item_level_id
+                data: {
+                    "item_level_id": item_level_id
                 },
-                success:function(response){
+                success: function(response) {
                     // //fill data to form
                     $('#component_name').text(response.data.item_level.name);
                     $("#tableCol").html("");
-                    $.each(response.data.item_components, function (key, value) {
-							$('#tableCol').append(`<tr class="bg-white border-b">
+                    $.each(response.data.item_components, function(key, value) {
+                        $('#tableCol').append(`<tr class="bg-white border-b">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    `+(key+1)+`
+                                    ` + (key + 1) + `
                                 </th>
                                 <td class="px-6 py-4">
-                                    `+value.item_number+`
+                                    ` + value.item_number + `
                                 </td>
                                 <td class="px-6 py-4">
-                                    `+value.item_description+`
+                                    ` + value.item_description + `
                                 </td>
                             </tr>`);
-					})
+                    })
 
                     $("#photosLoader").html("");
-                    $.each(response.data.all_photos, function (key, value) {
-							$('#photosLoader').append(`<img src="{{ asset("storage/`+value+`") }}" alt="" style="width:200px;height:200px">`);
-					})
+                    $.each(response.data.all_photos, function(key, value) {
+                        $('#photosLoader').append(
+                            `<img src="{{ asset('storage/`+value+`') }}" alt="" style="width:200px;height:200px">`
+                            );
+                    })
 
                 }
             });
 
         }
+
         function openMenu(sideNav, btnDown) {
             document.getElementById(sideNav).classList.toggle("hidden");
             // document.getElementById(btnDown).classList.toggle("rotate-180");
