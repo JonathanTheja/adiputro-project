@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('item_kit', function (Blueprint $table) {
-            $table->id('item_kit_id');
-            $table->text('item_kit_number');
-            $table->text('item_kit_description');
-            $table->text('component_item_number');
-            $table->text('component_item_description');
-            $table->text('component_item_qty');
-            $table->text('component_item_uofm');
+        Schema::create('process_entry', function (Blueprint $table) {
+            $table->id('process_entry_id');
+            $table->string('spk_type',100);
+            $table->text('process_name');
+            $table->integer('process_number');
+            $table->float('stall_number');
+            $table->text('work_description');
+            $table->text('pic');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_kit');
+        Schema::dropIfExists('process_entry');
     }
 };

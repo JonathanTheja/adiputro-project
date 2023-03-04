@@ -15,14 +15,16 @@ return new class extends Migration
     {
         Schema::create('bom', function (Blueprint $table) {
             $table->id('bom_id');
+            $table->string('bom_number',100);
             $table->text('bom_description');
             $table->text('site_id_input');
             $table->text('site_id_output');
             $table->text('consumed_item');
             $table->text('consumed_item_description');
             $table->text('consumed_uofm');
-            $table->integer('consumed_qty');
+            $table->bigInteger('consumed_qty');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
