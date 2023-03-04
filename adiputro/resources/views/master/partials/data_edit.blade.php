@@ -14,6 +14,7 @@
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Name" required>
 
+
             <label for="input-departemen" class="block my-2 text-gray-900">Departemen</label>
             <select id="input-departemen" multiple autocomplete="off" name="departments[]">
                 @foreach ($departments as $department)
@@ -26,7 +27,14 @@
                     <option value="{{ $item_component->item_component_id }}">{{ $item_component->item_number }} - {{ $item_component->item_description }}</option>
                 @endforeach
             </select>
-
+            <label for="nameUpdate" class="block my-2 text-gray-900">Item Kit</label>
+            <input type="text" name="name" id="nameUpdate" value="{{ $item_level->name }}"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Name" required>
+            <label for="nameUpdate" class="block my-2 text-gray-900">BOM ID</label>
+            <input type="text" name="name" id="nameUpdate" value="{{ $item_level->name }}"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Name" required>
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
             <input class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5" id="multiple_files" type="file" multiple name="photos[]">
 
