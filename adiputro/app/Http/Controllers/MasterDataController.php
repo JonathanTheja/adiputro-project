@@ -36,9 +36,16 @@ class MasterDataController extends Controller
     function toUpdate(Request $request)
     {
         $item_level_id = $request->item_level_id;
-        $departments = Department::all();
-        $item_components = ItemComponent::all();
         $item_level = ItemLevel::find($item_level_id);
+        $item_level_parent = $item_level->parent()->first();
+        $department = null;
+        if($item_level_parent == null){
+            $departments = Department::all();
+        }
+        else{
+            $departments = $item_level_parent->departments;
+        }
+        $item_components = ItemComponent::all();
         $item_kit = ItemKit::all();
         $bom = Bom::all();
         $process_entry = ProcessEntry::all();
