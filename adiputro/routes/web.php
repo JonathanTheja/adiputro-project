@@ -49,6 +49,7 @@ Route::prefix('master')->group(function () {
         Route::post('/doUpdate', [MasterDataController::class,'updateData']);
         Route::post('/delete', [MasterDataController::class,'deleteData']);
         Route::post('/getData', [MasterDataController::class,'getData']);
+        Route::post('/getProcessEntry', [MasterDataController::class,'getProcessEntryData']);
     });
 
     Route::prefix('form')->group(function () {

@@ -140,4 +140,14 @@ class MasterDataController extends Controller
 
         ]);
     }
+    function getProcessEntryData(Request $request){
+        //rule
+        //item kit , bom id
+        $item_kit_list = $request->item_kits;
+        $bom_list = $request->boms;
+
+        $components = [];
+        
+
+    }
 }

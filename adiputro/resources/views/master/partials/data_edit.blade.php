@@ -28,13 +28,13 @@
                 @endforeach
             </select>
             <label for="input-item-kit" class="block my-2 text-gray-900">Item Kit</label>
-            <select id="input-item-kit" multiple autocomplete="off" name="itemkit[]">
+            <select id="input-item-kit" multiple autocomplete="off" name="itemkits[]" onchange="updateProcess()">
                 @foreach ($item_kit as $ikit)
                     <option value="{{ $ikit->item_kit_id }}">{{ $ikit->item_kit_number }} - {{ $ikit->item_kit_description }}</option>
                 @endforeach
             </select>
             <label for="input-bom" class="block my-2 text-gray-900">BOM ID</label>
-            <select id="input-bom" multiple autocomplete="off" name="bom[]">
+            <select id="input-bom" multiple autocomplete="off" name="boms[]" onchange="updateProcess()">
                 @foreach ($bom as $b)
                     <option value="{{ $b->bom_id }}">{{ $b->bom_number }} - {{ $b->bom_description }}</option>
                 @endforeach
@@ -69,7 +69,7 @@
                                 </tr>
                             </thead>
                             <tbody id="tableCol">
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -102,6 +102,24 @@
                 return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
             }
         });
+    }
+
+    function updateProcess(){
+        $item_kits = $("#input-item-kit").val();
+        $boms = $("#input-bom").val();
+        // $.ajax({
+        //     url: `/master/data/getData`,
+        //     type: "POST",
+        //     cache: false,
+        //     data: {
+        //         "item_kits":$item_kits,
+        //         "boms":$boms
+        //     },
+        //     success: function(response) {
+        //         // //fill data to form
+
+        //     }
+        // });
     }
 
     generateTom("#input-departemen")
