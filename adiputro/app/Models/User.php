@@ -29,7 +29,11 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class,'department_id','department_id');
     }
 
-    function form_report(){
-        return $this->hasMany(FormReport::class,"user_id","user_id");
+    function lapor_report(){
+        return $this->hasMany(FormReport::class,"pelapor_id","user_id");
+    }
+
+    function selesai_report(){
+        return $this->hasMany(FormReport::class,"penyelesai_id","user_id");
     }
 }

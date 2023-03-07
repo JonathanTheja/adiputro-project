@@ -14,9 +14,17 @@ class FormReport extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['nomor_laporan','tanggal','user_id','kategori','temuan'];
+    protected $fillable = ['nomor_laporan','tanggal','user_id','kategori_id','temuan'];
 
-    function user(){
-        return $this->belongsTo(User::class,"user_id","user_id");
+    function pelapor(){
+        return $this->belongsTo(User::class,"pelapor_id","user_id");
+    }
+
+    function penyelesai(){
+        return $this->belongsTo(User::class,"penyelesai_id","user_id");
+    }
+
+    function kategori_report(){
+        return $this->belongsTo(KategoriReport::class,"kategori_report_id","kategori_report_id");
     }
 }
