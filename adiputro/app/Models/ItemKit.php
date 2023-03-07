@@ -14,5 +14,5 @@ class ItemKit extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['item_kit_number','item_kit_description','component_item_number','component_item_description','component_item_qty','component_item_uofm'];
+    protected $fillable = ['item_kit_number','item_kit_description'];
 }
