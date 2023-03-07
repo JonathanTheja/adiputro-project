@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bom extends Model
+class ItemKitItemComponent extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $table = 'bom';
-    protected $primaryKey = 'bom_id';
+    protected $table = 'item_kit_item_component';
+    protected $primaryKey = 'item_kit_item_component_id';
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['bom_number','bom_description','site_id_input','site_id_output'];
+    protected $fillable = ['item_kit_id','item_component_id','item_component_qty','item_component_uofm'];
 }

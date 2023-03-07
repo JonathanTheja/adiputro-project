@@ -20,4 +20,5 @@ class ItemComponent extends Model
     {
         return $this->belongsToMany(ItemLevel::class,'item_component_item_level','item_component_id','item_level_id')->withPivot('item_component_id','item_level_id');
     }
+    
 }

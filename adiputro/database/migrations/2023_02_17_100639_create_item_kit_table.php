@@ -17,10 +17,6 @@ return new class extends Migration
             $table->id('item_kit_id');
             $table->text('item_kit_number');
             $table->text('item_kit_description');
-            $table->text('component_item_number');
-            $table->text('component_item_description');
-            $table->text('component_item_qty');
-            $table->text('component_item_uofm');
             $table->timestamps();
             $table->softDeletes();
         });

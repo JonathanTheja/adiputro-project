@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bom', function (Blueprint $table) {
-            $table->id('bom_id');
-            $table->string('bom_number',100);
-            $table->text('bom_description');
-            $table->text('site_id_input');
-            $table->text('site_id_output');
+        Schema::create('item_kit_item_component', function (Blueprint $table) {
+            $table->id('item_kit_item_component_id');
+            $table->bigInteger('item_kit_id');
+            $table->bigInteger('item_component_id');
+            $table->text('item_component_qty');
+            $table->text('item_component_uofm');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bom');
+        Schema::dropIfExists('item_kit_item_component');
     }
 };
