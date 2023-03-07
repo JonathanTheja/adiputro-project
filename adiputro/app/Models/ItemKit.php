@@ -15,4 +15,9 @@ class ItemKit extends Model
     public $timestamps = true;
 
     protected $fillable = ['item_kit_number','item_kit_description'];
+
+    function itemComponents()
+    {
+        return $this->belongsToMany(ItemComponent::class,'item_kit_item_component','item_kit_id','item_component_id')->withPivot(['item_component_qty','item_component_uofm']);
+    }
 }

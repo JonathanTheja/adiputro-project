@@ -99,7 +99,7 @@
             persist: false,
             // create: true,
             onDelete: function(values) {
-                return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
+                return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length + ' items?' : 'Apakah anda yakin ingin menghapus?');
             }
         });
     }

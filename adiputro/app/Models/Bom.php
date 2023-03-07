@@ -15,4 +15,9 @@ class Bom extends Model
     public $timestamps = true;
 
     protected $fillable = ['bom_number','bom_description','site_id_input','site_id_output'];
+
+    function itemComponents()
+    {
+        return $this->belongsToMany(ItemComponent::class,'bom_item_component','bom_id','consumed_item_id')->withPivot(['consumed_qty','consumed_uofm']);
+    }
 }

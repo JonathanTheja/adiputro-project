@@ -20,5 +20,13 @@ class ItemComponent extends Model
     {
         return $this->belongsToMany(ItemLevel::class,'item_component_item_level','item_component_id','item_level_id')->withPivot('item_component_id','item_level_id');
     }
-    
+    function itemKits()
+    {
+        # code...
+        return $this->belongsToMany(ItemKit::class,'item_kit_item_component','item_component_id','item_kit_id')->withPivot(['item_component_qty','item_component_uofm']);
+    }
+    function boms()
+    {
+        return $this->belongsToMany(ItemComponent::class,'bom_item_component','consumed_item_id','bom_id')->withPivot(['consumed_qty','consumed_uofm']);
+    }
 }
