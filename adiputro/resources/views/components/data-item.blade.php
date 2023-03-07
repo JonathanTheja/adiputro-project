@@ -26,9 +26,9 @@
             </div>
         </td>
     @endfor
-    <td class="">
+    <td class="border-collapse">
         <button onclick="tambah('{{ $item->item_level_id }}', '{{ $item->name }}', '{{ $level }}');" type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-lg">Tambah
+            class="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-l-md">Tambah
         </button>
     </td>
     {{-- <td class="border-2 border-collapse border-gray-300">
@@ -37,22 +37,22 @@
         </button>
     </td> --}}
     <form action="/master/data/update" method="get">
-        <td class="">
+        <td class="border-collapse">
             {{-- <button onclick="update('{{ $item->item_level_id }}', '{{ $item->name }}', '{{ $level }}');" type="submit"
                 class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center max-w-32">Edit
             </button> --}}
             <input type="text" class="hidden" value="{{ $item->item_level_id }}" name="item_level_id">
             <button type="submit"
-                class="text-white bg-yellow-600 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-xl">Edit
+                class="text-white bg-yellow-600 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center max-w-32">Edit
             </button>
         </td>
     </form>
     <form action="/master/data/delete" method="post">
-        <td class="">
+        <td class="border-collapse">
             @csrf
             <input type="text" class="hidden" value="{{ $item->item_level_id }}" name="item_level_id">
             <div onclick="confirmDelete({{ $item->item_level_id }})"
-                class="text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 cursor-pointer rounded-xl">Hapus
+                class="text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 cursor-pointer rounded-r-md">Hapus
             </div>
             <button type="submit" id="btnDelete{{ $item->item_level_id }}"></button>
         </td>
