@@ -71,8 +71,6 @@
 <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
 
 <script>
-
-
     function generateTom(id) {
         return new TomSelect(id,{
             plugins: {
@@ -113,13 +111,15 @@
     }
 
     function updateEntryTable(){
-        let selected_processes = $("#input-process").val();
-        // $("#process_entries_container").html("");
+        var tableCount = $('#process_entries_container table').length;
+        let selected_processes = $("#input-process option:selected").length;
+        if(selected_processes > tableCount){
+             // $("#process_entries_container").html("");
         let input_selected = $("#input-process option:selected").last();
         let body_name = "process_entry_body_"+input_selected.val();
         //generate table
             $("#process_entries_container").append(
-                `<div class="w-9/12 rounded-lg py-5">
+                `<div class="w-9/12 rounded-lg py-5 process_entry_table_list">
                     <h1 class="text-lg my-3">Tabel Process Entry `+input_selected.text()+`</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
@@ -156,6 +156,14 @@
                     </div>
                 </div>`
             );
+        }
+        else{
+            //remove
+            let input_selected = $("#input-process option:selected").last();
+            let last_element = $(".process_entry_table_list").last().remove();
+
+        }
+
     }
     function addRowTable(id,table_number){
         let component_code = $("#component_input_"+table_number).val();
