@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
@@ -30,8 +31,15 @@ class AuthController extends Controller
             "username.required" => "Username is required!",
             "password.required" => "Password is required!"
         ]);
+        $credentials = [
+            "username" => $username,
+            "password" => $password
+        ];
+        if(Auth::attempt($credentials)){
+            return redirect("/master/user");
+        }
 
-        return redirect('/master/user');
+        return redirect('/login');
     }
 
     function doRegister(Request $request)
