@@ -47,6 +47,16 @@
                     <option value="{{ $pe->process_entry_id }}">{{$pe->work_description}}</option>
                 @endforeach
             </select>
+
+
+            <h2 class="my-4 text-lg font-semibold text-gray-900">Daftar komponen</h2>
+            <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside" id="ol-components">
+                {{-- <li>
+                    <span class="font-semibold text-gray-900">(Kode Komponen) -  (Nama Komponen) - </span><span class="font-semibold text-gray-900"> (Jumlah) </span>
+                </li> --}}
+            </ol>
+
+
             <div class="w-9/12 rounded-lg py-5">
                 <h1 class="text-lg" id="component_name">Tabel Process Entry</h1>
                 <div id="table_container">
@@ -74,8 +84,6 @@
                         </table>
                     </div>
                 </div>
-
-
                 <div id="photosLoader"></div>
             </div>
             <button type="submit"
@@ -105,21 +113,27 @@
     }
 
     function updateProcess(){
-        $item_kits = $("#input-item-kit").val();
-        $boms = $("#input-bom").val();
-        // $.ajax({
-        //     url: `/master/data/getData`,
-        //     type: "POST",
-        //     cache: false,
-        //     data: {
-        //         "item_kits":$item_kits,
-        //         "boms":$boms
-        //     },
-        //     success: function(response) {
-        //         // //fill data to form
+        let item_kits = $("#input-item-kit").val();
+        let boms = $("#input-bom").val();
+        $.ajax({
+            url: `/master/data/getProcessEntry`,
+            type: "POST",
+            cache: false,
+            data: {
+                "item_kits":item_kits,
+                "boms":boms
+            },
+            success: function(response) {
+                $("#ol-components").html("");
+                let components = response.data.components;
 
-        //     }
-        // });
+                $.each(components,function(key,comp) {
+                    $("#ol-components").append(`<li>
+                    <span class="font-semibold text-gray-900">`+comp.item_number+` - `+comp.item_description+` - </span><span class="font-semibold text-gray-900"> `+comp.item_qty+` PCS </span>
+                    </li>`);
+                });
+            }
+        });
     }
 
     generateTom("#input-departemen")

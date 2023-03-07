@@ -11,6 +11,7 @@ use App\Models\ItemComponent;
 use App\Models\ItemKit;
 use App\Models\ProcessEntry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
@@ -143,11 +144,74 @@ class MasterDataController extends Controller
     function getProcessEntryData(Request $request){
         //rule
         //item kit , bom id
-        $item_kit_list = $request->item_kits;
-        $bom_list = $request->boms;
+        $item_kit_list_id = $request->item_kits ?? [];
+        $bom_list_id = $request->boms ?? [];
+        $item_kit_lists = [];
+        $bom_lists = [];
 
+        //returned components (merged)
         $components = [];
-        
 
+        foreach($item_kit_list_id as $item_kit_id){
+            $item_kit_lists[] = ItemKit::find($item_kit_id);
+        }
+        foreach($bom_list_id as $bom_id){
+            $bom_lists[] = Bom::find($bom_id);
+        }
+
+        //components
+        // - component-id
+        // - component-code
+        // - component-name
+
+        foreach($item_kit_lists as $item_kit){
+            $ikit_components = $item_kit->itemComponents;
+            foreach ($ikit_components as $comp) {
+
+                # code...
+               $comp_id = (($comp->item_component_id)."");
+               if(Arr::exists($components,$comp_id)){
+                 //icr
+                 $components[$comp_id]["item_qty"] =  $components[$comp_id]["item_qty"] + $comp->pivot->item_component_qty;
+               }
+               else{
+                $new_comp = [
+                    "item_component_id"=>$comp->item_component_id,
+                    "item_number"=>$comp->item_number,
+                    "item_description"=>$comp->item_description,
+                    "item_qty"=>$comp->pivot->item_component_qty,
+                  ];
+                  $components[$comp_id] = $new_comp;
+               }
+            }
+        }
+
+        foreach($bom_lists as $bom){
+            $b_components = $bom->itemComponents;
+            foreach ($b_components as $comp) {
+                # code...
+               $comp_id = (($comp->item_component_id)."");
+               if(Arr::exists($components,$comp_id)){
+                 //icr
+                 $components[$comp_id]["item_qty"] =  $components[$comp_id]["item_qty"] + $comp->pivot->consumed_qty;
+               }
+               else{
+                $new_comp = [
+                    "item_component_id"=>$comp->item_component_id,
+                    "item_number"=>$comp->item_number,
+                    "item_description"=>$comp->item_description,
+                    "item_qty"=>$comp->pivot->consumed_qty,
+                  ];
+                  $components[$comp_id] = $new_comp;
+               }
+            }
+        }
+        //ok
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                "components"=>$components
+            ],
+        ]);
     }
 }
