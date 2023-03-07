@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -16,11 +17,12 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
+        $password = Hash::make('123');
         DB::table("users")->insert([
             [
                 // 'role_id' => 1,
                 'username'=>'kean',
-                'password'=>'123',
+                'password'=>$password,
                 'full_name'=>'Keanny G',
                 'department_id'=>1,
                 'gender'=>1,
@@ -30,7 +32,7 @@ class UserSeeder extends Seeder
             [
                 // 'role_id' => 1,
                 'username'=>'bean',
-                'password'=>'123',
+                'password'=>$password,
                 'full_name'=>'Bean bean',
                 'department_id'=>2,
                 'gender'=>0,
@@ -40,7 +42,7 @@ class UserSeeder extends Seeder
             [
                 // 'role_id' => 1,
                 'username'=>'belv',
-                'password'=>'123',
+                'password'=>$password,
                 'full_name'=>'Belv belv',
                 'department_id'=>2,
                 'gender'=>0,
@@ -50,7 +52,7 @@ class UserSeeder extends Seeder
             [
                 // 'role_id' => 1,
                 'username'=>'Bella',
-                'password'=>'123',
+                'password'=>$password,
                 'full_name'=>'Bella G',
                 'department_id'=>1,
                 'gender'=>0,
@@ -60,7 +62,7 @@ class UserSeeder extends Seeder
             [
                 // 'role_id' => 1,
                 'username'=>'Bona',
-                'password'=>'123',
+                'password'=>$password,
                 'full_name'=>'Bonna',
                 'department_id'=>4,
                 'gender'=>1,

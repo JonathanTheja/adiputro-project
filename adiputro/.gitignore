@@ -2,6 +2,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/gambar_komponen
 /storage/*.key
 /vendor
 .env
