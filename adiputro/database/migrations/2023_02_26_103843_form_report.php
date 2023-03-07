@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id('form_report_id');
             $table->integer('item_level_id');
             $table->string('nomor_laporan');
-            $table->date('tanggal');
+            $table->dateTime('tanggal');
             $table->integer('pelapor_id');
             $table->integer('kategori_report_id');
             $table->string('temuan');
-            $table->date('tanggal_diselesaikan');
-            $table->integer('penyelesai_id');
+            $table->string('reply')->nullable();
+            $table->dateTime('tanggal_diselesaikan')->nullable();
+            $table->integer('penyelesai_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

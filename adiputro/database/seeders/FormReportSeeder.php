@@ -24,6 +24,7 @@ class FormReportSeeder extends Seeder
                     'pelapor_id'=>$i+1,
                     'kategori_report_id'=> 1,
                     'temuan'=>"temuan".($i+1),
+                    'reply'=>"Proses Done".($i+1),
                     'tanggal_diselesaikan'=> now(),
                     'penyelesai_id'=> $i+2,
                 ],
