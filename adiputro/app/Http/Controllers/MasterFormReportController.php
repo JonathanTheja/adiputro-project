@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\FormReport;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MasterFormReportController extends Controller
@@ -34,6 +35,17 @@ class MasterFormReportController extends Controller
             "temuan" => $request->temuan,
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
+        return back();
+    }
+
+    function updateReport(Request $request)
+    {
+        $form_report = FormReport::find($request->form_report_id);
+        $form_report->reply = $request->reply;
+        $form_report->tanggal_diselesaikan = now();
+        $form_report->penyelesai_id = Auth::user()->user_id;
+        $form_report->save();
+        Alert::success('Sukses!', 'Berhasil Menyelesaikan Report!');
         return back();
     }
 }

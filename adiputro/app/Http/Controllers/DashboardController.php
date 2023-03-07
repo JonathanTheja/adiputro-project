@@ -45,4 +45,9 @@ class DashboardController extends Controller
         Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
         return back();
     }
+
+    function updateReport(Request $request)
+    {
+        # code...
+    }
 }
