@@ -217,7 +217,10 @@ class MasterDataController extends Controller
         }
         //ok
         Session::put("components.temp",$components);
-        Session::put("components.virtual",$components);
+        //components virtual used to track the process entry data
+        if(!Session::has("components.virtual")){
+            Session::put("components.virtual",[]);
+        }
         return response()->json([
             'success' => true,
             'data'    => [
@@ -225,18 +228,59 @@ class MasterDataController extends Controller
             ],
         ]);
     }
-    function getSpecComponent(Request $request)
+
+    function manipulateTable(Request $request){
+        $id = $request->table_id;
+        $action = $request->action;
+        if($action == "add"){
+            if(!Session::has($id)){
+                Session::put($id,[]);
+            }
+        }
+        else{
+            //remove
+            if(Session::has($id)){
+                Session::forget($id);
+            }
+        }
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    function updateSpecComponent(Request $request)
     {
         $item_number = $request->item_number;
+        $table_id = $request->table_id;
         //find in session
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
-        $item = Session::get('components.temp')[$item_component_id];
-        return response()->json([
-            'success' => true,
-            'data'    => [
-                "item"=>$item
-            ],
-        ]);
+
+        if(Session::has('components.temp.'.$item_component_id)){
+            $item = Session::get('components.temp')[$item_component_id];
+            if(Session::has($table_id.".".$item_component_id)){
+                return response()->json([
+                    'success' => false,
+                    'message'=>'Komponen sudah ada pada tabel!'
+                ]);
+            }
+            //success, no data found, create a new one
+            Session::push($table_id.".".$item_component_id,$item);
+
+            return response()->json([
+                'success' => true,
+                'data'    => [
+                    "item"=>$item,
+                    "table"=>Session::get($table_id)
+                ],
+            ]);
+        }
+        else{
+            return response()->json([
+                'success' => false,
+                'message'=>'Komponen tidak terdapat pada item kit / bom id!'
+            ]);
+        }
+
     }
 }

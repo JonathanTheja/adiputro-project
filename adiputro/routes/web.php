@@ -52,7 +52,7 @@ Route::prefix('master')->group(function () {
         Route::post('/delete', [MasterDataController::class,'deleteData']);
         Route::post('/getData', [MasterDataController::class,'getData']);
         Route::post('/getProcessEntry', [MasterDataController::class,'getProcessEntryData']);
-        Route::post('/getSpecComponent', [MasterDataController::class,'getSpecComponent']);
+        Route::post('/updateSpecComponent', [MasterDataController::class,'updateSpecComponent']);
     });
 });
 

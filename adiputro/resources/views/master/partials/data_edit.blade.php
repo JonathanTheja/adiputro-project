@@ -164,38 +164,47 @@
 
     function addRowTable(id,table_number){
         let component_code = $("#component_input_"+table_number).val();
+        let table_id = "process_entry_table_"+table_number;
         console.log(component_code);
         $.ajax({
-            url: `/master/data/getSpecComponent`,
+            url: `/master/data/updateSpecComponent`,
             type: "POST",
             cache: false,
             data: {
-                "item_number":component_code
+                "item_number":component_code,
+                "table_id":table_id
             },
             success: function(response) {
-              console.log(response.data);
-               let item = response.data.item;
-               var rowCount = $('#'+id+' tr').length;
+              if(response.success){
+                console.log(response.data);
+                let item = response.data.item;
+                console.log(response.data.table);
+                var rowCount = $('#'+id+' tr').length;
 
-                $("#"+id).append(`
-                    <tr>
-                        <td scope="col" class="px-6 py-3">
-                            `+(rowCount+1)+`
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            `+item.item_number+`
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            `+item.item_description+`
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=`+item.item_qty+`>
-                        </td>
-                    </tr>
-                `);
+                    $("#"+id).append(`
+                        <tr>
+                            <td scope="col" class="px-6 py-3">
+                                `+(rowCount+1)+`
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                `+item.item_number+`
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                `+item.item_description+`
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=`+item.item_qty+`>
+                            </td>
+                        </tr>
+                    `);
+              }
+              else{
+                //failed
+                alert(response.message);
+              }
+
             }
         });
-
     }
 
     generateTom("#input-departemen")
