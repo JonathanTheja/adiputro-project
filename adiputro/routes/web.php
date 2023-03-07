@@ -60,6 +60,7 @@ Route::prefix('notifikasi')->group(function () {
     Route::prefix('report')->group(function () {
         Route::get('/', [MasterFormReportController::class,'formReport']);
         Route::post('/add', [MasterFormReportController::class,'addReport']);
+        Route::post('/update', [MasterFormReportController::class,'updateReport']);
     });
 });
 

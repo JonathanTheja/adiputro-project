@@ -46,7 +46,17 @@
                                     @endif
                                 </td>
                             @else
-                                <td colspan="3" class="text-center bg-yellow-700 text-white">Dalam Proses..</td>
+                                <form action="/notifikasi/report/update" method="POST">
+                                    @csrf
+                                    <input class="hidden" type="text" name="form_report_id" value="{{ $form_report->form_report_id }}">
+                                    <td class="p-2 py-4"><input type="text" class="bg-transparent border w-20 border-black border-collapse" name="reply">
+                                    </td>
+                                    <td class="p-2 py-4 ">
+                                        <button type="submit"
+                                            class="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium px-1 py-2.5 text-center max-w-32 cursor-pointer w-full">Update</button>
+                                    </td>
+                                </form>
+                                <td class="p-2 py-4 bg-yellow-700 text-center text-white">Dalam Proses..</td>
                             @endif
                         </tr>
                     @endforeach
