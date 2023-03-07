@@ -44,8 +44,9 @@
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body py-4 px-5">
-                    <form action="{{ url('/master/form/report/add') }}" method="POST">
+                    <form action="{{ url('/dashboard/report/add') }}" method="POST">
                         @csrf
+                        <input class="hidden" type="text" name="item_level_id" id="item_level_id">
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="full_name"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
@@ -70,25 +71,31 @@
                             <label for="full_name"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Pelapor</label>
                             <div class="w-4"></div>
-                            <input type="text" id="full_name" name="pelapor"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
-                                placeholder="Pelapor" required>
+                            <input disabled type="text" id="full_name" name="pelapor"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                value="{{ $pelapor->full_name }}" placeholder="Pelapor" required>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="full_name"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Departemen</label>
                             <div class="w-4"></div>
-                            <input type="text" id="full_name" name="departemen"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
-                                placeholder="Departemen" required>
+                            <input disabled type="text" id="full_name" name="departemen"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="full_name"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
                             <div class="w-4"></div>
-                            <input type="text" id="full_name" name="kategori"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
-                                placeholder="Kategori" required>
+                            <select id="kategori_report" name="kategori_report_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                @foreach ($kategori_report as $kategori)
+                                    <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}</option>
+                                @endforeach
+                                {{-- @foreach ($roles as $role)
+                                    <option value="{{ $role->access }}">{{ $role->name }}</option>
+                                @endforeach --}}
+                            </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="full_name"
@@ -180,6 +187,7 @@
                         );
                     })
                     document.getElementById("accordionReport").classList.remove("hidden");
+                    document.getElementById("item_level_id").value = item_level_id;
 
                 }
             });

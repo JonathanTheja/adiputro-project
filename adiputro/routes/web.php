@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
 use App\Http\Controllers\MasterFormReportController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\MasterStallController;
 use App\Http\Controllers\MasterUserController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\AssignOp\Concat;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,5 +64,9 @@ Route::prefix('master')->group(function () {
 });
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [MasterLevelController::class,'dashboard']);
+    Route::get('/', [DashboardController::class,'dashboard']);
+
+    Route::prefix('report')->group(function () {
+        Route::post('/add', [DashboardController::class,'addReport']);
+    });
 });

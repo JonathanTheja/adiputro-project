@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
 use App\Models\FormReport;
-use App\Models\User;
+use App\Models\ItemLevel;
+use App\Models\KategoriReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class MasterFormReportController extends Controller
+class DashboardController extends Controller
 {
-    function formReport(Request $request)
+    function dashboard()
     {
         $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
         $form_reports = FormReport::all();
@@ -21,16 +22,24 @@ class MasterFormReportController extends Controller
         // echo substr($form_report->nomor_laporan,4,4);
         $nomor_laporan = "LAP/".str_pad(intval(substr($form_report->nomor_laporan,4,4))+1, 4, "0", STR_PAD_LEFT)."/BW/AP/".$bulan[intval(date('m'))]."/".date('Y');
 
-        return view("master.form.report", compact("form_reports","nomor_laporan","tanggal"));
+        $pelapor = Auth::user();
+
+        $item_levels = ItemLevel::tree()->get()->toTree();
+
+        $kategori_report = KategoriReport::all();
+
+        return view("master.dashboard",compact("item_levels","form_reports","nomor_laporan","tanggal","pelapor","kategori_report"));
     }
 
     function addReport(Request $request)
     {
+        // dump($request);
         $form_report = FormReport::create([
+            "item_level_id" => $request->item_level_id,
             "nomor_laporan" => $request->nomor_laporan,
             "tanggal" => now(),
-            "user_id" => 1,
-            "kategori" => $request->kategori,
+            "pelapor_id" => Auth::user()->user_id,
+            "kategori_report_id" => $request->kategori_report_id,
             "temuan" => $request->temuan,
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
