@@ -12,6 +12,7 @@ use App\Models\ItemKit;
 use App\Models\ProcessEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
@@ -207,10 +208,25 @@ class MasterDataController extends Controller
             }
         }
         //ok
+        Session::put("components",$components);
         return response()->json([
             'success' => true,
             'data'    => [
                 "components"=>$components
+            ],
+        ]);
+    }
+    function getSpecComponent(Request $request)
+    {
+        $item_number = $request->item_number;
+        //find in session
+        $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
+        $item_component_id = $item_component_id."";
+        $item = Session::get('components')[$item_component_id];
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                "item"=>$item
             ],
         ]);
     }
