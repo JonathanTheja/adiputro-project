@@ -60,7 +60,6 @@
 
             </div>
 
-
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update Komponen</button>
 
@@ -115,13 +114,23 @@
 
     function updateEntryTable(){
         let selected_processes = $("#input-process").val();
-        $("#process_entries_container").html("");
+        // $("#process_entries_container").html("");
         $("#input-process option:selected").each(function () {
             //generate table
+            let body_name = "process_entry_body_"+$(this).val();
             $("#process_entries_container").append(
                 `<div class="w-9/12 rounded-lg py-5">
-                    <h1 class="text-lg">Tabel Process Entry `+$(this).text()+`</h1>
-                    <div id="process_entry_table">
+                    <h1 class="text-lg my-3">Tabel Process Entry `+$(this).text()+`</h1>
+                    <div>
+                        <div class="flex flex-wrap -mx-3 mb-2">
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="component_input_`+$(this).val()+`" type="text" placeholder="Kode Komponen">
+                            </div>
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none" onclick="addRowTable('`+body_name+`','`+$(this).val()+`')">+</button>
+                            </div>
+                        </div>
+
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-500">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -140,21 +149,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody id="tableCol">
-                                    <tr>
-                                        <td scope="col" class="px-6 py-3">
-                                            No
-                                        </td>
-                                        <td scope="col" class="px-6 py-3">
-                                            Kode Komponen
-                                        </td>
-                                        <td scope="col" class="px-6 py-3">
-                                            Nama Komponen
-                                        </td>
-                                        <td scope="col" class="px-6 py-3">
-                                            QTY
-                                        </td>
-                                    </tr>
+                                <tbody id="process_entry_body_`+$(this).val()+`">
                                 </tbody>
                             </table>
                         </div>
@@ -168,6 +163,44 @@
             //     console.log(selText);
             // }
         });
+    }
+
+    function addRowTable(id,table_number){
+        let component_code = $("#component_input_"+table_number).val();
+
+        console.log(component_code);
+        $.ajax({
+            url: `/master/data/getSpecComponent`,
+            type: "POST",
+            cache: false,
+            data: {
+                "item_number":component_code
+            },
+            success: function(response) {
+              console.log(response.data);
+               let item = response.data.item;
+               var rowCount = $('#'+id+' tr').length;
+
+                $("#"+id).append(`
+                    <tr>
+                        <td scope="col" class="px-6 py-3">
+                            `+(rowCount+1)+`
+                        </td>
+                        <td scope="col" class="px-6 py-3">
+                            `+item.item_number+`
+                        </td>
+                        <td scope="col" class="px-6 py-3">
+                            `+item.item_description+`
+                        </td>
+                        <td scope="col" class="px-6 py-3">
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=`+item.item_qty+`>
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+
+
     }
 
     generateTom("#input-departemen")
