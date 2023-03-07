@@ -1,5 +1,5 @@
 <!-- Dropdown menu -->
-<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
+<ul class="pt-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
     <li class="flex">
         <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown{{ $item->item_level_id }}"
             data-dropdown-placement="right-start" type="button"
@@ -22,21 +22,20 @@
         </div>
     </li>
     <li class="flex">
-        <button onclick="tambah('{{ $item->item_level_id }}', '{{ $item->name }}', '{{ $level }}');"
-            type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-lg">Tambah
+        <button onclick="tambah('{{ $item->item_level_id }}', '{{ $item->name }}', '0');" type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-xs px-1 py-2.5 text-center max-w-32 rounded-bl-md">Tambah
         </button>
         <form action="/master/data/update" method="get" class="m-0">
             <input type="text" class="hidden" value="{{ $item->item_level_id }}" name="item_level_id">
             <button type="submit"
-                class="text-white bg-yellow-600 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-5 py-2.5 text-center rounded-xl">Edit
+                class="text-white bg-yellow-600 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-xs px-1 py-2.5 text-center">Edit
             </button>
         </form>
         <form action="/master/data/delete" method="post" class="m-0">
             @csrf
             <input type="text" class="hidden" value="{{ $item->item_level_id }}" name="item_level_id">
             <div onclick="confirmDelete({{ $item->item_level_id }})"
-                class="text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 cursor-pointer rounded-xl">
+                class="text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-xs px-1 py-2.5 text-center max-w-32 cursor-pointer rounded-br-md">
                 Hapus
             </div>
             <button type="submit" id="btnDelete{{ $item->item_level_id }}"></button>
