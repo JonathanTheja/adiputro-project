@@ -20,13 +20,11 @@ class BomItemComponentSeeder extends Seeder
             [
                 'bom_id'=>1,
                 'consumed_item_id'=>11,
-                'consumed_uofm'=>'LONJOR',
                 'consumed_qty'=>100000
             ],
             [
                 'bom_id'=>2,
                 'consumed_item_id'=>12,
-                'consumed_uofm'=>'MTR',
                 'consumed_qty'=>96000000
             ],
         ]);

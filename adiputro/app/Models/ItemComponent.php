@@ -14,7 +14,7 @@ class ItemComponent extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['item_number','item_description'];
+    protected $fillable = ['item_number','item_description','item_uofm'];
 
     function itemLevels()
     {
@@ -23,10 +23,10 @@ class ItemComponent extends Model
     function itemKits()
     {
         # code...
-        return $this->belongsToMany(ItemKit::class,'item_kit_item_component','item_component_id','item_kit_id')->withPivot(['item_component_qty','item_component_uofm']);
+        return $this->belongsToMany(ItemKit::class,'item_kit_item_component','item_component_id','item_kit_id')->withPivot(['item_component_qty']);
     }
     function boms()
     {
-        return $this->belongsToMany(ItemComponent::class,'bom_item_component','consumed_item_id','bom_id')->withPivot(['consumed_qty','consumed_uofm']);
+        return $this->belongsToMany(ItemComponent::class,'bom_item_component','consumed_item_id','bom_id')->withPivot(['consumed_qty']);
     }
 }

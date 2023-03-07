@@ -22,25 +22,21 @@ class ItemKitItemComponentSeeder extends Seeder
                 'item_kit_id'=>1,
                 'item_component_id'=>7,
                 'item_component_qty'=>4000000,
-                'item_component_uofm'=>'PCS'
             ],
             [
                 'item_kit_number'=>1,
                 'item_component_number'=>8,
                 'item_component_qty'=>4000000,
-                'item_component_uofm'=>'PCS'
             ],
             [
                 'item_kit_number'=>1,
                 'item_component_number'=>9,
                 'item_component_qty'=>2000000,
-                'item_component_uofm'=>'PCS'
             ],
             [
                 'item_kit_number'=>1,
                 'item_component_id'=>10,
                 'item_component_qty'=>2000000,
-                'item_component_uofm'=>'PCS'
             ],
         ]);
     }

@@ -48,7 +48,6 @@
                 @endforeach
             </select>
 
-
             <h2 class="my-4 text-lg font-semibold text-gray-900">Daftar komponen</h2>
             <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside" id="ol-components">
                 {{-- <li>
@@ -65,7 +64,6 @@
 
         </form>
     </div>
-
 
 
 <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
@@ -103,7 +101,7 @@
 
                 $.each(components,function(key,comp) {
                     $("#ol-components").append(`<li>
-                    <span class="font-semibold text-gray-900">`+comp.item_number+` - `+comp.item_description+` - </span><span class="font-semibold text-gray-900"> `+comp.item_qty+` PCS </span>
+                    <span class="font-semibold text-gray-900">`+comp.item_number+` - `+comp.item_description+` - </span><span class="font-semibold text-gray-900"> `+comp.item_qty+` `+comp.item_uofm+` </span>
                     </li>`);
                 });
             }
@@ -117,7 +115,7 @@
              // $("#process_entries_container").html("");
         let input_selected = $("#input-process option:selected").last();
         let body_name = "process_entry_body_"+input_selected.val();
-        //generate table
+            //generate table
             $("#process_entries_container").append(
                 `<div class="w-9/12 rounded-lg py-5 process_entry_table_list">
                     <h1 class="text-lg my-3">Tabel Process Entry `+input_selected.text()+`</h1>
@@ -161,13 +159,11 @@
             //remove
             let input_selected = $("#input-process option:selected").last();
             let last_element = $(".process_entry_table_list").last().remove();
-
         }
-
     }
+
     function addRowTable(id,table_number){
         let component_code = $("#component_input_"+table_number).val();
-
         console.log(component_code);
         $.ajax({
             url: `/master/data/getSpecComponent`,
@@ -199,7 +195,6 @@
                 `);
             }
         });
-
 
     }
 

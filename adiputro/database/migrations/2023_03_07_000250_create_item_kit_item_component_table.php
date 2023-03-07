@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('item_kit_id');
             $table->bigInteger('item_component_id');
             $table->text('item_component_qty');
-            $table->text('item_component_uofm');
             $table->timestamps();
             $table->softDeletes();
         });

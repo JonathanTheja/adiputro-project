@@ -97,21 +97,27 @@ class MasterDataController extends Controller
         $item_level->name = $request->name;
         $item_level->departments()->detach();
 
+        $departments = $request->departments ?? [];
+        $components = $request->components ?? [];
+
         //update departments
-        foreach ($request->departments as $department) {
+        foreach ($departments as $department) {
             # code...
             $item_level->departments()->attach($department);
         }
-        foreach ($request->components as $component) {
+        foreach ($components as $component) {
             # code...
             $item_level->itemComponents()->attach($component);
         }
         $item_level->save();
-        foreach($request->file("photos") as $photo){
-            #code ..
-            $namafile = Str::random(8).".".$photo->getClientOriginalExtension();
-            $namafolder = "images/".$request->item_level_id;
-            $photo->storeAs($namafolder,$namafile,'public');
+
+        if($request->file("photos") != null){
+            foreach($request->file("photos") as $photo){
+                #code ..
+                $namafile = Str::random(8).".".$photo->getClientOriginalExtension();
+                $namafolder = "images/".$request->item_level_id;
+                $photo->storeAs($namafolder,$namafile,'public');
+            }
         }
         Alert::success('Sukses!', 'Berhasil Update Komponen!');
         return redirect('master/data');
@@ -181,6 +187,7 @@ class MasterDataController extends Controller
                     "item_number"=>$comp->item_number,
                     "item_description"=>$comp->item_description,
                     "item_qty"=>$comp->pivot->item_component_qty,
+                    "item_uofm"=>$comp->item_uofm
                   ];
                   $components[$comp_id] = $new_comp;
                }
@@ -202,13 +209,15 @@ class MasterDataController extends Controller
                     "item_number"=>$comp->item_number,
                     "item_description"=>$comp->item_description,
                     "item_qty"=>$comp->pivot->consumed_qty,
+                    "item_uofm"=>$comp->item_uofm
                   ];
                   $components[$comp_id] = $new_comp;
                }
             }
         }
         //ok
-        Session::put("components",$components);
+        Session::put("components.temp",$components);
+        Session::put("components.virtual",$components);
         return response()->json([
             'success' => true,
             'data'    => [
@@ -222,7 +231,7 @@ class MasterDataController extends Controller
         //find in session
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
-        $item = Session::get('components')[$item_component_id];
+        $item = Session::get('components.temp')[$item_component_id];
         return response()->json([
             'success' => true,
             'data'    => [

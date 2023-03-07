@@ -14,5 +14,5 @@ class BomItemComponent extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['bom_id','consumed_item_id','consumed_uofm','consumed_qty'];
+    protected $fillable = ['bom_id','consumed_item_id','consumed_qty'];
 }

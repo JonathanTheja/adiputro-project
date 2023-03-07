@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('item_component_id');
             $table->string('item_number',100);
             $table->text('item_description');
+            $table->text('item_uofm');
             $table->timestamps();
             $table->softDeletes();
         });

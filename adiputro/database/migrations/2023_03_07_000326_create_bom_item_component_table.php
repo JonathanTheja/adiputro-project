@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id('bom_item_component_id');
             $table->bigInteger('bom_id');
             $table->bigInteger('consumed_item_id');
-            $table->text('consumed_uofm');
             $table->bigInteger('consumed_qty');
             $table->softDeletes();
             $table->timestamps();

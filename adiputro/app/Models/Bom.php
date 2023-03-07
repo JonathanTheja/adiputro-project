@@ -18,6 +18,6 @@ class Bom extends Model
 
     function itemComponents()
     {
-        return $this->belongsToMany(ItemComponent::class,'bom_item_component','bom_id','consumed_item_id')->withPivot(['consumed_qty','consumed_uofm']);
+        return $this->belongsToMany(ItemComponent::class,'bom_item_component','bom_id','consumed_item_id')->withPivot(['consumed_qty']);
     }
 }
