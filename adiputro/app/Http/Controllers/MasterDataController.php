@@ -74,6 +74,7 @@ class MasterDataController extends Controller
 
     function toUpdate(Request $request)
     {
+        Session::forget("sess");
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
         $item_level_parent = $item_level->parent()->first();
@@ -216,10 +217,10 @@ class MasterDataController extends Controller
             }
         }
         //ok
-        Session::put("components.temp",$components);
+        Session::put("sess.components.temp",$components);
         //components virtual used to track the process entry data
-        if(!Session::has("components.virtual")){
-            Session::put("components.virtual",[]);
+        if(!Session::has("sess.components.virtual")){
+            Session::put("sess.components.virtual",[]);
         }
         return response()->json([
             'success' => true,
@@ -256,17 +257,16 @@ class MasterDataController extends Controller
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
 
-        if(Session::has('components.temp.'.$item_component_id)){
-            $item = Session::get('components.temp')[$item_component_id];
-            if(Session::has($table_id.".".$item_component_id)){
+        if(Session::has('sess.components.temp.'.$item_component_id)){
+            $item = Session::get('sess.components.temp')[$item_component_id];
+            if(Session::has("sess.".$table_id.".".$item_component_id)){
                 return response()->json([
                     'success' => false,
                     'message'=>'Komponen sudah ada pada tabel!'
                 ]);
             }
             //success, no data found, create a new one
-            Session::push($table_id.".".$item_component_id,$item);
-
+            Session::push("sess.".$table_id.".".$item_component_id,$item);
             return response()->json([
                 'success' => true,
                 'data'    => [

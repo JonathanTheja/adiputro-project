@@ -50,9 +50,7 @@
 
             <h2 class="my-4 text-lg font-semibold text-gray-900">Daftar komponen</h2>
             <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside" id="ol-components">
-                {{-- <li>
-                    <span class="font-semibold text-gray-900">(Kode Komponen) -  (Nama Komponen) - </span><span class="font-semibold text-gray-900"> (Jumlah) </span>
-                </li> --}}
+
             </ol>
 
             <div id="process_entries_container">
@@ -176,9 +174,7 @@
             },
             success: function(response) {
               if(response.success){
-                console.log(response.data);
                 let item = response.data.item;
-                console.log(response.data.table);
                 var rowCount = $('#'+id+' tr').length;
 
                     $("#"+id).append(`
@@ -202,7 +198,6 @@
                 //failed
                 alert(response.message);
               }
-
             }
         });
     }
