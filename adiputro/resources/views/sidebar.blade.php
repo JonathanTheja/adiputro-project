@@ -53,11 +53,11 @@
         </div>
     </a>
     <hr class="my-4 text-gray-600">
-    <a href="{{ url('/master/form/report') }}">
+    <a href="{{ url('/notifikasi/report') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            id="sidemenuFormReport">
+            id="sidemenuNotifikasiReport">
             <i class="bi bi-envelope-open"></i>
-            <span class="text-[15px] ml-4 text-gray-200">Master Form Report</span>
+            <span class="text-[15px] ml-4 text-gray-200">Notifikasi Report</span>
         </div>
     </a>
     {{-- <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
@@ -128,7 +128,7 @@
         document.getElementById("sidemenuDashboard").classList.add("bg-blue-600");
     } else if (master.includes("master/data")) {
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
-    } else if (master.includes("master/form")) {
-        document.getElementById("sidemenuFormReport").classList.add("bg-blue-600");
+    } else if (master.includes("notifikasi/report")) {
+        document.getElementById("sidemenuNotifikasiReport").classList.add("bg-blue-600");
     }
 </script>

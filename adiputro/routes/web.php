@@ -54,12 +54,12 @@ Route::prefix('master')->group(function () {
         Route::post('/getProcessEntry', [MasterDataController::class,'getProcessEntryData']);
         Route::post('/getSpecComponent', [MasterDataController::class,'getSpecComponent']);
     });
+});
 
-    Route::prefix('form')->group(function () {
-        Route::prefix('report')->group(function () {
-            Route::get('/', [MasterFormReportController::class,'formReport']);
-            Route::post('/add', [MasterFormReportController::class,'addReport']);
-        });
+Route::prefix('notifikasi')->group(function () {
+    Route::prefix('report')->group(function () {
+        Route::get('/', [MasterFormReportController::class,'formReport']);
+        Route::post('/add', [MasterFormReportController::class,'addReport']);
     });
 });
 
