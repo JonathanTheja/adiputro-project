@@ -12,7 +12,7 @@ class MasterFormReportController extends Controller
 {
     function formReport(Request $request)
     {
-        $bulan = array("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+        $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
         $form_reports = FormReport::all();
         $form_report = FormReport::all();
         $form_report = $form_report[count($form_report)-1];

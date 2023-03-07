@@ -103,8 +103,8 @@
                         <tr class="border-b hover:bg-orange-100 bg-gray-100">
                             <td class="p-3 px-5">{{ $form_report->nomor_laporan }}</td>
                             <td class="p-3 px-5">{{ date('d-m-Y', strtotime($form_report->tanggal)) }}</td>
-                            <td class="p-3 px-5">{{ $form_report->user->full_name }}</td>
-                            <td class="p-3 px-5">{{ $form_report->user->department->name }}</td>
+                            <td class="p-3 px-5">{{ $form_report->pelapor->full_name }}</td>
+                            <td class="p-3 px-5">{{ $form_report->pelapor->department->name }}</td>
                             <td class="p-3 px-5">{{ $form_report->kategori }}</td>
                             <td class="p-3 px-5">{{ $form_report->temuan }}</td>
                         </tr>

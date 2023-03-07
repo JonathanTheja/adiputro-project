@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('form_report', function (Blueprint $table) {
             $table->id('form_report_id');
+            $table->integer('item_level_id');
             $table->string('nomor_laporan');
             $table->date('tanggal');
-            $table->integer('user_id');
-            $table->string('kategori');
+            $table->integer('pelapor_id');
+            $table->integer('kategori_report_id');
             $table->string('temuan');
+            $table->date('tanggal_diselesaikan');
+            $table->integer('penyelesai_id');
             $table->timestamps();
             $table->softDeletes();
         });
