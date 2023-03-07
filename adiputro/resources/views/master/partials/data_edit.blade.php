@@ -42,7 +42,7 @@
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
             <input class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5" id="multiple_files" type="file" multiple name="photos[]">
             <label for="input-process" class="block my-2 text-gray-900">Process Entry</label>
-            <select id="input-process" multiple autocomplete="off" name="process[]">
+            <select id="input-process" multiple autocomplete="off" name="process[]" onchange="updateEntryTable()">
                 @foreach ($process_entry as $pe)
                     <option value="{{ $pe->process_entry_id }}">{{$pe->work_description}}</option>
                 @endforeach
@@ -56,36 +56,11 @@
                 </li> --}}
             </ol>
 
+            <div id="process_entries_container">
 
-            <div class="w-9/12 rounded-lg py-5">
-                <h1 class="text-lg" id="component_name">Tabel Process Entry</h1>
-                <div id="table_container">
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        No
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Kode Komponen
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Komponen
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        QTY
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableCol">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="photosLoader"></div>
             </div>
+
+
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update Komponen</button>
 
@@ -95,7 +70,9 @@
 
 
 <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
+
 <script>
+
 
     function generateTom(id) {
         return new TomSelect(id,{
@@ -133,6 +110,63 @@
                     </li>`);
                 });
             }
+        });
+    }
+
+    function updateEntryTable(){
+        let selected_processes = $("#input-process").val();
+        $("#process_entries_container").html("");
+        $("#input-process option:selected").each(function () {
+            //generate table
+            $("#process_entries_container").append(
+                `<div class="w-9/12 rounded-lg py-5">
+                    <h1 class="text-lg">Tabel Process Entry `+$(this).text()+`</h1>
+                    <div id="process_entry_table">
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Kode Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Nama Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            QTY
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableCol">
+                                    <tr>
+                                        <td scope="col" class="px-6 py-3">
+                                            No
+                                        </td>
+                                        <td scope="col" class="px-6 py-3">
+                                            Kode Komponen
+                                        </td>
+                                        <td scope="col" class="px-6 py-3">
+                                            Nama Komponen
+                                        </td>
+                                        <td scope="col" class="px-6 py-3">
+                                            QTY
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>`
+            );
+
+            // var $this = $(this);
+            // if ($this.length) {
+            //     var selText = $this.text();
+            //     console.log(selText);
+            // }
         });
     }
 
