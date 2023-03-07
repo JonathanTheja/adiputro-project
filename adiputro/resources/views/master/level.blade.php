@@ -30,7 +30,7 @@
     </form>
 
 
-    <div class="w-full flex h-screen">
+    <div class="w-full flex min-h-[60vh]">
         <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
             @foreach ($item_levels as $item_level)
                 <x-level-item :item="$item_level" />
