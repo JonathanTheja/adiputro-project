@@ -52,6 +52,13 @@
             <span class="text-[15px] ml-4 text-gray-200">Master Data</span>
         </div>
     </a>
+    <a href="{{ url('/master/input') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            id="sidemenuInput">
+            <i class="bi bi-file-image"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Master Input</span>
+        </div>
+    </a>
     <hr class="my-4 text-gray-600">
     <a href="{{ url('/notifikasi/report') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
@@ -128,6 +135,8 @@
         document.getElementById("sidemenuDashboard").classList.add("bg-blue-600");
     } else if (master.includes("master/data")) {
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
+    } else if (master.includes("master/input")) {
+        document.getElementById("sidemenuInput").classList.add("bg-blue-600");
     } else if (master.includes("notifikasi/report")) {
         document.getElementById("sidemenuNotifikasiReport").classList.add("bg-blue-600");
     }

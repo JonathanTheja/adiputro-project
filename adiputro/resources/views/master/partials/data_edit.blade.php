@@ -71,7 +71,6 @@
 
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
-
     <script>
         let boleh = false;
 

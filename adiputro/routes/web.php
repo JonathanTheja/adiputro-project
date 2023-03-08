@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
 use App\Http\Controllers\MasterFormReportController;
+use App\Http\Controllers\MasterInputController;
 use App\Http\Controllers\MasterLevelController;
 use App\Http\Controllers\MasterStallController;
 use App\Http\Controllers\MasterUserController;
@@ -33,6 +34,10 @@ Route::prefix('master')->group(function () {
         Route::get('/', [MasterUserController::class,'masterUser']);
         Route::post('/update', [MasterUserController::class,'updateUser']);
         Route::post('/delete', [MasterUserController::class,'deleteUser']);
+    });
+
+    Route::prefix('input')->group(function () {
+        Route::get('/', [MasterInputController::class,'masterInput']);
     });
 
     Route::prefix('departemen')->group(function () {
