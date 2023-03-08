@@ -143,6 +143,9 @@
                                         <th scope="col" class="px-6 py-3">
                                             QTY
                                         </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Aksi
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="process_entry_body_`+input_selected.val()+`">
@@ -158,6 +161,31 @@
             let input_selected = $("#input-process option:selected").last();
             let last_element = $(".process_entry_table_list").last().remove();
         }
+    }
+
+    function refreshDataTable(){
+        
+    }
+
+    function deleteComponentTable(table_id,item_number){
+        $.ajax({
+            url: `/master/data/deleteComponentTable`,
+            type: "POST",
+            cache: false,
+            data: {
+                "item_number":item_number,
+                "table_id":table_id
+            },
+            success: function(response) {
+              if(response.success){
+                console.log(response.message);
+              }
+              else{
+                //failed
+                alert(response.message);
+              }
+            }
+        });
     }
 
     function addRowTable(id,table_number){
@@ -190,6 +218,9 @@
                             </td>
                             <td scope="col" class="px-6 py-3">
                                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=`+item.item_qty+`>
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('`+table_id+`','`+item.item_number+`')>Hapus</button>
                             </td>
                         </tr>
                     `);

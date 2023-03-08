@@ -75,6 +75,7 @@ class MasterDataController extends Controller
     function toUpdate(Request $request)
     {
         Session::forget("sess");
+
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
         $item_level_parent = $item_level->parent()->first();
@@ -218,34 +219,12 @@ class MasterDataController extends Controller
         }
         //ok
         Session::put("sess.components.temp",$components);
-        //components virtual used to track the process entry data
-        if(!Session::has("sess.components.virtual")){
-            Session::put("sess.components.virtual",[]);
-        }
+
         return response()->json([
             'success' => true,
             'data'    => [
                 "components"=>$components
             ],
-        ]);
-    }
-
-    function manipulateTable(Request $request){
-        $id = $request->table_id;
-        $action = $request->action;
-        if($action == "add"){
-            if(!Session::has($id)){
-                Session::put($id,[]);
-            }
-        }
-        else{
-            //remove
-            if(Session::has($id)){
-                Session::forget($id);
-            }
-        }
-        return response()->json([
-            'success' => true,
         ]);
     }
 
@@ -274,6 +253,7 @@ class MasterDataController extends Controller
                     "table"=>Session::get($table_id)
                 ],
             ]);
+
         }
         else{
             return response()->json([
@@ -281,6 +261,22 @@ class MasterDataController extends Controller
                 'message'=>'Komponen tidak terdapat pada item kit / bom id!'
             ]);
         }
+    }
+
+    function deleteComponentTable(Request $request){
+        $item_number = $request->item_number;
+        $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
+        //delete
+        $table_id = $request->table_id;
+        Session::forget("sess.".$table_id.".".$item_component_id);
+        return response()->json([
+            'success' => true,
+            'message'=>'Berhasil hapus komponen dari tabel!'
+        ]);
+    }
+
+    function updateVirtualComponent(Request $request){
+        //components virtual used to track the process entry data
 
     }
 }
