@@ -32,7 +32,7 @@
         // alert("apwoiejf");
         document.getElementById("loading").style.display = "none";
         try {
-            document.getElementById("showModal").style.display = "block";
+            document.getElementById("showModal").classList.remove("hidden");
         } catch (error) {
 
         }

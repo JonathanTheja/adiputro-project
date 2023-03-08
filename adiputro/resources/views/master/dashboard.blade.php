@@ -28,7 +28,7 @@
             <span class="sr-only">Search</span>
         </button>
     </form>
-    <div class="accordion hidden" id="accordionReport">
+    <div class="accordion pointer-events-none" id="accordionReport">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">
                 <button
@@ -123,38 +123,42 @@
             @endforeach
         </div>
         <div class="w-9/12 bg-slate-200 rounded-lg p-5">
-            <h1 class="text-lg" id="component_name">Name</h1>
-            <div id="table_container">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    No
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Kode Komponen
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Nama Komponen
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableCol">
+            <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
+            <div id="dashboard_container" class="hidden">
+                <h1 class="text-lg" id="component_name">Name</h1>
+                <h1>Gambar Komponen</h1>
+                <div id="photosLoader" class="mb-4"></div>
+                <div id="table_container">
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        No
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Kode Komponen
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Nama Komponen
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableCol">
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <h1>Gambar Komponen</h1>
-
-            <div id="photosLoader"></div>
         </div>
     </div>
 
     <script>
         function updateLevelData(item_level_id) {
             //ajax call
+            document.getElementById("loadingDashboard").classList.remove("hidden");
+            document.getElementById("dashboard_container").classList.add("hidden");
             $.ajax({
                 url: `/master/data/getData`,
                 type: "POST",
@@ -182,11 +186,31 @@
 
                     $("#photosLoader").html("");
                     $.each(response.data.all_photos, function(key, value) {
+                        let id_target_left = key-1;
+                        let id_target_right = key+1;
+                        let boleh = false;
+                        if(key == 0){
+                            boleh = true;
+                            id_target_left = response.data.all_photos.length-1;
+                        }
+                        if(key == response.data.all_photos.length-1){
+                            id_target_right = 0;
+                        }
                         $('#photosLoader').append(
-                            `<img src="{{ asset('storage/`+value+`') }}" alt="" style="width:200px;height:200px">`
+                            `<div id='img${key}' class='w-full flex items-center justify-between ${!boleh && "hidden"}'>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]'>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>`
                         );
                     })
-                    document.getElementById("accordionReport").classList.remove("hidden");
+                    document.getElementById("loadingDashboard").classList.add("hidden");
+                    document.getElementById("dashboard_container").classList.remove("hidden");
+                    document.getElementById("accordionReport").classList.remove("pointer-events-none");
                     document.getElementById("item_level_id").value = item_level_id;
 
                 }
@@ -197,6 +221,11 @@
         function openMenu(sideNav, btnDown) {
             document.getElementById(sideNav).classList.toggle("hidden");
             // document.getElementById(btnDown).classList.toggle("rotate-180");
+        }
+
+        function slideImg(id_this,id_target){
+            document.getElementById(`img${id_this}`).classList.add("hidden");
+            document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
     </script>
 @endsection

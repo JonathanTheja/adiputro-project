@@ -81,7 +81,7 @@
 
     </div>
 
-    <div style="display: none" id="showModal">
+    <div class="hidden" id="showModal">
         @include('modal.add.data')
         {{-- @include('modal.update.data') --}}
     </div>
