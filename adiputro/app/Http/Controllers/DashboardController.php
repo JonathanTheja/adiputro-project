@@ -8,6 +8,7 @@ use App\Models\KategoriReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -48,6 +49,24 @@ class DashboardController extends Controller
 
     function updateReport(Request $request)
     {
-        # code...
+
+    }
+
+    function konfirmasi(Request $request)
+    {
+        $username = $request->username;
+        $password = $request->password;
+        $credentials = [
+            "username" => $username,
+            "password" => $password
+        ];
+        if(Auth::user()->username == $username && Auth::attempt($credentials)){
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+        ]);
     }
 }
