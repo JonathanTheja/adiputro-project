@@ -141,7 +141,7 @@
                         </div>
 
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500">
+                            <table class="w-full text-sm text-left text-gray-500" id="process_entry_table_${input_selected.val()}">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
@@ -176,7 +176,7 @@
         }
 
         function refreshDataTable() {
-            $("#process_entry_body_1").html("");
+
             $.ajax({
                 url: `/master/data/getComponents`,
                 type: "POST",
@@ -184,51 +184,12 @@
                 success: function(response) {
                     console.log(response.items);
                     let tables = response.items;
-                    Object.entries(tables).forEach(table => {
-                        const [table_key, table_value] = table;
-                        console.log(table_key);
-                        let table_id = table_key;
-                        let rowCount = 0;
-                        // console.log("process_entry_body_" + table_key.substring(20) + "awef");
-                        // $("#process_entry_body_" + table_key.substring(20)).html("");
-                        $("#process_entry_body_1" + table_key.substring(20)).html("");
-                        Object.entries(table_value).forEach(item => {
-                            const [item_key, item_value] = item;
-                            // console.log(item_key);
-                            // console.log(item_value);
-                            rowCount++;
-                            let items = item_value;
-                            var rowCount = $('#' + id + ' tr').length;
-                            $("#process_entry_body_" + table_key.substring(20)).append(`
-                                <tr>
-                                    <td scope="col" class="px-6 py-3">
-                                        ` + (rowCount + 1) + `
-                                    </td>
-                                    <td scope="col" class="px-6 py-3">
-                                        ` + item.item_number + `
-                                    </td>
-                                    <td scope="col" class="px-6 py-3">
-                                        ` + item.item_description +
-                                `
-                                    </td>
-                                    <td scope="col" class="px-6 py-3">
-                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=` +
-                                item.item_qty +
-                                `>
-                                    </td>
-                                    <td scope="col" class="px-6 py-3">
-                                        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('` +
-                                table_id + `','` + item.item_number + `')>Hapus</button>
-                                    </td>
-                                </tr>
-                            `);
-                        });
-                    });
+
                 }
             });
         }
 
-        function deleteComponentTable(table_id, item_number) {
+        function deleteComponentTable(table_id,item_number,tr_id) {
             $.ajax({
                 url: `/master/data/deleteComponentTable`,
                 type: "POST",
@@ -240,7 +201,9 @@
                 success: function(response) {
                     if (response.success) {
                         console.log(response.message);
-                        refreshDataTable();
+                        //delete here
+                        // refreshDataTable();
+                        $("#"+tr_id).remove();
                     } else {
                         //failed
                         alert(response.message);
@@ -248,7 +211,7 @@
                 }
             });
         }
-
+        //to add row table
         function addRowTable(id, table_number) {
             let component_code = $("#component_input_" + table_number).val();
             let table_id = "process_entry_table_" + table_number;
@@ -265,9 +228,9 @@
                     if (response.success) {
                         let item = response.data.item;
                         var rowCount = $('#' + id + ' tr').length;
-
+                        let tr_id = `tr_${table_number}_${item.item_component_id}`;
                         $("#" + id).append(`
-                        <tr>
+                        <tr id="${tr_id}">
                             <td scope="col" class="px-6 py-3">
                                 ` + (rowCount + 1) + `
                             </td>
@@ -285,7 +248,7 @@
                             </td>
                             <td scope="col" class="px-6 py-3">
                                 <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('` +
-                            table_id + `','` + item.item_number + `')>Hapus</button>
+                            table_id + `','` + item.item_number + `','`+tr_id+`')>Hapus</button>
                             </td>
                         </tr>
                     `);
