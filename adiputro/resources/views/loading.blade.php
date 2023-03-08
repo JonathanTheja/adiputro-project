@@ -33,6 +33,7 @@
         document.getElementById("loading").style.display = "none";
         try {
             document.getElementById("showModal").classList.remove("hidden");
+            document.getElementById("modalKonfirmasi").classList.remove("hidden");
         } catch (error) {
 
         }

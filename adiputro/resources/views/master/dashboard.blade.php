@@ -105,10 +105,10 @@
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
                                 placeholder="Temuan" required>
                         </div>
-
-                        <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Tambah
-                            report baru</button>
+                        <button type="submit" class="hidden" id="submitReport"></button>
+                        <label for="my-modal-konfirmasi"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5 cursor-pointer">Tambah
+                            report baru</label>
                     </form>
                 </div>
             </div>
@@ -154,6 +154,25 @@
         </div>
     </div>
 
+    <div class="hidden" id="modalKonfirmasi">
+        <input type="checkbox" id="my-modal-konfirmasi" class="modal-toggle" />
+        <label for="my-modal-konfirmasi" class="modal cursor-pointer">
+            <label class="modal-box relative" for="">
+                <label for="my-modal-konfirmasi" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold" id="titleModal">Konfirmasi Tambah Laporan</h3>
+                <div class="py-4" id="bodyModal">Username</div>
+                <input type="text" name="username" id="username"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Username" required>
+                <div class="py-4" id="bodyModal">Password</div>
+                <input type="password" name="password" id="password"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Password" required>
+                <button type="submit" onclick="konfirmasi()"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Konfirmasi</button>
+            </label>
+        </label>
+    </div>
     <script>
         function updateLevelData(item_level_id) {
             //ajax call
@@ -186,14 +205,14 @@
 
                     $("#photosLoader").html("");
                     $.each(response.data.all_photos, function(key, value) {
-                        let id_target_left = key-1;
-                        let id_target_right = key+1;
+                        let id_target_left = key - 1;
+                        let id_target_right = key + 1;
                         let boleh = false;
-                        if(key == 0){
+                        if (key == 0) {
                             boleh = true;
-                            id_target_left = response.data.all_photos.length-1;
+                            id_target_left = response.data.all_photos.length - 1;
                         }
-                        if(key == response.data.all_photos.length-1){
+                        if (key == response.data.all_photos.length - 1) {
                             id_target_right = 0;
                         }
                         $('#photosLoader').append(
@@ -208,14 +227,38 @@
                             </div>`
                         );
                     })
+
                     document.getElementById("loadingDashboard").classList.add("hidden");
                     document.getElementById("dashboard_container").classList.remove("hidden");
                     document.getElementById("accordionReport").classList.remove("pointer-events-none");
                     document.getElementById("item_level_id").value = item_level_id;
-
                 }
             });
+        }
 
+        function konfirmasi() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            if (username == "" || password == "") {
+                alert("Username dan password harus terisi!");
+            } else {
+                $.ajax({
+                    url: `/dashboard/report/konfirmasi`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        "username": username,
+                        "password": password,
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert("Data kredensial salah!");
+                        } else {
+                            document.getElementById("submitReport").click();
+                        }
+                    }
+                });
+            }
         }
 
         function openMenu(sideNav, btnDown) {
@@ -223,9 +266,14 @@
             // document.getElementById(btnDown).classList.toggle("rotate-180");
         }
 
-        function slideImg(id_this,id_target){
+        function slideImg(id_this, id_target) {
             document.getElementById(`img${id_this}`).classList.add("hidden");
             document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
+
+        setTimeout(() => {
+            document.getElementById("modalKonfirmasi").classList.remove("hidden");
+        }, 1000);
+        // document.getElementById("modalKonfirmasi").click();
     </script>
 @endsection

@@ -69,5 +69,6 @@ Route::prefix('dashboard')->group(function () {
 
     Route::prefix('report')->group(function () {
         Route::post('/add', [DashboardController::class,'addReport']);
+        Route::post('/konfirmasi', [DashboardController::class,'konfirmasi']);
     });
 });

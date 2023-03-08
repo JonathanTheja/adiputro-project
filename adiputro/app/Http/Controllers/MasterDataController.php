@@ -146,7 +146,6 @@ class MasterDataController extends Controller
                 "item_components"=>$item_components,
                 "all_photos"=>$allPhotos
             ],
-
         ]);
     }
     function getProcessEntryData(Request $request){
