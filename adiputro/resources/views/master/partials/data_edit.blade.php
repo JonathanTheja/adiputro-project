@@ -191,7 +191,7 @@
                         let rowCount = 0;
                         // console.log("process_entry_body_" + table_key.substring(20) + "awef");
                         // $("#process_entry_body_" + table_key.substring(20)).html("");
-                        $("#process_entry_body_1" + table_key.substring(20)).html("");
+                        $("#process_entry_body_" + table_key.substring(20)).html("");
                         Object.entries(table_value).forEach(item => {
                             const [item_key, item_value] = item;
                             // console.log(item_key);
