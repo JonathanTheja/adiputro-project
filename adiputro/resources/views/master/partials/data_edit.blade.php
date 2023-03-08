@@ -73,6 +73,8 @@
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
 
     <script>
+        let boleh = false;
+
         function generateTom(id) {
             return new TomSelect(id, {
                 plugins: {
