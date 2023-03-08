@@ -201,7 +201,7 @@
                                 <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_left})'>
                                     <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
-                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]'>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
                                 <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_right})'>
                                     <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
