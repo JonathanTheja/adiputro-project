@@ -237,14 +237,14 @@ class MasterDataController extends Controller
 
         if(Session::has('sess.components.temp.'.$item_component_id)){
             $item = Session::get('sess.components.temp')[$item_component_id];
-            if(Session::has("sess.".$table_id.".".$item_component_id)){
+            if(Session::has("sess.table.".$table_id.".".$item_component_id)){
                 return response()->json([
                     'success' => false,
                     'message'=>'Komponen sudah ada pada tabel!'
                 ]);
             }
             //success, no data found, create a new one
-            Session::push("sess.".$table_id.".".$item_component_id,$item);
+            Session::push("sess.table.".$table_id.".".$item_component_id,$item);
             return response()->json([
                 'success' => true,
                 'data'    => [
@@ -267,7 +267,7 @@ class MasterDataController extends Controller
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         //delete
         $table_id = $request->table_id;
-        Session::forget("sess.".$table_id.".".$item_component_id);
+        Session::forget("sess.table.".$table_id.".".$item_component_id);
         return response()->json([
             'success' => true,
             'message'=>'Berhasil hapus komponen dari tabel!'
@@ -277,5 +277,13 @@ class MasterDataController extends Controller
     function updateVirtualComponent(Request $request){
         //components virtual used to track the process entry data
 
+    }
+
+    function getComponents(){
+        $items = Session::get('sess.table');
+        return response()->json([
+            'success' => true,
+            'items' => $items
+        ]);
     }
 }
