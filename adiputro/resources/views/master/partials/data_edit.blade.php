@@ -58,13 +58,14 @@
 
             </ol>
 
-            <div id="process_entries_container">
+            <div id="pe_container">
 
             </div>
 
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update
                 Komponen</button>
+            <button onclick="getDataComponent()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5" type="button">Get component</button>
 
         </form>
     </div>
@@ -72,6 +73,7 @@
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
     <script>
+        //----------------DONE
         let boleh = false;
 
         function generateTom(id) {
@@ -90,11 +92,24 @@
             });
         }
 
+        function getDataComponent(){
+            $.ajax({
+                url: `/master/data/getDataTemp`,
+                type: "POST",
+                cache: false,
+                success: function(response) {
+                  console.log(response);
+                }
+            });
+        }
+        //------------------
+
+        //----------------DONE
         function updateProcess() {
             let item_kits = $("#input-item-kit").val();
             let boms = $("#input-bom").val();
             $.ajax({
-                url: `/master/data/getProcessEntry`,
+                url: `/master/data/getProcessEntryItem`,
                 type: "POST",
                 cache: false,
                 data: {
@@ -104,7 +119,6 @@
                 success: function(response) {
                     $("#ol-components").html("");
                     let components = response.data.components;
-
                     $.each(components, function(key, comp) {
                         $("#ol-components").append(`<li>
                     <span class="font-semibold text-gray-900">` + comp.item_number + ` - ` + comp.item_description +
@@ -115,34 +129,36 @@
                 }
             });
         }
+        //------------------------
 
+
+        //-----------------------done
         function updateEntryTable() {
-            var tableCount = $('#process_entries_container table').length;
+            var tableCount = $('#pe_container table').length;
             let selected_processes = $("#input-process option:selected").length;
             if (selected_processes > tableCount) {
-                // $("#process_entries_container").html("");
-                let input_selected = $("#input-process option:selected").last();
-                let body_name = "process_entry_body_" + input_selected.val();
+                let pe = $("#input-process option:selected").last();
+                let pe_id = pe.val();
+                let pe_text = pe.text();
+
+                let table_id = "pe_table_"+pe_id;
                 //generate table
-                $("#process_entries_container").append(
-                    `<div class="w-9/12 rounded-lg py-5 process_entry_table_list">
-                    <h1 class="text-lg my-3">Tabel Process Entry ` + input_selected.text() +
-                    `</h1>
+
+                $("#pe_container").append(
+                    `<div class="w-9/12 rounded-lg py-5 pe_table_list">
+                    <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
                             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="component_input_` +
-                    input_selected.val() +
-                    `" type="text" placeholder="Kode Komponen">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="input_in_${table_id}" type="text" placeholder="Kode Komponen">
                             </div>
                             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none" onclick="addRowTable('` +
-                    body_name + `','` + input_selected.val() + `')">+</button>
+                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none" onclick="insertToTable('${table_id}',null)">+</button>
                             </div>
                         </div>
 
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500" id="process_entry_table_${input_selected.val()}">
+                            <table class="w-full text-sm text-left text-gray-500" id="${table_id}">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
@@ -162,7 +178,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody id="process_entry_body_` + input_selected.val() + `">
+                                <tbody>
                                 </tbody>
                             </table>
                         </div>
@@ -172,25 +188,110 @@
             } else {
                 //remove
                 let input_selected = $("#input-process option:selected").last();
-                let last_element = $(".process_entry_table_list").last().remove();
+                let last_element = $(".pe_table_list").last().remove();
             }
         }
 
-        function refreshDataTable() {
+        //DONE
+        function placeComponentToTable(table_id,item){
+            var rowCount = $(`#${table_id} tbody tr`).length;
+            $(`#${table_id} tbody`).append(`
+            <tr>
+                <td scope="col" class="px-6 py-3">
+                    ${(rowCount+1)}
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    ${item.item_number}
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    ${item.item_description}
 
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_qty}>
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}')>Hapus</button>
+                </td>
+            </tr>
+        `);
+        }
+
+        function addComponent(table_id,item_number){
+            $.ajax({
+                url: `/master/data/updateSpecComponent`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_number": item_number,
+                    "table_id": table_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let item = response.data.item;
+                        placeComponentToTable(table_id,item);
+                    } else {
+                        //failed
+                        alert(response.message);
+                    }
+                }
+            });
+
+        }
+
+
+        function insertToTable(table_id,item_number){
+           //if param doesn't contain the item_number then get item_number from the input_in_(pe_id)
+           if(!item_number){
+            item_number = $("#input_in_" + table_id).val();
+           }
+           addComponent(table_id,item_number);
+        }
+        //--------------------------------------------------
+
+
+        //to add row table
+        function addRowTable(id, table_number) {
+            //the input box
+            let component_code = $("#component_input_" + table_number).val();
+            let table_id = "process_entry_table_" + table_number;
+            doAdd(id,table_number,component_code,table_id);
+        }
+
+
+        //call the placeComponentToTable
+        function refreshTable(table_id) {
             $.ajax({
                 url: `/master/data/getComponents`,
                 type: "POST",
                 cache: false,
+                data:{
+                    "table_id":table_id
+                },
                 success: function(response) {
-                    console.log(response.items);
-                    let tables = response.items;
 
+                    if(!response.is_multiple){
+                        //just refresh the current table
+                        let items = response.items;
+                        let table_body = $(`#${table_id} tbody`);
+                        table_body.eq(0).html("");
+
+                        //foreach
+                        $.each(items, function(key,item) {
+                            placeComponentToTable(table_id,item);
+                        });
+
+                    }
+                    else{
+                        //refresh multiple tables
+                        $tables = response.tables;
+                    }
                 }
             });
         }
 
-        function deleteComponentTable(table_id,item_number,tr_id) {
+        function deleteComponentTable(table_id,item_number) {
+            console.log(table_id,item_number);
             $.ajax({
                 url: `/master/data/deleteComponentTable`,
                 type: "POST",
@@ -201,58 +302,7 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        console.log(response.message);
-                        //delete here
-                        // refreshDataTable();
-                        $("#"+tr_id).remove();
-                    } else {
-                        //failed
-                        alert(response.message);
-                    }
-                }
-            });
-        }
-        //to add row table
-        function addRowTable(id, table_number) {
-            let component_code = $("#component_input_" + table_number).val();
-            let table_id = "process_entry_table_" + table_number;
-            console.log(component_code);
-            $.ajax({
-                url: `/master/data/updateSpecComponent`,
-                type: "POST",
-                cache: false,
-                data: {
-                    "item_number": component_code,
-                    "table_id": table_id
-                },
-                success: function(response) {
-                    if (response.success) {
-                        let item = response.data.item;
-                        var rowCount = $('#' + id + ' tr').length;
-                        let tr_id = `tr_${table_number}_${item.item_component_id}`;
-                        $("#" + id).append(`
-                        <tr id="${tr_id}">
-                            <td scope="col" class="px-6 py-3">
-                                ` + (rowCount + 1) + `
-                            </td>
-                            <td scope="col" class="px-6 py-3">
-                                ` + item.item_number + `
-                            </td>
-                            <td scope="col" class="px-6 py-3">
-                                ` + item.item_description +
-                            `
-                            </td>
-                            <td scope="col" class="px-6 py-3">
-                                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=` +
-                            item.item_qty +
-                            `>
-                            </td>
-                            <td scope="col" class="px-6 py-3">
-                                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('` +
-                            table_id + `','` + item.item_number + `','`+tr_id+`')>Hapus</button>
-                            </td>
-                        </tr>
-                    `);
+                        refreshTable(table_id);
                     } else {
                         //failed
                         alert(response.message);
