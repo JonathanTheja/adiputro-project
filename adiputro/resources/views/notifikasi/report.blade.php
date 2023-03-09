@@ -25,7 +25,8 @@
                     </tr>
                     @foreach ($form_reports as $form_report)
                         <tr class="border-b hover:bg-orange-100 bg-gray-100 text-md">
-                            <td class="p-2 py-4 whitespace-nowrap">{{ $form_report->nomor_laporan }}</td>
+                            <td class="p-2 py-4 whitespace-nowrap"><a class="hover:bg-blue-200" href="/dashboard/{{ $form_report->item_level_id }}">{{ $form_report->nomor_laporan }}</a>
+                            </td>
                             <td class="p-2 py-4">{{ date('d-m-Y h:i A', strtotime($form_report->tanggal)) }}
                             </td>
                             <td class="p-2 py-4">{{ $form_report->pelapor->full_name }}</td>
@@ -48,8 +49,10 @@
                             @else
                                 <form action="/notifikasi/report/update" method="POST">
                                     @csrf
-                                    <input class="hidden" type="text" name="form_report_id" value="{{ $form_report->form_report_id }}">
-                                    <td class="p-2 py-4"><input type="text" class="bg-transparent border w-20 border-black border-collapse" name="reply">
+                                    <input class="hidden" type="text" name="form_report_id"
+                                        value="{{ $form_report->form_report_id }}">
+                                    <td class="p-2 py-4"><input type="text"
+                                            class="bg-transparent border w-20 border-black border-collapse" name="reply">
                                     </td>
                                     <td class="p-2 py-4 ">
                                         <button type="submit"

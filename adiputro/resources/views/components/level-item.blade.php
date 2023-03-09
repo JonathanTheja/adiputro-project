@@ -1,7 +1,7 @@
 <div class="w-fit">
-    <div class="flex items-center min-w-[200px]" onclick="updateLevelData({{ $item->item_level_id }})">
-        <a class="flex items-center pl-4 text-sm py-2 text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-200 transition duration-300 ease-in-out cursor-pointer min-w-[150px]"
-            data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse"
+    <div class="flex items-center min-w-[200px]">
+        <a class="sidemenuDashboard hover:bg-gray-200 flex items-center pl-4 text-sm py-2 text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 transition duration-300 ease-in-out cursor-pointer min-w-[150px]"
+            data-mdb-ripple="true" data-mdb-ripple-color="dark" id="sidemenuDashboard{{ $item->item_level_id }}"    data-bs-toggle="collapse" onclick="updateLevelData({{ $item->item_level_id }});selectDashboard(this)"
             data-bs-target="#collapseSidenavEx1" aria-expanded="true" aria-controls="collapseSidenavEx1">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 mr-3" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
