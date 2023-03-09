@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
-    function dashboard()
+    function dashboard(Request $request)
     {
         $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
         $form_reports = FormReport::all();
@@ -29,6 +29,10 @@ class DashboardController extends Controller
 
         $kategori_report = KategoriReport::all();
 
+        if(isset($request->item_level_id)){
+            $item_level_id = $request->item_level_id;
+            return view("master.dashboard",compact("item_levels","form_reports","nomor_laporan","tanggal","pelapor","kategori_report","item_level_id"));
+        }
         return view("master.dashboard",compact("item_levels","form_reports","nomor_laporan","tanggal","pelapor","kategori_report"));
     }
 

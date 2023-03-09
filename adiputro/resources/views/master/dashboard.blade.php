@@ -173,6 +173,7 @@
             </label>
         </label>
     </div>
+
     <script>
         function updateLevelData(item_level_id) {
             //ajax call
@@ -275,5 +276,43 @@
             document.getElementById("modalKonfirmasi").classList.remove("hidden");
         }, 1000);
         // document.getElementById("modalKonfirmasi").click();
+
+        function selectDashboard(e) {
+            var menus = document.getElementsByClassName("sidemenuDashboard");
+            Array.prototype.forEach.call(menus, function(menu) {
+                menu.classList.remove("bg-gray-200");
+            });
+
+            e.classList.add("bg-gray-200");
+        }
+
+        function selectDashboard2(id) {
+            let selectedDashboard = document.getElementById(`sideNav${id}`);
+            selectDashboard(document.getElementById(`sidemenuDashboard${id}`));
+            while (selectedDashboard.parentNode) {
+                let selected = selectedDashboard.parentNode;
+                try {
+                    if (selected.classList.contains("hidden")) {
+                        selected.classList.remove("hidden");
+                    }
+                } catch (error) {
+
+                }
+                selectedDashboard = selectedDashboard.parentNode;
+            }
+            setTimeout(() => {
+                updateLevelData(id);
+            }, 500);
+        }
+
+        function selectedDashboard() {
+            var url = window.location.href;
+            getId = url.split("/dashboard/");
+            getId = getId[1];
+            if (getId != null) {
+                selectDashboard2(getId);
+            }
+        }
+        selectedDashboard();
     </script>
 @endsection

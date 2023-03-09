@@ -72,7 +72,7 @@ Route::prefix('notifikasi')->group(function () {
 });
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class,'dashboard']);
+    Route::get('/{item_level_id?}', [DashboardController::class,'dashboard']);
 
     Route::prefix('report')->group(function () {
         Route::post('/add', [DashboardController::class,'addReport']);
