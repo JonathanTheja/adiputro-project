@@ -21,6 +21,7 @@ class MasterDepartemenController extends Controller
         ]);
         Department::create([
             "name" => $request->name,
+            "access_database" => $request->access_database,
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Departemen!');
         return back();
@@ -33,6 +34,7 @@ class MasterDepartemenController extends Controller
             "name" => ["required"],
         ]);
         $department->name = $request->name;
+        $department->access_database = $request->access_database;
         $department->save();
         Alert::success('Sukses!', 'Berhasil Update Departemen!');
         return back();

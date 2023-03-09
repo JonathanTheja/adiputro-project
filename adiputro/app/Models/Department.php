@@ -14,7 +14,7 @@ class Department extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','access_database'];
 
     function user()
     {

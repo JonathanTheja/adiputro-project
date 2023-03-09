@@ -18,22 +18,28 @@ class DepartmentSeeder extends Seeder
         //
         DB::table("department")->insert([
             [
-                'name'=>'Body Welding'
+                'name'=>'Body Welding',
+                'access_database' => 'SPK Mini Bus',
             ],
             [
-                'name'=>'Trimming Bus'
+                'name'=>'Trimming Bus',
+                'access_database' => 'SPK Bus',
             ],
             [
-                'name'=>'Sub Assy Minibus'
+                'name'=>'Sub Assy Minibus',
+                'access_database' => 'SPK Mini Bus',
             ],
             [
-                'name'=>'Rangka Bus'
+                'name'=>'Rangka Bus',
+                'access_database' => 'SPK Bus',
             ],
             [
-                'name'=>'Paneling'
+                'name'=>'Paneling',
+                'access_database' => 'SPK Mini Bus',
             ],
             [
-                'name'=>'Putty Bus'
+                'name'=>'Putty Bus',
+                'access_database' => 'SPK Bus',
             ]
         ]);
     }

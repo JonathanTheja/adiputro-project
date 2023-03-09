@@ -33,12 +33,10 @@
                             <div class="mb-4 w-full">
                                 <label for="access" class="block mb-2 text-sm font-medium text-gray-900">Access
                                     Database</label>
-                                <select id="access" name="access"
+                                <select id="access" name="access_database"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option value="">Tidak ada</option>
-                                    {{-- @foreach ($roles as $role)
-                                        <option value="{{ $role->access }}">{{ $role->name }}</option>
-                                    @endforeach --}}
+                                    <option value="SPK Mini Bus">SPK Mini Bus</option>
+                                    <option value="SPK Bus">SPK Bus</option>
                                 </select>
                             </div>
                         </div>
@@ -65,6 +63,7 @@
                     <tr class="border-b">
                         <th class="text-left p-3 px-5">Department ID</th>
                         <th class="text-left p-3 px-5">Name</th>
+                        <th class="text-left p-3 px-5">Access Database</th>
                         <th class="text-center p-3 px-5" colspan="2">Action</th>
                     </tr>
                     @foreach ($departments as $key => $department)
@@ -75,6 +74,14 @@
                                         class="bg-transparent" name="department_id"></td>
                                 <td class="p-3 px-5"><input type="text" value="{{ $department->name }}"
                                         class="bg-transparent" name="name"></td>
+                                <td class="p-3 px-5">
+                                    <select class="bg-transparent" name="access_database">
+                                        <option value="SPK Mini Bus">SPK Mini Bus</option>
+
+                                        <option value="SPK Bus"
+                                            @if ($department->access_database == 'SPK Bus') {{ 'selected' }} @endif>SPK Bus</option>
+                                    </select>
+                                </td>
                                 <td class="p-3"><button type="button"
                                         class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                                         onclick="confirmUpdate({{ $key }});">Update</button>
