@@ -56,10 +56,11 @@ Route::prefix('master')->group(function () {
         Route::post('/doUpdate', [MasterDataController::class,'updateData']);
         Route::post('/delete', [MasterDataController::class,'deleteData']);
         Route::post('/getData', [MasterDataController::class,'getData']);
-        Route::post('/getProcessEntry', [MasterDataController::class,'getProcessEntryData']);
+        Route::post('/getProcessEntryItem', [MasterDataController::class,'getProcessEntryItem']);
         Route::post('/updateSpecComponent', [MasterDataController::class,'updateSpecComponent']);
         Route::post('/deleteComponentTable', [MasterDataController::class,'deleteComponentTable']);
         Route::post('/getComponents', [MasterDataController::class,'getComponents']);
+        Route::post('/getDataTemp', [MasterDataController::class,'getDataTemp']);
     });
 });
 

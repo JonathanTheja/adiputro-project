@@ -149,7 +149,7 @@ class MasterDataController extends Controller
             ],
         ]);
     }
-    function getProcessEntryData(Request $request){
+    function getProcessEntryItem(Request $request){
         //rule
         //item kit , bom id
         $item_kit_list_id = $request->item_kits ?? [];
@@ -217,7 +217,7 @@ class MasterDataController extends Controller
             }
         }
         //ok
-        Session::put("sess.components.temp",$components);
+        Session::put("sess.comp_temp",$components);
 
         return response()->json([
             'success' => true,
@@ -235,8 +235,8 @@ class MasterDataController extends Controller
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
 
-        if(Session::has('sess.components.temp.'.$item_component_id)){
-            $item = Session::get('sess.components.temp')[$item_component_id];
+        if(Session::has('sess.comp_temp.'.$item_component_id)){
+            $item = Session::get('sess.comp_temp')[$item_component_id];
             if(Session::has("sess.table.".$table_id.".".$item_component_id)){
                 return response()->json([
                     'success' => false,
@@ -244,7 +244,7 @@ class MasterDataController extends Controller
                 ]);
             }
             //success, no data found, create a new one
-            Session::push("sess.table.".$table_id.".".$item_component_id,$item);
+            Session::put("sess.table.".$table_id.".".$item_component_id,$item);
             return response()->json([
                 'success' => true,
                 'data'    => [
@@ -279,11 +279,33 @@ class MasterDataController extends Controller
 
     }
 
-    function getComponents(){
-        $items = Session::get('sess.table');
+    function getComponents(Request $request){
+        //table_id
+        $table_id = $request->table_id;
+        $tables = Session::get('sess.table');
+        if($table_id == "all"){
+            return response()->json([
+                'success' => true,
+                'is_multiple'=>true,
+                'tables' => $tables
+            ]);
+        }
+        else{
+            return response()->json([
+                'success' => true,
+                'is_multiple'=>false,
+                'items' => $tables[$table_id]
+            ]);
+        }
+
+    }
+
+    function getDataTemp(){
+        $table = Session::get('sess.table');
+        $temp = Session::get('sess.comp_temp');
         return response()->json([
-            'success' => true,
-            'items' => $items
+            'table'=>$table,
+            'temp'=>$temp
         ]);
     }
 }
