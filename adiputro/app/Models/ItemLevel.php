@@ -27,6 +27,14 @@ class ItemLevel extends Model
     {
         return $this->belongsToMany(ItemComponent::class,'item_component_item_level','item_level_id','item_component_id')->withPivot('item_component_id','item_level_id');
     }
+    function itemKits()
+    {
+        return $this->belongsToMany(ItemKit::class,'item_kit_item_level','item_level_id','item_kit_id')->withPivot('item_kit_id','item_level_id');
+    }
+    function boms()
+    {
+        return $this->belongsToMany(Bom::class,'bom_item_level','item_level_id','bom_id')->withPivot('bom_id','item_level_id');
+    }
 
     public function getMaxChildrenDepth()
     {

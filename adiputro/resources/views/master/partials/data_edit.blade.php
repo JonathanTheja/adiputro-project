@@ -92,6 +92,9 @@
             });
         }
 
+
+
+
         function getDataComponent(){
             $.ajax({
                 url: `/master/data/getDataTemp`,
@@ -132,7 +135,7 @@
         //------------------------
 
 
-        //-----------------------done
+        //-----------------------DONE
         function updateEntryTable() {
             var tableCount = $('#pe_container table').length;
             let selected_processes = $("#input-process option:selected").length;
@@ -145,7 +148,7 @@
                 //generate table
 
                 $("#pe_container").append(
-                    `<div class="w-9/12 rounded-lg py-5 pe_table_list">
+                    `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
                     <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
@@ -188,6 +191,8 @@
             } else {
                 //remove
                 let input_selected = $("#input-process option:selected").last();
+                //its not always last :/
+
                 let last_element = $(".pe_table_list").last().remove();
             }
         }
@@ -316,5 +321,6 @@
         generateTom("#input-item-kit")
         generateTom("#input-bom")
         generateTom("#input-process")
+
     </script>
 @endsection

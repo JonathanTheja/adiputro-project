@@ -98,6 +98,7 @@ class MasterDataController extends Controller
         $item_level = ItemLevel::find($request->item_level_id);
         $item_level->name = $request->name;
         $item_level->departments()->detach();
+        $item_level->itemComponents()->detach();
 
         $departments = $request->departments ?? [];
         $components = $request->components ?? [];
