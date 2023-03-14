@@ -35,7 +35,11 @@ class ItemLevel extends Model
     {
         return $this->belongsToMany(Bom::class,'bom_item_level','item_level_id','bom_id')->withPivot('bom_id','item_level_id');
     }
-
+    function processEntries()
+    {
+        return $this->belongsToMany(ProcessEntry::class,'item_level_process_entry','item_level_id','process_entry_id')->withPivot('process_entry_id','item_level_id');
+    }
+    
     public function getMaxChildrenDepth()
     {
         $maxDepth = 0;

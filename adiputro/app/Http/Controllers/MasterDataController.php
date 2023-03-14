@@ -9,6 +9,7 @@ use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
 use App\Models\ItemKit;
+use App\Models\ItemLevelProcessEntry;
 use App\Models\ProcessEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -99,9 +100,13 @@ class MasterDataController extends Controller
         $item_level->name = $request->name;
         $item_level->departments()->detach();
         $item_level->itemComponents()->detach();
+        $item_level->itemKits()->detach();
+        $item_level->boms()->detach();
 
         $departments = $request->departments ?? [];
         $components = $request->components ?? [];
+        $item_kits = $request->item_kits ?? [];
+        $boms = $request->boms ?? [];
 
         //update departments
         foreach ($departments as $department) {
@@ -112,8 +117,40 @@ class MasterDataController extends Controller
             # code...
             $item_level->itemComponents()->attach($component);
         }
-        $item_level->save();
+        foreach ($item_kits as $item_kit) {
+            # code...
+            $item_level->itemKits()->attach($item_kit);
+        }
+        foreach ($boms as $bom) {
+            # code...
+            $item_level->boms()->attach($bom);
+        }
+        $process_entries = Session::get("sess.table");
+        $item_level->processEntries()->detach();
 
+        foreach ($process_entries as $pe=>$item_components) {
+            $process_entry_id = substr($pe, strpos($pe,'pe_table_')+strlen('pe_table_'));
+
+            //attach to item level process entry
+            $item_level->processEntries()->attach($process_entry_id);
+
+            $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
+
+            foreach($item_components as $item_component=>$ic){
+                //put into item_component_process_entry table
+                $icomp = ItemComponent::find($item_component);
+                $icomp->ItemLevelProcessEntries()->detach();
+            }
+
+            //loop through every item components inside pe
+            foreach($item_components as $item_component=>$ic){
+                //put into item_component_process_entry table
+                $icomp = ItemComponent::find($item_component);
+                $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry);
+            }
+        }
+
+        $item_level->save();
         if($request->file("photos") != null){
             foreach($request->file("photos") as $photo){
                 #code ..
@@ -253,7 +290,6 @@ class MasterDataController extends Controller
                     "table"=>Session::get($table_id)
                 ],
             ]);
-
         }
         else{
             return response()->json([

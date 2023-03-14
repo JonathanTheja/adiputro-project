@@ -30,7 +30,7 @@
                 @endforeach
             </select>
             <label for="input-item-kit" class="block my-2 text-gray-900">Item Kit</label>
-            <select id="input-item-kit" multiple autocomplete="off" name="itemkits[]" onchange="updateProcess()">
+            <select id="input-item-kit" multiple autocomplete="off" name="item_kits[]" onchange="updateProcess()">
                 @foreach ($item_kit as $ikit)
                     <option value="{{ $ikit->item_kit_id }}">{{ $ikit->item_kit_number }} -
                         {{ $ikit->item_kit_description }}</option>
@@ -244,7 +244,6 @@
 
         }
 
-
         function insertToTable(table_id,item_number){
            //if param doesn't contain the item_number then get item_number from the input_in_(pe_id)
            if(!item_number){
@@ -253,15 +252,6 @@
            addComponent(table_id,item_number);
         }
         //--------------------------------------------------
-
-
-        //to add row table
-        function addRowTable(id, table_number) {
-            //the input box
-            let component_code = $("#component_input_" + table_number).val();
-            let table_id = "process_entry_table_" + table_number;
-            doAdd(id,table_number,component_code,table_id);
-        }
 
 
         //call the placeComponentToTable
