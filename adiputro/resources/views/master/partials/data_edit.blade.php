@@ -15,31 +15,38 @@
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Name" required>
 
-
             <label for="input-departemen" class="block my-2 text-gray-900">Departemen</label>
             <select id="input-departemen" multiple autocomplete="off" name="departments[]">
                 @foreach ($departments as $department)
-                    <option value="{{ $department->department_id }}">{{ $department->name }}</option>
+                    <option value="{{ $department->department_id }}" @if ($item_level->departments->contains($department))
+                        selected
+                    @endif>{{ $department->name }}</option>
                 @endforeach
             </select>
             <label for="input-komponen" class="block my-2 text-gray-900">Komponen</label>
             <select id="input-komponen" multiple autocomplete="off" name="components[]">
                 @foreach ($item_components as $item_component)
-                    <option value="{{ $item_component->item_component_id }}">{{ $item_component->item_number }} -
+                    <option value="{{ $item_component->item_component_id }}" @if ($item_level->itemComponents->contains($item_component))
+                        selected
+                    @endif>{{ $item_component->item_number }} -
                         {{ $item_component->item_description }}</option>
                 @endforeach
             </select>
             <label for="input-item-kit" class="block my-2 text-gray-900">Item Kit</label>
             <select id="input-item-kit" multiple autocomplete="off" name="item_kits[]" onchange="updateProcess()">
                 @foreach ($item_kit as $ikit)
-                    <option value="{{ $ikit->item_kit_id }}">{{ $ikit->item_kit_number }} -
+                    <option value="{{ $ikit->item_kit_id }}" @if ($item_level->itemKits->contains($ikit))
+                        selected
+                    @endif>{{ $ikit->item_kit_number }} -
                         {{ $ikit->item_kit_description }}</option>
                 @endforeach
             </select>
             <label for="input-bom" class="block my-2 text-gray-900">BOM ID</label>
             <select id="input-bom" multiple autocomplete="off" name="boms[]" onchange="updateProcess()">
                 @foreach ($bom as $b)
-                    <option value="{{ $b->bom_id }}">{{ $b->bom_number }} - {{ $b->bom_description }}</option>
+                    <option value="{{ $b->bom_id }}" @if ($item_level->boms->contains($b))
+                        selected
+                    @endif>{{ $b->bom_number }} - {{ $b->bom_description }}</option>
                 @endforeach
             </select>
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
@@ -49,7 +56,9 @@
             <label for="input-process" class="block my-2 text-gray-900">Process Entry</label>
             <select id="input-process" multiple autocomplete="off" name="process[]" onchange="updateEntryTable()">
                 @foreach ($process_entry as $pe)
-                    <option value="{{ $pe->process_entry_id }}">{{ $pe->work_description }}</option>
+                    <option value="{{ $pe->process_entry_id }}" @if ($item_level->processEntries->contains($pe))
+                        selected
+                    @endif>{{ $pe->work_description }}</option>
                 @endforeach
             </select>
 
@@ -91,8 +100,6 @@
                 }
             });
         }
-
-
 
 
         function getDataComponent(){

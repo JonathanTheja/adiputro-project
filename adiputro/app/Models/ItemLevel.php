@@ -37,9 +37,9 @@ class ItemLevel extends Model
     }
     function processEntries()
     {
-        return $this->belongsToMany(ProcessEntry::class,'item_level_process_entry','item_level_id','process_entry_id')->withPivot('process_entry_id','item_level_id');
+        return $this->belongsToMany(ProcessEntry::class,'item_level_process_entry','item_level_id','process_entry_id')->withPivot('item_level_process_entry_id','process_entry_id','item_level_id');
     }
-    
+
     public function getMaxChildrenDepth()
     {
         $maxDepth = 0;

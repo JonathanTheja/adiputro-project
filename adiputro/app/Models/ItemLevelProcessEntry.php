@@ -15,4 +15,10 @@ class ItemLevelProcessEntry extends Model
     public $timestamps = true;
 
     protected $fillable = ['item_level_id','item_level_process_entry_id'];
+
+    function itemComponents()
+    {
+        # code...
+        return $this->belongsToMany(ItemComponent::class,'item_component_process_entry','item_level_process_entry_id','item_component_id')->withPivot('department_id');
+    }
 }

@@ -76,7 +76,6 @@ class MasterDataController extends Controller
     function toUpdate(Request $request)
     {
         Session::forget("sess");
-
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
         $item_level_parent = $item_level->parent()->first();
@@ -91,6 +90,26 @@ class MasterDataController extends Controller
         $item_kit = ItemKit::all();
         $bom = Bom::all();
         $process_entry = ProcessEntry::all();
+
+        $item_level_pes = $item_level->processEntries;
+
+        foreach ($item_level_pes as $item_level_pe) {
+            //make a new session table && components
+            //itl_pe -> item level process entry
+            //ics -> item components
+            $itl_pe = ItemLevelProcessEntry::find($item_level_pe->pivot->item_level_process_entry_id);
+            $ics = $itl_pe->itemComponents;
+            //push to session table
+            $table_id = $item_level_pe->process_entry_id;
+            foreach ($ics as $ic) {
+
+                Session::put("sess.table.".$table_id.".".$ic->item_component_id,$ic);
+            }
+
+        }
+        //insert all components to pe_table
+
+
         return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry"));
     }
 
@@ -137,7 +156,6 @@ class MasterDataController extends Controller
             $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
 
             foreach($item_components as $item_component=>$ic){
-                //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
                 $icomp->ItemLevelProcessEntries()->detach();
             }
@@ -265,14 +283,10 @@ class MasterDataController extends Controller
         ]);
     }
 
-    function updateSpecComponent(Request $request)
-    {
-        $item_number = $request->item_number;
-        $table_id = $request->table_id;
-        //find in session
+    function callUpdateSpecComponent($item_number,$table_id){
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
-
+        //find in session
         if(Session::has('sess.comp_temp.'.$item_component_id)){
             $item = Session::get('sess.comp_temp')[$item_component_id];
             if(Session::has("sess.table.".$table_id.".".$item_component_id)){
@@ -297,6 +311,14 @@ class MasterDataController extends Controller
                 'message'=>'Komponen tidak terdapat pada item kit / bom id!'
             ]);
         }
+    }
+
+    function updateSpecComponent(Request $request)
+    {
+        $item_number = $request->item_number;
+        $table_id = $request->table_id;
+
+        return $this->callUpdateSpecComponent($item_number,$table_id);
     }
 
     function deleteComponentTable(Request $request){
