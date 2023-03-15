@@ -85,13 +85,17 @@ class MasterDataController extends Controller
             $table_id = "pe_table_".$item_level_pe->process_entry_id;
 
             foreach ($ics as $ic) {
-                Session::put("sess.table.".$table_id.".".$ic->item_component_id,[
+
+                $comp = [
                     "item_component_id"=>$ic->item_component_id,
                     "item_number"=>$ic->item_number,
                     "item_description"=>$ic->item_description,
                     "item_component_qty"=>$ic->pivot->item_component_qty,
                     "item_uofm"=>$ic->item_uofm
-                ]);
+                ];
+
+                Session::push("sess.comp_temp",$comp);
+                Session::put("sess.table.".$table_id.".".$ic->item_component_id,$comp);
             }
             // dd(Session::get("sess.table"));
         }
@@ -195,79 +199,86 @@ class MasterDataController extends Controller
         ]);
     }
     function getProcessEntryItem(Request $request){
-        //rule
-        //item kit , bom id
-        $item_kit_list_id = $request->item_kits ?? [];
-        $bom_list_id = $request->boms ?? [];
-        $item_kit_lists = [];
-        $bom_lists = [];
+        $session_status = $request->session_status;
+        $components = null;
+        if($session_status == false){
+            //rule
+            //item kit , bom id
+            $item_kit_list_id = $request->item_kits ?? [];
+            $bom_list_id = $request->boms ?? [];
+            $item_kit_lists = [];
+            $bom_lists = [];
 
-        //returned components (merged)
-        $components = [];
+            //returned components (merged)
+            $components = [];
 
-        foreach($item_kit_list_id as $item_kit_id){
-            $item_kit_lists[] = ItemKit::find($item_kit_id);
-        }
-        foreach($bom_list_id as $bom_id){
-            $bom_lists[] = Bom::find($bom_id);
-        }
-
-        //components
-        // - component-id
-        // - component-code
-        // - component-name
-
-        foreach($item_kit_lists as $item_kit){
-            $ikit_components = $item_kit->itemComponents;
-            foreach ($ikit_components as $comp) {
-
-                # code...
-               $comp_id = (($comp->item_component_id)."");
-               if(Arr::exists($components,$comp_id)){
-                 //icr
-                 $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->item_component_qty;
-               }
-               else{
-                $new_comp = [
-                    "item_component_id"=>$comp->item_component_id,
-                    "item_number"=>$comp->item_number,
-                    "item_description"=>$comp->item_description,
-                    "item_component_qty"=>$comp->pivot->item_component_qty,
-                    "item_uofm"=>$comp->item_uofm
-                  ];
-                  $components[$comp_id] = $new_comp;
-               }
+            foreach($item_kit_list_id as $item_kit_id){
+                $item_kit_lists[] = ItemKit::find($item_kit_id);
             }
-        }
-
-        foreach($bom_lists as $bom){
-            $b_components = $bom->itemComponents;
-            foreach ($b_components as $comp) {
-                # code...
-               $comp_id = (($comp->item_component_id)."");
-               if(Arr::exists($components,$comp_id)){
-                 //icr
-                 $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->consumed_qty;
-               }
-               else{
-                $new_comp = [
-                    "item_component_id"=>$comp->item_component_id,
-                    "item_number"=>$comp->item_number,
-                    "item_description"=>$comp->item_description,
-                    "item_component_qty"=>$comp->pivot->consumed_qty,
-                    "item_uofm"=>$comp->item_uofm
-                  ];
-                  $components[$comp_id] = $new_comp;
-               }
+            foreach($bom_list_id as $bom_id){
+                $bom_lists[] = Bom::find($bom_id);
             }
-        }
-        //ok
-        Session::put("sess.comp_temp",$components);
 
+            //components
+            // - component-id
+            // - component-code
+            // - component-name
+
+            foreach($item_kit_lists as $item_kit){
+                $ikit_components = $item_kit->itemComponents;
+                foreach ($ikit_components as $comp) {
+
+                    # code...
+                $comp_id = (($comp->item_component_id)."");
+                if(Arr::exists($components,$comp_id)){
+                    //icr
+                    $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->item_component_qty;
+                }
+                else{
+                    $new_comp = [
+                        "item_component_id"=>$comp->item_component_id,
+                        "item_number"=>$comp->item_number,
+                        "item_description"=>$comp->item_description,
+                        "item_component_qty"=>$comp->pivot->item_component_qty,
+                        "item_uofm"=>$comp->item_uofm
+                    ];
+                    $components[$comp_id] = $new_comp;
+                }
+                }
+            }
+
+            foreach($bom_lists as $bom){
+                $b_components = $bom->itemComponents;
+                foreach ($b_components as $comp) {
+                    # code...
+                $comp_id = (($comp->item_component_id)."");
+                if(Arr::exists($components,$comp_id)){
+                    //icr
+                    $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->consumed_qty;
+                }
+                else{
+                    $new_comp = [
+                        "item_component_id"=>$comp->item_component_id,
+                        "item_number"=>$comp->item_number,
+                        "item_description"=>$comp->item_description,
+                        "item_component_qty"=>$comp->pivot->consumed_qty,
+                        "item_uofm"=>$comp->item_uofm
+                    ];
+                    $components[$comp_id] = $new_comp;
+                }
+                }
+            }
+            //ok
+            Session::put("sess.comp_temp",$components);
+
+        }
+        else{
+            $components = Session::get("sess.comp_temp");
+        }
         return response()->json([
             'success' => true,
             'data'    => [
-                "components"=>$components
+            "components"=>$components
             ],
         ]);
     }

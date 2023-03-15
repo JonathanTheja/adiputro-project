@@ -33,7 +33,7 @@
                 @endforeach
             </select>
             <label for="input-item-kit" class="block my-2 text-gray-900">Item Kit</label>
-            <select id="input-item-kit" multiple autocomplete="off" name="item_kits[]" onchange="updateProcess()">
+            <select id="input-item-kit" multiple autocomplete="off" name="item_kits[]" onchange="updateProcess(false)">
                 @foreach ($item_kit as $ikit)
                     <option value="{{ $ikit->item_kit_id }}" @if ($item_level->itemKits->contains($ikit))
                         selected
@@ -42,7 +42,7 @@
                 @endforeach
             </select>
             <label for="input-bom" class="block my-2 text-gray-900">BOM ID</label>
-            <select id="input-bom" multiple autocomplete="off" name="boms[]" onchange="updateProcess()">
+            <select id="input-bom" multiple autocomplete="off" name="boms[]" onchange="updateProcess(false)">
                 @foreach ($bom as $b)
                     <option value="{{ $b->bom_id }}" @if ($item_level->boms->contains($b))
                         selected
@@ -115,7 +115,7 @@
         //------------------
 
         //----------------DONE
-        function updateProcess() {
+        function updateProcess(session_status) {
             let item_kits = $("#input-item-kit").val();
             let boms = $("#input-bom").val();
             $.ajax({
@@ -124,7 +124,8 @@
                 cache: false,
                 data: {
                     "item_kits": item_kits,
-                    "boms": boms
+                    "boms": boms,
+                    "session_status":session_status
                 },
                 success: function(response) {
                     $("#ol-components").html("");
@@ -337,6 +338,7 @@
 
         setTimeout(() => {
            refreshTable("all");
+           updateProcess(true);
         }, 1000);
 
         generateTom("#input-departemen")
