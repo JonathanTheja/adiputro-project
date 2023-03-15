@@ -19,6 +19,6 @@ class ItemLevelProcessEntry extends Model
     function itemComponents()
     {
         # code...
-        return $this->belongsToMany(ItemComponent::class,'item_component_process_entry','item_level_process_entry_id','item_component_id')->withPivot('department_id');
+        return $this->belongsToMany(ItemComponent::class,'item_component_process_entry','item_level_process_entry_id','item_component_id')->withPivot('department_id','item_component_qty');
     }
 }

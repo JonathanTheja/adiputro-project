@@ -93,6 +93,7 @@ class MasterDataController extends Controller
 
         $item_level_pes = $item_level->processEntries;
 
+        //DONE--
         foreach ($item_level_pes as $item_level_pe) {
             //make a new session table && components
             //itl_pe -> item level process entry
@@ -100,16 +101,13 @@ class MasterDataController extends Controller
             $itl_pe = ItemLevelProcessEntry::find($item_level_pe->pivot->item_level_process_entry_id);
             $ics = $itl_pe->itemComponents;
             //push to session table
-            $table_id = $item_level_pe->process_entry_id;
+            $table_id = "pe_table_".$item_level_pe->process_entry_id;
             foreach ($ics as $ic) {
-
                 Session::put("sess.table.".$table_id.".".$ic->item_component_id,$ic);
             }
-
+            // dd(Session::get("sess.table"));
         }
-        //insert all components to pe_table
-
-
+        //---
         return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry"));
     }
 
@@ -164,7 +162,9 @@ class MasterDataController extends Controller
             foreach($item_components as $item_component=>$ic){
                 //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
-                $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry);
+                $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry,[
+                    'item_component_qty'=>$ic["item_component_qty"]
+                ]);
             }
         }
 
@@ -236,14 +236,14 @@ class MasterDataController extends Controller
                $comp_id = (($comp->item_component_id)."");
                if(Arr::exists($components,$comp_id)){
                  //icr
-                 $components[$comp_id]["item_qty"] =  $components[$comp_id]["item_qty"] + $comp->pivot->item_component_qty;
+                 $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->item_component_qty;
                }
                else{
                 $new_comp = [
                     "item_component_id"=>$comp->item_component_id,
                     "item_number"=>$comp->item_number,
                     "item_description"=>$comp->item_description,
-                    "item_qty"=>$comp->pivot->item_component_qty,
+                    "item_component_qty"=>$comp->pivot->item_component_qty,
                     "item_uofm"=>$comp->item_uofm
                   ];
                   $components[$comp_id] = $new_comp;
@@ -258,14 +258,14 @@ class MasterDataController extends Controller
                $comp_id = (($comp->item_component_id)."");
                if(Arr::exists($components,$comp_id)){
                  //icr
-                 $components[$comp_id]["item_qty"] =  $components[$comp_id]["item_qty"] + $comp->pivot->consumed_qty;
+                 $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->consumed_qty;
                }
                else{
                 $new_comp = [
                     "item_component_id"=>$comp->item_component_id,
                     "item_number"=>$comp->item_number,
                     "item_description"=>$comp->item_description,
-                    "item_qty"=>$comp->pivot->consumed_qty,
+                    "item_component_qty"=>$comp->pivot->consumed_qty,
                     "item_uofm"=>$comp->item_uofm
                   ];
                   $components[$comp_id] = $new_comp;
@@ -329,7 +329,8 @@ class MasterDataController extends Controller
         Session::forget("sess.table.".$table_id.".".$item_component_id);
         return response()->json([
             'success' => true,
-            'message'=>'Berhasil hapus komponen dari tabel!'
+            'message'=>'Berhasil hapus komponen dari tabel!',
+            'tables'=>Session::get("sess.table")
         ]);
     }
 
@@ -342,11 +343,23 @@ class MasterDataController extends Controller
         //table_id
         $table_id = $request->table_id;
         $tables = Session::get('sess.table');
+        $pes = [];
         if($table_id == "all"){
+            foreach ($tables as $pe_table_id=>$table) {
+                $pe_id = substr($pe_table_id, strpos($pe_table_id,'pe_table_')+strlen('pe_table_'));
+                
+                $pe = ProcessEntry::find($pe_id);
+                $new_pe = [
+                    "process_entry_id"=>$pe->process_entry_id,
+                    "work_description"=>$pe->work_description,
+                ];
+                $pes[] = $new_pe;
+            }
             return response()->json([
                 'success' => true,
                 'is_multiple'=>true,
-                'tables' => $tables
+                'tables' => $tables,
+                'process_entries'=>$pes
             ]);
         }
         else{

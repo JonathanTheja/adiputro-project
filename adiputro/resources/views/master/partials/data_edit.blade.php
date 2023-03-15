@@ -82,9 +82,9 @@
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
     <script>
+
         //----------------DONE
         let boleh = false;
-
         function generateTom(id) {
             return new TomSelect(id, {
                 plugins: {
@@ -133,7 +133,7 @@
                         $("#ol-components").append(`<li>
                     <span class="font-semibold text-gray-900">` + comp.item_number + ` - ` + comp.item_description +
                             ` - </span><span class="font-semibold text-gray-900"> ` + comp
-                            .item_qty + ` ` + comp.item_uofm + ` </span>
+                            .item_component_qty + ` ` + comp.item_uofm + ` </span>
                     </li>`);
                     });
                 }
@@ -141,20 +141,8 @@
         }
         //------------------------
 
-
-        //-----------------------DONE
-        function updateEntryTable() {
-            var tableCount = $('#pe_container table').length;
-            let selected_processes = $("#input-process option:selected").length;
-            if (selected_processes > tableCount) {
-                let pe = $("#input-process option:selected").last();
-                let pe_id = pe.val();
-                let pe_text = pe.text();
-
-                let table_id = "pe_table_"+pe_id;
-                //generate table
-
-                $("#pe_container").append(
+        function generateTable(pe_id,pe_text,table_id){
+            $("#pe_container").append(
                     `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
                     <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
@@ -195,6 +183,21 @@
                     </div>
                 </div>`
                 );
+        }
+
+        //-----------------------DONE
+        function updateEntryTable() {
+            var tableCount = $('#pe_container table').length;
+            let selected_processes = $("#input-process option:selected").length;
+            if (selected_processes > tableCount) {
+                let pe = $("#input-process option:selected").last();
+                let pe_id = pe.val();
+                let pe_text = pe.text();
+
+                let table_id = "pe_table_"+pe_id;
+                //generate table
+                generateTable(pe_id,pe_text,table_id);
+
             } else {
                 //remove
                 let input_selected = $("#input-process option:selected").last();
@@ -220,7 +223,7 @@
 
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_qty}>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty}>
                 </td>
                 <td scope="col" class="px-6 py-3">
                     <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}')>Hapus</button>
@@ -262,7 +265,9 @@
 
 
         //call the placeComponentToTable
+
         function refreshTable(table_id) {
+
             $.ajax({
                 url: `/master/data/getComponents`,
                 type: "POST",
@@ -271,7 +276,6 @@
                     "table_id":table_id
                 },
                 success: function(response) {
-
                     if(!response.is_multiple){
                         //just refresh the current table
                         let items = response.items;
@@ -286,7 +290,26 @@
                     }
                     else{
                         //refresh multiple tables
-                        $tables = response.tables;
+                        let tables = response.tables;
+                        let process_entries = response.process_entries;
+                        //push tables
+                        $.each(process_entries, function(key,pe) {
+                            let table_id = 'pe_table_'+pe.process_entry_id;
+                            generateTable(pe.process_entry_id,pe.work_description,table_id);
+
+
+                            $.each(tables[table_id], function(key,item) {
+                                let it = {
+                                    item_number:item.item_number,
+                                    item_description:item.item_description,
+                                    item_component_qty:item.pivot.item_component_qty
+                                };
+                                placeComponentToTable(table_id,it);
+                            });
+                        });
+
+                        //foreach every tables ?
+
                     }
                 }
             });
@@ -313,11 +336,16 @@
             });
         }
 
+        setTimeout(() => {
+           refreshTable("all");
+        }, 1000);
+
         generateTom("#input-departemen")
         generateTom("#input-komponen")
         generateTom("#input-item-kit")
         generateTom("#input-bom")
         generateTom("#input-process")
+
 
     </script>
 @endsection
