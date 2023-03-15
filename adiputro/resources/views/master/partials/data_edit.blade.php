@@ -297,12 +297,11 @@
                             let table_id = 'pe_table_'+pe.process_entry_id;
                             generateTable(pe.process_entry_id,pe.work_description,table_id);
 
-
                             $.each(tables[table_id], function(key,item) {
                                 let it = {
                                     item_number:item.item_number,
                                     item_description:item.item_description,
-                                    item_component_qty:item.pivot.item_component_qty
+                                    item_component_qty:item.item_component_qty
                                 };
                                 placeComponentToTable(table_id,it);
                             });

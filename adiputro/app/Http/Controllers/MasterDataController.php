@@ -24,10 +24,7 @@ class MasterDataController extends Controller
     function masterData(Request $request)
     {
         $item_levels = ItemLevel::tree()->get()->toTree();
-        // $item_levels = ItemLevel::whereIn("item_level_id",[1,3])->tree()->get();
-        // dump($item_levels->toTree());
-        // dd($item_levels);
-        // $item_levels = ItemLevel::all();
+
         $max = 0;
 
         $item_level_id = array();
@@ -38,28 +35,11 @@ class MasterDataController extends Controller
             $item_level_id[] = $item->item_level_id;
         }
 
-        // $constraint = function ($query) {
-        //     $department_id = 1;
-        //     $department_item_level = DepartmentItemLevel::where("department_id","=",$department_id)->get();
-        //     foreach ($department_item_level as $key => $item) {
-        //         $item_level_id[] = $item->item_level_id;
-        //     }
-        //     // dump($item_level_id);
-        //     $query->whereNull('parent_id')->where('item_level_id', [1,9]);
-        // };
-
-        // $item_levels = ItemLevel::treeOf($constraint)->get()->toTree();
-
         foreach ($item_levels as $key => $item_level) {
             if($item_level->getMaxChildrenDepth() > $max){
                 $max = $item_level->getMaxChildrenDepth();
             }
         }
-
-        // dump($tree);
-
-        // $item_levels = item_level::find(3)->descendantsAndSelf()->delete();
-        // dd($item_levels);
         return view("master.data", compact("item_levels","max"));
     }
 
@@ -99,11 +79,19 @@ class MasterDataController extends Controller
             //itl_pe -> item level process entry
             //ics -> item components
             $itl_pe = ItemLevelProcessEntry::find($item_level_pe->pivot->item_level_process_entry_id);
-            $ics = $itl_pe->itemComponents;
+            $ics = ($itl_pe->itemComponents);
+
             //push to session table
             $table_id = "pe_table_".$item_level_pe->process_entry_id;
+
             foreach ($ics as $ic) {
-                Session::put("sess.table.".$table_id.".".$ic->item_component_id,$ic);
+                Session::put("sess.table.".$table_id.".".$ic->item_component_id,[
+                    "item_component_id"=>$ic->item_component_id,
+                    "item_number"=>$ic->item_number,
+                    "item_description"=>$ic->item_description,
+                    "item_component_qty"=>$ic->pivot->item_component_qty,
+                    "item_uofm"=>$ic->item_uofm
+                ]);
             }
             // dd(Session::get("sess.table"));
         }
@@ -157,6 +145,7 @@ class MasterDataController extends Controller
                 $icomp = ItemComponent::find($item_component);
                 $icomp->ItemLevelProcessEntries()->detach();
             }
+
 
             //loop through every item components inside pe
             foreach($item_components as $item_component=>$ic){
@@ -347,7 +336,7 @@ class MasterDataController extends Controller
         if($table_id == "all"){
             foreach ($tables as $pe_table_id=>$table) {
                 $pe_id = substr($pe_table_id, strpos($pe_table_id,'pe_table_')+strlen('pe_table_'));
-                
+
                 $pe = ProcessEntry::find($pe_id);
                 $new_pe = [
                     "process_entry_id"=>$pe->process_entry_id,
