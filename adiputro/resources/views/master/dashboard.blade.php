@@ -309,7 +309,7 @@
             var url = window.location.href;
             getId = url.split("/dashboard/");
             getId = getId[1];
-            if (getId != null) {
+            if (getId != "") {
                 selectDashboard2(getId);
             }
         }
