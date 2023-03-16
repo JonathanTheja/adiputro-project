@@ -15,6 +15,7 @@ class FormReportSeeder extends Seeder
      */
     public function run()
     {
+        $jenis = ["TI", "Gambar Teknik", "Process Entry"];
         for ($i=0; $i < 4; $i++) {
             DB::table("form_report")->insert([
                 [
@@ -24,6 +25,7 @@ class FormReportSeeder extends Seeder
                     'pelapor_id'=>$i+1,
                     'kategori_report_id'=> 1,
                     'temuan'=>"temuan".($i+1),
+                    'jenis'=>$jenis[rand(0,1)],
                     'reply'=>"Proses Done".($i+1),
                     'tanggal_diselesaikan'=> now(),
                     'penyelesai_id'=> $i+2,

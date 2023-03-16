@@ -85,6 +85,17 @@
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="full_name"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Jenis</label>
+                            <div class="w-4"></div>
+                            <select id="jenis" name="jenis"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                <option value="TI">TI</option>
+                                <option value="Gambar Teknik">Gambar Teknik</option>
+                                <option value="Process Entry">Process Entry</option>
+                            </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="full_name"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
                             <div class="w-4"></div>
                             <select id="kategori_report" name="kategori_report_id"
