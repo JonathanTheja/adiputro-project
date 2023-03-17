@@ -85,7 +85,7 @@ class MasterDataController extends Controller
             $table_id = "pe_table_".$item_level_pe->process_entry_id;
 
             foreach ($ics as $ic) {
-
+                $comp_id = (($ic->item_component_id)."");
                 $comp = [
                     "item_component_id"=>$ic->item_component_id,
                     "item_number"=>$ic->item_number,
@@ -94,7 +94,7 @@ class MasterDataController extends Controller
                     "item_uofm"=>$ic->item_uofm
                 ];
 
-                Session::push("sess.comp_temp",$comp);
+                Session::put("sess.comp_temp.".$comp_id,$comp);
                 Session::put("sess.table.".$table_id.".".$ic->item_component_id,$comp);
             }
             // dd(Session::get("sess.table"));
@@ -201,7 +201,8 @@ class MasterDataController extends Controller
     function getProcessEntryItem(Request $request){
         $session_status = $request->session_status;
         $components = null;
-        if($session_status == false){
+
+        if($session_status == '0'){
             //rule
             //item kit , bom id
             $item_kit_list_id = $request->item_kits ?? [];
@@ -270,17 +271,23 @@ class MasterDataController extends Controller
             }
             //ok
             Session::put("sess.comp_temp",$components);
-
+            return response()->json([
+                'success' => true,
+                'data'    => [
+                "components"=>$components
+                ],
+            ]);
         }
-        else{
+        else if($session_status=='1'){
             $components = Session::get("sess.comp_temp");
+            return response()->json([
+                'success' => true,
+                'data'    => [
+                "components"=>$components
+                ],
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'data'    => [
-            "components"=>$components
-            ],
-        ]);
+
     }
 
     function callUpdateSpecComponent($item_number,$table_id){
@@ -342,9 +349,10 @@ class MasterDataController extends Controller
     function getComponents(Request $request){
         //table_id
         $table_id = $request->table_id;
-        $tables = Session::get('sess.table');
+        $tables = Session::get('sess.table') ?? [];
         $pes = [];
         if($table_id == "all"){
+
             foreach ($tables as $pe_table_id=>$table) {
                 $pe_id = substr($pe_table_id, strpos($pe_table_id,'pe_table_')+strlen('pe_table_'));
 
