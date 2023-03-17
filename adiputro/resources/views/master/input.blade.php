@@ -8,15 +8,15 @@
                 <button
                     class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <h1 class="text-xl text-gray-800">
                         Tambah Technical Instruction
                     </h1>
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample">
+            <div id="collapseOne" data-te-collapse-item data-te-collapse-show class="accordion-collapse collapse"
+                aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body py-4 px-5">
                     <form action="{{ url('/dashboard/report/add') }}" method="POST">
                         @csrf
@@ -124,96 +124,45 @@
                                 @endforeach --}}
                             </select>
                         </div>
-                        <div class="accordion mb-4" id="accordionCB">
+                        <div class="accordion mb-4" id="accordionCBApprovedBy">
                             <div class="accordion-item bg-white border border-gray-200 rounded-lg mb-4">
                                 <h2 class="accordion-header mb-0" id="headingCB">
                                     <button
+                                        id="btnApprovedBy1"
                                         class="accordion-button collapsed relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
                                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                                         type="button" data-bs-toggle="collapse" data-bs-target="#collapseCB"
-                                        aria-expanded="false" aria-controls="collapseTwo">
+                                        aria-expanded="true" aria-controls="">
                                         <h1 class="text-md text-gray-800">
                                             Approved By
                                         </h1>
                                     </button>
                                 </h2>
-                                <div id="collapseCB" class="accordion-collapse collapse p-4" aria-labelledby="headingCB"
-                                    data-bs-parent="#accordionCB">
+                                <div id="collapseCB" class="p-4" aria-labelledby="headingCB"
+                                    data-te-collapse-item data-te-collapse-show data-bs-parent="#accordionCBApprovedBy">
                                     <div class="text-center text-xl mb-2">All Minibus</div>
-                                    <div class="grid grid-cols-5 gap-4 mb-2">
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
+                                    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
+                                        @for ($i = 0; $i < 10; $i++)
+                                            <div>
+                                                <input id="default-checkbox" type="checkbox" value=""
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <label for="default-checkbox"
+                                                    class="ml-2 text-sm font-medium text-gray-900">Default
+                                                    checkbox</label>
+                                            </div>
+                                        @endfor
                                     </div>
                                     <div class="text-center text-xl mb-2">All Bus</div>
-                                    <div class="grid grid-cols-5 gap-4 mb-2">
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
+                                    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
+                                        @for ($i = 0; $i < 5; $i++)
+                                            <div>
+                                                <input id="default-checkbox" type="checkbox" value=""
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <label for="default-checkbox"
+                                                    class="ml-2 text-sm font-medium text-gray-900">Default
+                                                    checkbox</label>
+                                            </div>
+                                        @endfor
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +219,8 @@
 
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="kode_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode Gambar</label>
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                Gambar</label>
                             <div class="w-4"></div>
                             <input type="text" id="kode_ti" name="nomor"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
@@ -287,7 +237,8 @@
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nama Gambar</label>
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nama
+                                Gambar</label>
                             <div class="w-4"></div>
                             <input type="text" id="nomor_laporan" name="nama_gambar"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"

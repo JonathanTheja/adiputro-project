@@ -18,35 +18,31 @@
             <label for="input-departemen" class="block my-2 text-gray-900">Departemen</label>
             <select id="input-departemen" multiple autocomplete="off" name="departments[]">
                 @foreach ($departments as $department)
-                    <option value="{{ $department->department_id }}" @if ($item_level->departments->contains($department))
-                        selected
-                    @endif>{{ $department->name }}</option>
+                    <option value="{{ $department->department_id }}" @if ($item_level->departments->contains($department)) selected @endif>
+                        {{ $department->name }}</option>
                 @endforeach
             </select>
             <label for="input-komponen" class="block my-2 text-gray-900">Komponen</label>
             <select id="input-komponen" multiple autocomplete="off" name="components[]">
                 @foreach ($item_components as $item_component)
-                    <option value="{{ $item_component->item_component_id }}" @if ($item_level->itemComponents->contains($item_component))
-                        selected
-                    @endif>{{ $item_component->item_number }} -
+                    <option value="{{ $item_component->item_component_id }}"
+                        @if ($item_level->itemComponents->contains($item_component)) selected @endif>{{ $item_component->item_number }} -
                         {{ $item_component->item_description }}</option>
                 @endforeach
             </select>
             <label for="input-item-kit" class="block my-2 text-gray-900">Item Kit</label>
             <select id="input-item-kit" multiple autocomplete="off" name="item_kits[]" onchange="updateProcess(false)">
                 @foreach ($item_kit as $ikit)
-                    <option value="{{ $ikit->item_kit_id }}" @if ($item_level->itemKits->contains($ikit))
-                        selected
-                    @endif>{{ $ikit->item_kit_number }} -
+                    <option value="{{ $ikit->item_kit_id }}" @if ($item_level->itemKits->contains($ikit)) selected @endif>
+                        {{ $ikit->item_kit_number }} -
                         {{ $ikit->item_kit_description }}</option>
                 @endforeach
             </select>
             <label for="input-bom" class="block my-2 text-gray-900">BOM ID</label>
             <select id="input-bom" multiple autocomplete="off" name="boms[]" onchange="updateProcess(false)">
                 @foreach ($bom as $b)
-                    <option value="{{ $b->bom_id }}" @if ($item_level->boms->contains($b))
-                        selected
-                    @endif>{{ $b->bom_number }} - {{ $b->bom_description }}</option>
+                    <option value="{{ $b->bom_id }}" @if ($item_level->boms->contains($b)) selected @endif>
+                        {{ $b->bom_number }} - {{ $b->bom_description }}</option>
                 @endforeach
             </select>
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
@@ -56,9 +52,8 @@
             <label for="input-process" class="block my-2 text-gray-900">Process Entry</label>
             <select id="input-process" multiple autocomplete="off" name="process[]" onchange="updateEntryTable()">
                 @foreach ($process_entry as $pe)
-                    <option value="{{ $pe->process_entry_id }}" @if ($item_level->processEntries->contains($pe))
-                        selected
-                    @endif>{{ $pe->work_description }}</option>
+                    <option value="{{ $pe->process_entry_id }}" @if ($item_level->processEntries->contains($pe)) selected @endif>
+                        {{ $pe->work_description }}</option>
                 @endforeach
             </select>
 
@@ -74,7 +69,9 @@
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update
                 Komponen</button>
-            <button onclick="getDataComponent()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5" type="button">Get component</button>
+            <button onclick="getDataComponent()"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5"
+                type="button">Get component</button>
 
         </form>
     </div>
@@ -82,9 +79,9 @@
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
     <script>
-
         //----------------DONE
         let boleh = false;
+
         function generateTom(id) {
             return new TomSelect(id, {
                 plugins: {
@@ -102,13 +99,13 @@
         }
 
 
-        function getDataComponent(){
+        function getDataComponent() {
             $.ajax({
                 url: `/master/data/getDataTemp`,
                 type: "POST",
                 cache: false,
                 success: function(response) {
-                  console.log(response);
+                    console.log(response);
                 }
             });
         }
@@ -125,7 +122,7 @@
                 data: {
                     "item_kits": item_kits,
                     "boms": boms,
-                    "session_status":session_status
+                    "session_status": session_status
                 },
                 success: function(response) {
                     $("#ol-components").html("");
@@ -142,9 +139,9 @@
         }
         //------------------------
 
-        function generateTable(pe_id,pe_text,table_id){
+        function generateTable(pe_id, pe_text, table_id) {
             $("#pe_container").append(
-                    `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
+                `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
                     <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
@@ -183,7 +180,7 @@
                         </div>
                     </div>
                 </div>`
-                );
+            );
         }
 
         //-----------------------DONE
@@ -195,9 +192,9 @@
                 let pe_id = pe.val();
                 let pe_text = pe.text();
 
-                let table_id = "pe_table_"+pe_id;
+                let table_id = "pe_table_" + pe_id;
                 //generate table
-                generateTable(pe_id,pe_text,table_id);
+                generateTable(pe_id, pe_text, table_id);
 
             } else {
                 //remove
@@ -209,7 +206,7 @@
         }
 
         //DONE
-        function placeComponentToTable(table_id,item){
+        function placeComponentToTable(table_id, item) {
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`
             <tr>
@@ -233,7 +230,7 @@
         `);
         }
 
-        function addComponent(table_id,item_number){
+        function addComponent(table_id, item_number) {
             $.ajax({
                 url: `/master/data/updateSpecComponent`,
                 type: "POST",
@@ -245,7 +242,7 @@
                 success: function(response) {
                     if (response.success) {
                         let item = response.data.item;
-                        placeComponentToTable(table_id,item);
+                        placeComponentToTable(table_id, item);
                     } else {
                         //failed
                         alert(response.message);
@@ -255,12 +252,12 @@
 
         }
 
-        function insertToTable(table_id,item_number){
-           //if param doesn't contain the item_number then get item_number from the input_in_(pe_id)
-           if(!item_number){
-            item_number = $("#input_in_" + table_id).val();
-           }
-           addComponent(table_id,item_number);
+        function insertToTable(table_id, item_number) {
+            //if param doesn't contain the item_number then get item_number from the input_in_(pe_id)
+            if (!item_number) {
+                item_number = $("#input_in_" + table_id).val();
+            }
+            addComponent(table_id, item_number);
         }
         //--------------------------------------------------
 
@@ -273,41 +270,39 @@
                 url: `/master/data/getComponents`,
                 type: "POST",
                 cache: false,
-                data:{
-                    "table_id":table_id
+                data: {
+                    "table_id": table_id
                 },
                 success: function(response) {
-                    if(!response.is_multiple){
+                    if (!response.is_multiple) {
                         //just refresh the current table
                         let items = response.items;
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
 
                         //foreach
-                        $.each(items, function(key,item) {
-                            placeComponentToTable(table_id,item);
+                        $.each(items, function(key, item) {
+                            placeComponentToTable(table_id, item);
                         });
 
-                    }
-                    else{
+                    } else {
                         //refresh multiple tables
                         let tables = response.tables;
                         let process_entries = response.process_entries;
                         //push tables
-                        $.each(process_entries, function(key,pe) {
-                            let table_id = 'pe_table_'+pe.process_entry_id;
-                            generateTable(pe.process_entry_id,pe.work_description,table_id);
+                        $.each(process_entries, function(key, pe) {
+                            let table_id = 'pe_table_' + pe.process_entry_id;
+                            generateTable(pe.process_entry_id, pe.work_description, table_id);
 
-                            $.each(tables[table_id], function(key,item) {
+                            $.each(tables[table_id], function(key, item) {
                                 let it = {
-                                    item_number:item.item_number,
-                                    item_description:item.item_description,
-                                    item_component_qty:item.item_component_qty
+                                    item_number: item.item_number,
+                                    item_description: item.item_description,
+                                    item_component_qty: item.item_component_qty
                                 };
-                                placeComponentToTable(table_id,it);
+                                placeComponentToTable(table_id, it);
                             });
                         });
-
                         //foreach every tables ?
 
                     }
@@ -315,8 +310,8 @@
             });
         }
 
-        function deleteComponentTable(table_id,item_number) {
-            console.log(table_id,item_number);
+        function deleteComponentTable(table_id, item_number) {
+            console.log(table_id, item_number);
             $.ajax({
                 url: `/master/data/deleteComponentTable`,
                 type: "POST",
@@ -337,8 +332,8 @@
         }
 
         setTimeout(() => {
-           refreshTable("all");
-           updateProcess(true);
+            refreshTable("all");
+            updateProcess(true);
         }, 1000);
 
         generateTom("#input-departemen")
@@ -346,7 +341,5 @@
         generateTom("#input-item-kit")
         generateTom("#input-bom")
         generateTom("#input-process")
-
-
     </script>
 @endsection
