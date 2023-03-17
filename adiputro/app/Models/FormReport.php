@@ -14,7 +14,7 @@ class FormReport extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['item_level_id','nomor_laporan','tanggal','pelapor_id','kategori_report_id','temuan','reply','tanggal_diselesaikan','penyelesai_id'];
+    protected $fillable = ['item_level_id','nomor_laporan','tanggal','pelapor_id','kategori_report_id','temuan','jenis','reply','tanggal_diselesaikan','penyelesai_id'];
 
     function pelapor(){
         return $this->belongsTo(User::class,"pelapor_id","user_id");

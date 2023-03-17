@@ -44,6 +44,7 @@ class DashboardController extends Controller
             "nomor_laporan" => $request->nomor_laporan,
             "tanggal" => now(),
             "pelapor_id" => Auth::user()->user_id,
+            "jenis" => $request->jenis,
             "kategori_report_id" => $request->kategori_report_id,
             "temuan" => $request->temuan,
         ]);

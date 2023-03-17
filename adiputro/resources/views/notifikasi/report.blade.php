@@ -18,6 +18,7 @@
                         <th class="text-left p-2">Pelapor</th>
                         <th class="text-left p-2">Departemen</th>
                         <th class="text-left p-2">Kategori</th>
+                        <th class="text-left p-2">Jenis</th>
                         <th class="text-left p-2">Temuan</th>
                         <th class="text-left p-2">Reply</th>
                         <th class="text-left p-2 w-32">Diselesaikan Tanggal</th>
@@ -32,6 +33,7 @@
                             <td class="p-2 py-4">{{ $form_report->pelapor->full_name }}</td>
                             <td class="p-2 py-4">{{ $form_report->pelapor->department->name }}</td>
                             <td class="p-2 py-4">{{ $form_report->kategori_report->name }}</td>
+                            <td class="p-2 py-4">{{ $form_report->jenis }}</td>
                             <td class="p-2 py-4">{{ $form_report->temuan }}</td>
 
                             @if (isset($form_report->tanggal_diselesaikan))

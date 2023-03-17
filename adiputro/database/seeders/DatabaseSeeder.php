@@ -35,7 +35,8 @@ class DatabaseSeeder extends Seeder
             ProcessEntrySeeder::class,
             BomItemComponentSeeder::class,
             ItemKitItemComponentSeeder::class,
-            KategoriReportSeeder::class
+            KategoriReportSeeder::class,
+            UserDefinedSeeder::class,
         ]);
     }
 }

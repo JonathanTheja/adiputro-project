@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('pelapor_id');
             $table->integer('kategori_report_id');
             $table->string('temuan');
+            $table->string('jenis');
             $table->string('reply')->nullable();
             $table->dateTime('tanggal_diselesaikan')->nullable();
             $table->integer('penyelesai_id')->nullable();
