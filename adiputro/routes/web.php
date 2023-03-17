@@ -38,6 +38,13 @@ Route::prefix('master')->group(function () {
 
     Route::prefix('input')->group(function () {
         Route::get('/', [MasterInputController::class,'masterInput']);
+
+        Route::prefix('ti')->group(function () {
+            Route::post('/getLevel', [MasterInputController::class,'getLevelTI']);
+            Route::post('/getComponent', [MasterInputController::class,'getComponentTI']);
+            Route::post('/getCodeComponent', [MasterInputController::class,'getCodeComponentTI']);
+        });
+
     });
 
     Route::prefix('departemen')->group(function () {

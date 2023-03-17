@@ -23,11 +23,11 @@ class RoleSeeder extends Seeder
             ],
             [
                 // 'role_id' => 2,
-                'name'=>'Manajer'
+                'name'=>'Manager'
             ],
             [
                 // 'role_id' => 3,
-                'name'=>'Manajer Engineering'
+                'name'=>'Manager Engineering'
             ],
             [
                 // 'role_id' => 4,
