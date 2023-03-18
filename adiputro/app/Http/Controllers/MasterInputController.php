@@ -95,43 +95,43 @@ class MasterInputController extends Controller
         $photos = $request->photos; //bisa banyak
 
         //cek apakah kode_ti sudah ada, kalau sudah ada, dianggap sebagai revisi
-        $input_ti = InputTI::where("kode_ti",$kode_ti)->first();
-        if($input_ti){
-            if($input_ti->revisi == null){
-                $input_ti->revisi = 1;
-            }
-            else{
-                $input_ti->revisi++;
-            }
-            $input_ti->kode_ti = $kode_ti;
-            $input_ti->nama_ti = $nama_ti;
-            $input_ti->model = $model;
-            $input_ti->pembuat_id = $pembuat->user_id;
-            $input_ti->user_defined_id = $user_defined_ti;
-            $input_ti->description = $description;
-            $input_ti->level_process_input_ti()->detach();
-            $input_ti->item_level_ti()->detach();
-            $input_ti->item_component_ti()->detach();
-            $input_ti->checked_by_ti()->detach();
-            $input_ti->approved_by_ti()->detach();
-            $input_ti->save();
+        $input_ti_lama = InputTI::where("kode_ti",$kode_ti)->where("status",1)->first();
+        $revisi = 0;
+        if($input_ti_lama){
+            //ambil approvedby department id sebelumnya
+            $department_ids = array_map(function($department) {
+                return $department["department_id"];
+            }, $input_ti_lama->approved_by_ti->toArray());
+
+            $revisi = $input_ti_lama->revisi + 1;
+            $input_ti_lama->status = 0;
+
+            //gabung approvedby department id dengan yang baru ditambah
+            $cb_ti = array_merge($cb_ti, $department_ids);
+            // $input_ti->level_process_input_ti()->detach();
+            // $input_ti->item_level_ti()->detach();
+            // $input_ti->item_component_ti()->detach();
+            // $input_ti->checked_by_ti()->detach();
+            // $input_ti->approved_by_ti()->detach();
+            $input_ti_lama->save();
         }
-        else{
-            $input_ti = InputTI::create([
-                "kode_ti" => $kode_ti,
-                "nomor_laporan" => $nomor_laporan_ti,
-                "nama_ti" => $nama_ti,
-                "model" => $model,
-                "pembuat_id" => $pembuat->user_id,
-                "user_defined_id" => $user_defined_ti,
-                "description" => $description,
-            ]);
-        }
+        $input_ti = InputTI::create([
+            "revisi" => $revisi,
+            "kode_ti" => $kode_ti,
+            "nomor_laporan" => $nomor_laporan_ti,
+            "nama_ti" => $nama_ti,
+            "model" => $model,
+            "pembuat_id" => $pembuat->user_id,
+            "user_defined_id" => $user_defined_ti,
+            "description" => $description,
+            "status" => 1,
+        ]);
 
         //level process only
         foreach ($level_proses_ti as $key => $level_proses) {
             $item_level = ItemLevel::find($level_proses);
-            $input_ti->level_process_input_ti()->attach($item_level, ["kode_ti" => $kode_ti]);
+            // $input_ti->level_process_input_ti()->attach($item_level, ["kode_ti" => $kode_ti]);
+            $input_ti->level_process_input_ti()->attach($item_level);
         }
 
         //item component id with level process
@@ -140,19 +140,22 @@ class MasterInputController extends Controller
             foreach ($item_component_process_entry->item_level_process_entry as $key => $item) {
                 $item_level_id = $item->item_level_id;
                 $item_level = ItemLevel::find($item_level_id);
-                $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen, "kode_ti" => $kode_ti]);
+                // $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen, "kode_ti" => $kode_ti]);
+                $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen]);
             }
         }
 
         foreach ($diperiksa_oleh as $key => $user_id) {
             $user = User::find($user_id);
-            $input_ti->checked_by_ti()->attach($user, ["kode_ti" => $kode_ti]);
+            // $input_ti->checked_by_ti()->attach($user, ["kode_ti" => $kode_ti]);
+            $input_ti->checked_by_ti()->attach($user);
         }
 
         //cb_ti diambil dari cb_minibus dan cb_bus isinya adalah department_id
         foreach ($cb_ti as $key => $department_id) {
             $department = Department::find($department_id);
-            $input_ti->approved_by_ti()->attach($department, ["kode_ti" => $kode_ti]);
+            // $input_ti->approved_by_ti()->attach($department, ["kode_ti" => $kode_ti]);
+            $input_ti->approved_by_ti()->attach($department);
         }
 
         // $kode_urutan = preg_replace('/\D/', '', $kode_ti);
@@ -168,5 +171,36 @@ class MasterInputController extends Controller
 
         Alert::success('Sukses!', 'Berhasil Tambah TI!');
         return redirect("/master/input");
+    }
+
+    function loadInputTI(Request $request)
+    {
+        $input_ti = InputTI::where("kode_ti",$request->kode_ti)->where("status",1)->first();
+
+        if(!$input_ti){
+            return response()->json([
+                "success" => false,
+            ]);
+        }
+
+        $level_process_input_ti = $input_ti->level_process_input_ti;
+        $item_level_ti = $input_ti->item_level_ti;
+        $item_component_ti = $input_ti->item_component_ti;
+        $checked_by_ti = $input_ti->checked_by_ti;
+        $approved_by_ti = $input_ti->approved_by_ti;
+        $user_defined_ti = $input_ti->user_defined;
+        $description = $input_ti->description;
+
+        return response()->json([
+            "success" => true,
+            "input_ti" => $input_ti,
+            // "level_process_input_ti" => $level_process_input_ti,
+            // "item_level_ti" => $item_level_ti,
+            // "item_component_ti" => $item_component_ti,
+            // "checked_by_ti" => $checked_by_ti,
+            // "approved_by_ti" => $approved_by_ti,
+            // "user_defined_ti" => $user_defined_ti,
+            // "description" => $description,
+        ]);
     }
 }

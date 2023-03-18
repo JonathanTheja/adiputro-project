@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('input_ti', function (Blueprint $table) {
-            $table->string('kode_ti')->primary();
+            $table->id("input_ti_id");
+            $table->string('kode_ti');
             $table->integer('revisi')->nullable();
             $table->string('nomor_laporan');
             $table->string('nama_ti');
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->integer('user_defined_id');
             $table->string('description');
             // $table->string('nama_gambar_ti');
+            $table->integer('status');
             $table->timestamps();
             $table->softDeletes();
         });

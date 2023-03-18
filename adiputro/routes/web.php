@@ -44,6 +44,7 @@ Route::prefix('master')->group(function () {
             Route::post('/getComponent', [MasterInputController::class,'getComponentTI']);
             Route::post('/getCodeComponent', [MasterInputController::class,'getCodeComponentTI']);
             Route::post('/add', [MasterInputController::class,'addTI']);
+            Route::post('/loadInputTI', [MasterInputController::class,'loadInputTI']);
         });
 
     });

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('item_component_code_ti', function (Blueprint $table) {
             $table->id('item_component_code_ti_id');
-            $table->string('kode_ti');
+            $table->integer('input_ti_id');
             $table->integer('item_level_id');
             $table->integer('item_component_id');
             $table->timestamps();

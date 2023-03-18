@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('approved_by_ti', function (Blueprint $table) {
             $table->id('approved_by_ti_id');
-            $table->string('kode_ti');
+            $table->integer('input_ti_id');
             $table->integer('department_id');
             $table->timestamps();
             $table->softDeletes();

@@ -27,7 +27,7 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti" name="kode_ti"
+                            <input type="text" id="kode_ti" name="kode_ti" oninput="loadKodeTI(this.value)"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode TI" required>
                         </div>
@@ -51,7 +51,7 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nama
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nomor_laporan" name="nama_ti"
+                            <input type="text" id="nama_ti" name="nama_ti"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nama TI" required>
                         </div>
@@ -151,14 +151,17 @@
                                         </h1>
                                     </button>
                                 </h2>
-                                <div id="collapseCB1" class="accordion-collapse collapse p-4" aria-labelledby="headingCB"
-                                    data-te-collapse-item data-te-collapse-show data-bs-parent="#accordionCBApprovedBy">
+                                <div id="collapseCB1" class="p-4" aria-labelledby="headingCB" data-te-collapse-item
+                                    data-te-collapse-show data-bs-parent="#accordionCBApprovedBy">
+                                    {{-- @if ($pembuat->department->access_database == 'SPK Mini Bus') --}}
                                     <div class="text-center text-xl mb-2">All Minibus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_minibus as $department)
                                             {{-- department minibus --}}
                                             <div>
-                                                <input id="default-checkbox" type="checkbox" name="cb_minibus_ti[]"
+                                                <input id="default-checkbox"
+                                                    @if ($pembuat->department->access_database == 'SPK Mini Bus') {{ 'checked' }} @endif
+                                                    type="checkbox" name="cb_minibus_ti[]"
                                                     value="{{ $department->department_id }}"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
                                                 <label for="default-checkbox"
@@ -166,12 +169,15 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    {{-- @else --}}
                                     <div class="text-center text-xl mb-2">All Bus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_bus as $department)
                                             {{-- department bus --}}
                                             <div>
-                                                <input id="default-checkbox" type="checkbox" name="cb_bus_ti[]"
+                                                <input id="default-checkbox"
+                                                    @if ($pembuat->department->access_database == 'SPK Bus') {{ 'checked' }} @endif
+                                                    type="checkbox" name="cb_bus_ti[]"
                                                     value="{{ $department->department_id }}"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
                                                 <label for="default-checkbox"
@@ -179,6 +185,9 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    {{-- @endif --}}
+
+
                                 </div>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -191,7 +200,8 @@
                                     autocomplete="on" name="user_defined_ti" required>
                                     <option disabled selected value>Pilih User Defined</option>
                                     @foreach ($user_defined as $item)
-                                        <option value="{{ $item->user_defined_id }}">{{ $item->name }} - {{ $item->desc }}</option>
+                                        <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
+                                            {{ $item->desc }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -199,7 +209,7 @@
                                 <label for="description"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="description" name="description"
+                                <input type="text" id="description_ti" name="description"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                     placeholder="Description" required>
                             </div>
@@ -214,7 +224,8 @@
                             </div>
                             <button type="submit" class="hidden" id="submit_ti"></button>
                             <div onclick="submitTI()"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">Input
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                Input
                                 TI</div>
                     </form>
                 </div>
@@ -515,7 +526,8 @@
         }
         refreshInput()
 
-        function getLevelProsesTI(nomor_laporan_ti) {
+        //                                                  param    ini         dan     ini hanya untuk edit
+        function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti) {
             //setiap kali nomor laporan diganti, reset
             resetDataTI();
             $.ajax({
@@ -537,12 +549,21 @@
                                 text: `Level ${key} ${level.name}`
                             });
                         });
+                        //cek apakah edit
+                        if (level_process_input_ti != undefined) {
+                            level_process_input_ti.forEach(level => {
+                                level_proses_ti.addItem(level.item_level_id);
+                            });
+                            //show kode komponen dengan param item_component_ti
+                            getCodeComponentTI(item_component_ti);
+                        }
                     }
                 }
             });
         }
 
-        function getCodeComponentTI() {
+        //                                  param ini hanya untuk edit
+        function getCodeComponentTI(item_component_ti) {
             if (level_proses_ti.items.length == 0) {
                 kode_komponen_ti.clear();
             } else {
@@ -566,6 +587,13 @@
                                     text: item.item_number
                                 });
                             });
+                            //cek apakah edit kalau iya show kode komponen
+                            if (item_component_ti != undefined) {
+                                // alert(item_component_ti.length);
+                                item_component_ti.forEach(item => {
+                                    kode_komponen_ti.addItem(item.item_component_id);
+                                });
+                            }
                         }
                     }
                 });
@@ -606,12 +634,63 @@
             }
         }
 
-        function submitTI(){
+        function loadKodeTI(kode_ti) {
+            // nomor_laporan_ti.addItem("LAP/0004/BW/AP/III/2023");
+            $.ajax({
+                url: `/master/input/ti/loadInputTI`,
+                type: "POST",
+                cache: false,
+                data: {
+                    kode_ti: kode_ti
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.input_ti);
+                        //show nomor_laporan_ti
+                        nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
+                        //show nama_ti
+                        $("#nama_ti").val(response.input_ti.nama_ti);
+                        //show level_proses dulu baru show kode komponen
+                        getLevelProsesTI(response.input_ti.nomor_laporan, response.input_ti
+                            .level_process_input_ti, response.input_ti.item_component_ti);
+                        //show diperiksa_oleh / checkby
+                        response.input_ti.checked_by_ti.forEach(user => {
+                            // console.log(diperiksa_oleh);
+                            diperiksa_oleh.addItem(user.user_id);
+                        });
+                        //show user_defined
+                        user_defined_ti.addItem(response.input_ti.user_defined.user_defined_id);
+                        $("#description_ti").val(response.input_ti.description);
+
+                        //show all of approvedby
+                        //refresh cb_ti
+                        $('input[type=checkbox].cb_ti').each(function() {
+                            $(this).prop('checked', false);
+                            $(this).prop('disabled', false);
+                        });
+                        $('input[type=checkbox].cb_ti').each(function() {
+                            var cb_ti = $(this);
+                            response.input_ti.approved_by_ti.forEach(department => {
+                                if (cb_ti.val() == department.department_id) {
+                                    // alert("true");
+                                    cb_ti.prop('checked', true);
+                                    cb_ti.prop('disabled', true);
+                                } else if (!cb_ti.prop('disabled')) {
+                                    cb_ti.prop('checked', false);
+                                    cb_ti.prop('disabled', false);
+                                }
+                            })
+                        });
+                    }
+                }
+            });
+        }
+
+        function submitTI() {
             let cb_ti = $('input[type=checkbox].cb_ti:checked');
-            if(cb_ti.length == 0){
+            if (cb_ti.length == 0) {
                 alert("Pilih setidaknya approved by 1 departemen ");
-            }
-            else{
+            } else {
                 $("#submit_ti").click();
             }
         }

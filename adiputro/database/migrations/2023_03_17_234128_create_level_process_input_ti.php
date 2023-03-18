@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('level_process_input_ti', function (Blueprint $table) {
             $table->id('level_process_input_ti_id');
-            $table->string('kode_ti');
+            $table->integer('input_ti_id');
             $table->integer('item_level_id');
             $table->timestamps();
             $table->softDeletes();

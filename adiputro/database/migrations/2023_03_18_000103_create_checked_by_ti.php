@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('checked_by_ti', function (Blueprint $table) {
             //khusus manager engineering
             $table->id('checked_by_ti_id');
-            $table->string('kode_ti');
+            $table->integer('input_ti_id');
             $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
