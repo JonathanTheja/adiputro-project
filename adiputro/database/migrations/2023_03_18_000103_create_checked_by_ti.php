@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('level_process_input_ti', function (Blueprint $table) {
-            $table->id('level_process_input_ti_id');
+        Schema::create('checked_by_ti', function (Blueprint $table) {
+            //khusus manager engineering
+            $table->id('checked_by_ti_id');
             $table->string('kode_ti');
-            $table->integer('item_level_id');
+            $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('level_process_input_ti');
+        Schema::dropIfExists('checked_by_ti');
     }
 };

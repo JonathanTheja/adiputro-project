@@ -15,4 +15,9 @@ class ItemComponentProcessEntry extends Model
     public $timestamps = true;
 
     protected $fillable = ['item_component_id','item_level_process_entry_id','department_id','item_component_qty'];
+
+    function item_level_process_entry()
+    {
+        return $this->hasMany(ItemLevelProcessEntry::class,'item_level_process_entry_id','item_level_process_entry_id');
+    }
 }
