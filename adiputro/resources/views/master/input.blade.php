@@ -11,7 +11,7 @@
                     type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <h1 class="text-xl text-gray-800">
-                        Tambah Technical Instruction
+                        Tambah Technical Instruction [Input 2]
                     </h1>
                 </button>
             </h2>
@@ -241,7 +241,7 @@
                     type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                     aria-controls="collapseTwo">
                     <h1 class="text-xl text-gray-800">
-                        Tambah Gambar Teknik
+                        Tambah Gambar Teknik [Input 3]
                     </h1>
                 </button>
             </h2>
@@ -700,8 +700,15 @@
             level_proses_ti.clearOptions();
             kode_komponen_ti.clear();
             kode_komponen_ti.clearOptions();
+            diperiksa_oleh.clear();
+            $('input[type=checkbox].cb_ti').each(function() {
+                $(this).prop('checked', false);
+                $(this).prop('disabled', false);
+            });
+            user_defined_ti.clear();
             getCodeComponentTI();
             getComponentTI();
+            $("#description_ti").val("");
             $("#komponen_ti").html("");
         }
     </script>
