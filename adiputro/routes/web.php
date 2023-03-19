@@ -45,6 +45,10 @@ Route::prefix('master')->group(function () {
             Route::post('/getCodeComponent', [MasterInputController::class,'getCodeComponentTI']);
             Route::post('/add', [MasterInputController::class,'addTI']);
             Route::post('/loadInputTI', [MasterInputController::class,'loadInputTI']);
+
+            Route::prefix('detail')->group(function () {
+                Route::get('/{input_ti_id}', [MasterInputController::class,'getDetailTI']);
+            });
         });
 
     });
@@ -78,6 +82,11 @@ Route::prefix('notifikasi')->group(function () {
         Route::get('/', [MasterFormReportController::class,'formReport']);
         Route::post('/add', [MasterFormReportController::class,'addReport']);
         Route::post('/update', [MasterFormReportController::class,'updateReport']);
+
+        Route::prefix('approval')->group(function () {
+            Route::get('/', [MasterFormReportController::class,'reportApproval']);
+            Route::post('/doApprove', [MasterFormReportController::class,'doApprove']);
+        });
     });
 });
 

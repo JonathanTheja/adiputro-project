@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\UserDefined;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -164,7 +165,7 @@ class MasterInputController extends Controller
             foreach($request->file("photos") as $key => $photo){
                 #code ..
                 $namafile = ($key+1).".".$photo->getClientOriginalExtension();
-                $namafolder = "images/Input/TI/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp));
+                $namafolder = "images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp));
                 $photo->storeAs($namafolder,$namafile,'public');
             }
         }
@@ -202,5 +203,22 @@ class MasterInputController extends Controller
             // "user_defined_ti" => $user_defined_ti,
             // "description" => $description,
         ]);
+    }
+
+    function getDetailTI(Request $request)
+    {
+        $form_report_ti = FormReport::where("jenis","TI")->get();
+        $form_report_gambar = FormReport::where("jenis","Gambar Teknik")->get();
+        $pembuat = Auth::user();
+        $diperiksa_oleh = Role::where("name","Manager Engineering")->first()->users;
+        $approved_by_bus = Department::where("access_database","SPK Mini Bus")->get();
+        $approved_by_minibus = Department::where("access_database","SPK Bus")->get();
+        $user_defined = UserDefined::all();
+
+        $input_ti = InputTI::find($request->input_ti_id);
+        $kode_ti = $input_ti->kode_ti;
+
+        $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        return view('master.input.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti"));
     }
 }

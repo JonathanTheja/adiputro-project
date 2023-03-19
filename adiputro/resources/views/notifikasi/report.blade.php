@@ -9,7 +9,6 @@
             </h1>
         </div>
         <div class="py-4 flex justify-start overflow-x-auto">
-
             <table class="w-full text-md bg-white shadow-md rounded mb-4">
                 <tbody>
                     <tr class="border-b">

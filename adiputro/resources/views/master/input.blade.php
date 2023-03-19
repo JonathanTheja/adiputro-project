@@ -5,7 +5,7 @@
     <div class="accordion" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">
-                <button
+                <button id="accordion_input_ti"
                     class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                     type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="flex lg:flex-row flex-col mb-4">
-                            <table class="w-full text-sm text-left text-gray-500">
+                            <table class="w-full text-sm text-left text-gray-500 shadow-md sm:rounded-lg">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
@@ -207,26 +207,31 @@
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Description</label>
                                 <div class="w-4"></div>
                                 <input type="text" id="description_ti" name="description"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                     placeholder="Description" required>
                             </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
-                                    TI</label>
-                                <div class="w-4"></div>
-                                <input
-                                    class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
-                                    id="multiple_files" type="file" multiple name="photos[]" required>
+                            {{-- saat lihat detail upload photo dimatikan --}}
+                            {{-- saat lihat detail button submit dimatikan --}}
+                            <div id="photos_ti">
+                                <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                    <label for="description"
+                                        class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
+                                        TI</label>
+                                    <div class="w-4"></div>
+                                    <input
+                                        class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
+                                        id="multiple_files" type="file" multiple name="photos[]" required>
+                                </div>
+                                <button type="submit" class="hidden" id="submit_ti"></button>
+                                <div onclick="submitTI()"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                    Input TI
+                                </div>
                             </div>
-                            <button type="submit" class="hidden" id="submit_ti"></button>
-                            <div onclick="submitTI()"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                                Input
-                                TI</div>
+                            @yield('photos_ti')
                     </form>
                 </div>
             </div>
@@ -711,5 +716,10 @@
             $("#description_ti").val("");
             $("#komponen_ti").html("");
         }
+
+        //accordion agak bug
+        setTimeout(() => {
+            document.getElementById("btnApprovedBy1").click();
+        }, 500);
     </script>
 @endsection

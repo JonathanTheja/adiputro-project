@@ -46,4 +46,14 @@ class InputTI extends Model
     {
         return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
     }
+
+    function pembuat()
+    {
+        return $this->belongsTo(User::class, "pembuat_id", "user_id");
+    }
+
+    function form_report()
+    {
+        return $this->belongsTo(FormReport::class, "nomor_laporan", "nomor_laporan");
+    }
 }

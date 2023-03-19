@@ -67,6 +67,13 @@
             <span class="text-[15px] ml-4 text-gray-200">Notifikasi Report</span>
         </div>
     </a>
+    <a href="{{ url('/notifikasi/report/approval') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            id="sidemenuNotifikasiReportApproval">
+            <i class="bi bi-file-earmark-arrow-up"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Report Approval</span>
+        </div>
+    </a>
     {{-- <div class="p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
         onclick="dropdown();">
         <i class="bi bi-chat-left-text-fill"></i>
@@ -137,7 +144,9 @@
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
     } else if (master.includes("master/input")) {
         document.getElementById("sidemenuInput").classList.add("bg-blue-600");
-    } else if (master.includes("notifikasi/report")) {
+    } else if (master.includes("notifikasi/report") && !master.includes("notifikasi/report/approval")) {
         document.getElementById("sidemenuNotifikasiReport").classList.add("bg-blue-600");
+    } else if (master.includes("notifikasi/report/approval")) {
+        document.getElementById("sidemenuNotifikasiReportApproval").classList.add("bg-blue-600");
     }
 </script>

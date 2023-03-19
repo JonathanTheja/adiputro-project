@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\FormReport;
+use App\Models\InputTI;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,5 +48,11 @@ class MasterFormReportController extends Controller
         $form_report->save();
         Alert::success('Sukses!', 'Berhasil Menyelesaikan Report!');
         return back();
+    }
+
+    function reportApproval(Request $request)
+    {
+        $input_ti = InputTI::orderBy("kode_ti", "asc")->orderBy("revisi", "asc")->get();
+        return view("notifikasi.report.approval", compact("input_ti"));
     }
 }
