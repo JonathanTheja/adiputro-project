@@ -189,12 +189,25 @@ class MasterDataController extends Controller
         //get pictures
         $allPhotos = Storage::disk('public')->files("images/$item_level_id");
 
+        //get all process entries
+        $item_level_process_entries = $item_level->processEntries;
+        $tables = [];
+        foreach ($item_level_process_entries as $item_level_process_entry) {
+            $table_id = 'pe_table_'.$item_level_process_entry->process_entry_id;
+            //get all item
+            $items = ItemLevelProcessEntry::find($item_level_process_entry->pivot->item_level_process_entry_id)->itemComponents;
+
+            $tables[$table_id] = $items;
+        }
+
         return response()->json([
             'success' => true,
             'data'    => [
                 "item_level"=>$item_level,
                 "item_components"=>$item_components,
-                "all_photos"=>$allPhotos
+                "all_photos"=>$allPhotos,
+                "process_entries"=>$item_level_process_entries,
+                "tables"=>$tables
             ],
         ]);
     }

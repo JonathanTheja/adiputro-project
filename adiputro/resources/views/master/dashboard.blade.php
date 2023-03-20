@@ -136,9 +136,9 @@
         <div class="w-9/12 bg-slate-200 rounded-lg p-5">
             <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
             <div id="dashboard_container" class="hidden">
+
                 <h1 class="text-lg" id="component_name">Name</h1>
-                <h1>Gambar Komponen</h1>
-                <div id="photosLoader" class="mb-4"></div>
+
                 <div id="table_container">
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left text-gray-500">
@@ -161,6 +161,52 @@
                         </table>
                     </div>
                 </div>
+
+
+                <h1 class="my-4">Gambar Komponen</h1>
+                <div id="photosLoader" class="mb-4"></div>
+
+
+                <div id="pe_container">
+
+                    {{-- <div class="pe_table">
+                        <h1>Persiapan pembongkaran Unit sesuai dengan Jadwal</h1>
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Kode
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Nama Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Jumlah
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Satuan
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Keterangan
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Gambar
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableCol">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> --}}
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -240,6 +286,9 @@
                         );
                     })
 
+                    //load all process entries
+                    loadProcessEntries(response.data.process_entries,response.data.tables);
+
                     document.getElementById("loadingDashboard").classList.add("hidden");
                     document.getElementById("dashboard_container").classList.remove("hidden");
                     document.getElementById("accordionReport").classList.remove("pointer-events-none");
@@ -297,6 +346,95 @@
             e.classList.add("bg-gray-200");
         }
 
+        function generateTable(pe_id, pe_text, table_id) {
+            $("#pe_container").append(`
+                    <div id="pe_${pe_id}">
+                        <h1>${pe_text}</h1>
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500" id="${table_id}">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Kode
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Nama Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Jumlah
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Satuan
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Keterangan
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Gambar
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableCol">
+
+                                </tbody>
+                            </table>
+                        </div>
+                </div>`);
+        }
+
+            //DONE
+        function placeComponentToTable(table_id, item) {
+            var rowCount = $(`#${table_id} tbody tr`).length;
+            $(`#${table_id} tbody`).append(`<tr class="bg-white border-b">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    ` + (rowCount + 1) + `
+                </th>
+                <td class="px-6 py-4">
+                    ` + item.item_number + `
+                </td>
+                <td class="px-6 py-4">
+                    ` + item.item_description + `
+                </td>
+                <td class="px-6 py-4">
+                    ` + item.item_component_qty + `
+                </td>
+                <td class="px-6 py-4">
+                    ` + item.item_uofm + `
+                </td>
+                <td class="px-6 py-4">
+                    -
+                </td>
+                <td class="px-6 py-4">
+                    <a href='https://google.com'>detail</a>
+                </td>
+            </tr>`);
+        }
+
+        function loadProcessEntries(process_entries,tables) {
+            $.each(process_entries, function(key, pe) {
+                let table_id = 'pe_table_' + pe.process_entry_id;
+                generateTable(pe.process_entry_id, pe.work_description, table_id);
+
+                console.log(tables[table_id]);
+
+                $.each(tables[table_id], function(key, item) {
+                    let it = {
+                        item_number: item.item_number,
+                        item_description: item.item_description,
+                        item_component_qty: item.pivot.item_component_qty,
+                        item_uofm:item.item_uofm
+                    };
+                    placeComponentToTable(table_id, it);
+                });
+        });
+    }
+
+
+
+
         function selectDashboard2(id) {
             let selectedDashboard = document.getElementById(`sideNav${id}`);
             selectDashboard(document.getElementById(`sidemenuDashboard${id}`));
@@ -324,6 +462,9 @@
                 selectDashboard2(getId);
             }
         }
+
+
+
         selectedDashboard();
     </script>
 @endsection

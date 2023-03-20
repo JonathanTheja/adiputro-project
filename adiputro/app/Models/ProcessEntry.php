@@ -15,6 +15,7 @@ class ProcessEntry extends Model
     public $timestamps = true;
 
     protected $fillable = ['spk_type','process_name','process_number','stall_number','work_description','pic'];
-    
+
+
 
 }
