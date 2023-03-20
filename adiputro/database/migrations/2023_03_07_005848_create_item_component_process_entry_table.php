@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('item_level_process_entry_id');
             $table->bigInteger('department_id')->nullable();
             $table->integer('item_component_qty');
+            $table->text('info')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

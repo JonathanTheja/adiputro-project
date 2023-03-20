@@ -8,6 +8,7 @@ use App\Models\DepartmentItemLevel;
 use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
+use App\Models\ItemComponentProcessEntry;
 use App\Models\ItemKit;
 use App\Models\ItemLevelProcessEntry;
 use App\Models\ProcessEntry;
@@ -137,6 +138,7 @@ class MasterDataController extends Controller
         $process_entries = Session::get("sess.table");
         $item_level->processEntries()->detach();
 
+
         foreach ($process_entries as $pe=>$item_components) {
             $process_entry_id = substr($pe, strpos($pe,'pe_table_')+strlen('pe_table_'));
 
@@ -145,16 +147,21 @@ class MasterDataController extends Controller
 
             $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
 
+
             foreach($item_components as $item_component=>$ic){
                 $icomp = ItemComponent::find($item_component);
                 $icomp->ItemLevelProcessEntries()->detach();
             }
 
-
             //loop through every item components inside pe
             foreach($item_components as $item_component=>$ic){
                 //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
+                // ItemComponentProcessEntry::create([
+                //     'item_component_id'=>$icomp->item_component_id,
+                //     'item_level_process_entry_id'=>$item_level_process_entry->item_level_process_entry_id,
+                //     'item_component_qty'=>$ic["item_component_qty"]
+                // ]);
                 $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry,[
                     'item_component_qty'=>$ic["item_component_qty"]
                 ]);
@@ -339,6 +346,23 @@ class MasterDataController extends Controller
         $table_id = $request->table_id;
 
         return $this->callUpdateSpecComponent($item_number,$table_id);
+    }
+
+    function matchDataComponent(Request $request){
+        $item_component_id = $request->item_component_id;
+        $tables = Session::get("sess.table");
+        $total_qty = 0;
+        foreach($tables as $table){
+            if($table[$item_component_id]!=null){
+                $total_qty += $table[$item_component_id]["item_component_qty"];
+            }
+        }
+
+        $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
+        if($total_qty >= $item_component_id){
+            //delete
+            
+        }
     }
 
     function deleteComponentTable(Request $request){

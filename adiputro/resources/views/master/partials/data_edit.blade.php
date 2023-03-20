@@ -252,6 +252,26 @@
 
         }
 
+        function updateInputTable($table_id,$item_number){
+            $.ajax({
+                url: `/master/data/updateInputTable`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_number": item_number,
+                    "table_id": table_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let item = response.data.item;
+                    } else {
+                        //failed
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+
         function insertToTable(table_id, item_number) {
             //if param doesn't contain the item_number then get item_number from the input_in_(pe_id)
             if (!item_number) {
