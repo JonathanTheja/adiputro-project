@@ -51,6 +51,12 @@ Route::prefix('master')->group(function () {
             });
         });
 
+        Route::prefix('gt')->group(function () {
+            Route::post('/add', [MasterInputController::class,'addGT']);
+            Route::post('/getGTByKodeTI', [MasterInputController::class,'getGTByKodeTI']);
+            Route::post('/getComponent', [MasterInputController::class,'getComponentGT']);
+        });
+
     });
 
     Route::prefix('departemen')->group(function () {

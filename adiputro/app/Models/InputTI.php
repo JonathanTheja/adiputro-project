@@ -24,12 +24,12 @@ class InputTI extends Model
 
     function item_level_ti()
     {
-        return $this->belongsToMany(ItemLevel::class,"item_component_code_ti",'input_ti_id','item_level_id')->withPivot('item_component_id','created_at','updated_at','deleted_at');
+        return $this->belongsToMany(ItemLevel::class,"item_component_code_ti",'input_ti_id','item_level_id')->withPivot('item_component_code_ti_id','item_component_id','created_at','updated_at','deleted_at');
     }
 
     function item_component_ti()
     {
-        return $this->belongsToMany(ItemComponent::class,"item_component_code_ti",'input_ti_id','item_component_id')->withPivot('item_level_id','created_at','updated_at','deleted_at');
+        return $this->belongsToMany(ItemComponent::class,"item_component_code_ti",'input_ti_id','item_component_id')->withPivot('item_component_code_ti_id','item_level_id','created_at','updated_at','deleted_at');
     }
 
     function checked_by_ti()

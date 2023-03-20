@@ -37,6 +37,8 @@
         document.getElementById("kode_ti").value = "{{ $kode_ti }}";
         setTimeout(() => {
             document.getElementById("accordion_input_ti").click();
+        }, 500);
+        setTimeout(() => {
             loadKodeTI("{{ $kode_ti }}");
         }, 1000);
 

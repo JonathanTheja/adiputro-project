@@ -16,8 +16,8 @@
             </h2>
             <div id="collapseOne" data-te-collapse-item data-te-collapse-show class="accordion-collapse collapse"
                 aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body py-2">
-                    <div class="py-4 flex justify-start overflow-x-auto">
+                <div class="accordion-body py-2 overflow-x-auto">
+                    <div class="py-4">
                         <table class="w-full text-md bg-white shadow-md rounded mb-2">
                             <tbody>
                                 <tr class="border-b">
@@ -40,7 +40,9 @@
                                         <button class="hidden" id="input{{ $input->input_ti_id }}"></button>
                                     </form>
                                     <tr class="border-b hover:bg-orange-100 bg-gray-100 text-md">
-                                        <td class="p-2 py-4"><a class="hover:bg-blue-200" href="/master/input/ti/detail/{{ $input->input_ti_id }}">{{ $input->kode_ti }}</a></td>
+                                        <td class="p-2 py-4"><a class="hover:bg-blue-200"
+                                                href="/master/input/ti/detail/{{ $input->input_ti_id }}">{{ $input->kode_ti }}</a>
+                                        </td>
                                         @if ($input->revisi == 0)
                                             <td class="p-2 py-4 text-center">Pertama dibuat</td>
                                         @else
@@ -58,9 +60,11 @@
                                         @if ($input->status == 0)
                                             <td class="p-2 py-4 text-center">Revisi</td>
                                         @else
-                                            <td onclick="submitApprove()"
-                                                class="p-2 text-center text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg rounded-lg cursor-pointer">
-                                                Approve
+                                            <td class="border-collapse">
+                                                <a href="/master/input/ti/detail/{{ $input->input_ti_id }}">
+                                                    <button
+                                                        class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium w-full py-7 text-center">Approve
+                                                    </button></a>
                                             </td>
                                         @endif
                                     </tr>
@@ -72,6 +76,7 @@
             </div>
         </div>
     </div>
+
     <div class="accordion mt-4" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">

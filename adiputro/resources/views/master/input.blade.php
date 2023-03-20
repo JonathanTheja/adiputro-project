@@ -2,7 +2,7 @@
 
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master Input</h1>
-    <div class="accordion" id="accordionExample">
+    <div class="accordion accordion_input_ti" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">
                 <button id="accordion_input_ti"
@@ -38,7 +38,7 @@
                             <div class="w-4"></div>
                             <select id="nomor_laporan_ti" placeholder="Nomor Laporan"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="on" name="nomor_laporan_ti" required onchange="getLevelProsesTI(this.value)">
+                                autocomplete="off" name="nomor_laporan_ti" required onchange="getLevelProsesTI(this.value)">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
                                 @foreach ($form_report_ti as $form_report)
                                     <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
@@ -186,8 +186,6 @@
                                         @endforeach
                                     </div>
                                     {{-- @endif --}}
-
-
                                 </div>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -197,7 +195,7 @@
                                 <div class="w-4"></div>
                                 <select id="user_defined_ti" placeholder="User Defined"
                                     class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                    autocomplete="on" name="user_defined_ti" required>
+                                    autocomplete="off" name="user_defined_ti" required>
                                     <option disabled selected value>Pilih User Defined</option>
                                     @foreach ($user_defined as $item)
                                         <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
@@ -228,7 +226,7 @@
                                 <button type="submit" class="hidden" id="submit_ti"></button>
                                 <div onclick="submitTI()"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                                    Input TI
+                                    Input Technical Instruction
                                 </div>
                             </div>
                             @yield('photos_ti')
@@ -237,7 +235,7 @@
             </div>
         </div>
     </div>
-    <div class="accordion mt-4" id="accordionExample">
+    <div class="accordion mt-4 accordion_input_gt" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">
                 <button
@@ -253,45 +251,60 @@
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body py-4 px-5">
-                    <form action="{{ url('/dashboard/report/add') }}" method="POST">
+                    <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
 
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_ti"
+                            <label for="kode_gt"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 Gambar</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti" name="nomor"
+                            <input type="text" id="kode_gt" name="nomor"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode Gambar" required>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                TI</label>
+                            <div class="w-4"></div>
+                            {{-- kode_ti_gt -> kode_ti punya gt --}}
+                            <select id="kode_ti_gt" placeholder="Kode TI" required onchange="getGTByKodeTI(this.value)"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="kode_ti_gt">
+                                <option disabled selected value>Pilih Kode TI</option>
+                                @foreach ($input_ti as $input)
+                                    <option value="{{ $input->kode_ti }}">{{ $input->kode_ti }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nomor_laporan"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
                                 Laporan</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nomor_laporan" name="nomor_laporan"
+                            <input type="text" id="nomor_laporan_gt" name="nomor_laporan_gt" readonly
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nomor Laporan" required>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="nama_ti"
+                            <label for="nama_gt"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nama
                                 Gambar</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nomor_laporan" name="nama_gambar"
+                            <input type="text" id="nama_gt" name="nama_gt"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nama Gambar">
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Level
-                                Proses</label>
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
+                                Komponen</label>
                             <div class="w-4"></div>
-                            <select id="level_proses" name="level_proses" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option value="">Kosong</option>
+                            <select id="kode_komponen_gt" placeholder="Kode Komponen" required onchange="getComponentGT()"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="kode_komponen_gt">
                                 {{-- @foreach ($departments as $department)
                                     <option value="{{ $department->department_id }}">{{ $department->name }}</option>
                                 @endforeach --}}
@@ -300,19 +313,12 @@
                         <div class="flex lg:flex-row flex-col">
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="nama_ti"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
-                                    Komponen</label>
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Level
+                                    Proses</label>
                                 <div class="w-4"></div>
-
-                                <select id="input-component-gambar-teknik" placeholder="Kode Komponen" required
-                                    class="text-gray-900 text-sm mt-1 ml-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                    autocomplete="off" name="components">
-                                    <option value="1">Kosong</option>
-                                    <option value="2">Kosong2</option>
-                                    {{-- @foreach ($departments as $department)
-                                        <option value="{{ $department->department_id }}">{{ $department->name }}</option>
-                                    @endforeach --}}
-                                </select>
+                                <input type="text" id="level_proses_gt" name="level_proses_gt" readonly
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    placeholder="Level Proses">
                             </div>
                             <div class="w-8"></div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -320,12 +326,12 @@
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-52">Nama
                                     Komponen</label>
                                 <div class="w-4"></div>
-                                <input type="text" readonly id="name" name="nama_komponen"
+                                <input type="text" readonly id="name" name="nama_komponen_gt"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     placeholder="Nama Komponen" required>
                             </div>
                         </div>
-                        <div class="flex lg:flex-row flex-col">
+                        {{-- <div class="flex lg:flex-row flex-col">
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="nama_ti"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Model</label>
@@ -343,26 +349,25 @@
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     placeholder="Pembuat" required>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Diperiksa
                                 Oleh</label>
                             <div class="w-4"></div>
-                            <select id="diperiksa_oleh_gambar_teknik" name="diperiksa_oleh[]" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            <select id="diperiksa_oleh_gt" name="diperiksa_oleh_gt[]" required
+                                placeholder="Diperiksa Oleh"
+                                class="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 multiple>
-                                <option value="1">Kosong</option>
-                                <option value="2">Kosong2</option>
-                                {{-- @foreach ($departments as $department)
-                                    <option value="{{ $department->department_id }}">{{ $department->name }}</option>
-                                @endforeach --}}
+                                @foreach ($diperiksa_oleh as $user)
+                                    <option value="{{ $user->user_id }}">{{ $user->full_name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="accordion mb-4" id="accordionCB">
                             <div class="accordion-item bg-white border border-gray-200 rounded-lg mb-4">
                                 <h2 class="accordion-header mb-0" id="headingCB">
-                                    <button
+                                    <button id="btnApprovedBy2"
                                         class="accordion-button collapsed relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
                                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                                         type="button" data-bs-toggle="collapse" data-bs-target="#collapseCB2"
@@ -374,92 +379,56 @@
                                 </h2>
                                 <div id="collapseCB2" class="p-4" data-te-collapse-item data-te-collapse-show
                                     aria-labelledby="headingCB" data-bs-parent="#accordionCB">
+                                    {{-- @if ($pembuat->department->access_database == 'SPK Mini Bus') --}}
                                     <div class="text-center text-xl mb-2">All Minibus</div>
-                                    <div class="grid grid-cols-5 gap-4 mb-2">
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
+                                    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
+                                        @foreach ($approved_by_minibus as $department)
+                                            {{-- department minibus --}}
+                                            <div>
+                                                <input id="default-checkbox"
+                                                    @if ($pembuat->department->name == $department->name) {{ 'checked' }} @endif
+                                                    type="checkbox" name="cb_minibus_gt[]"
+                                                    value="{{ $department->department_id }}"
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                <label for="default-checkbox"
+                                                    class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
+                                            </div>
+                                        @endforeach
                                     </div>
+                                    {{-- @else --}}
                                     <div class="text-center text-xl mb-2">All Bus</div>
-                                    <div class="grid grid-cols-5 gap-4 mb-2">
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
-                                        <div>
-                                            <input id="default-checkbox" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-checkbox"
-                                                class="ml-2 text-sm font-medium text-gray-900">Default
-                                                checkbox</label>
-                                        </div>
+                                    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
+                                        @foreach ($approved_by_bus as $department)
+                                            {{-- department bus --}}
+                                            <div>
+                                                <input id="default-checkbox"
+                                                    @if ($pembuat->department->name == $department->name) {{ 'checked' }} @endif
+                                                    type="checkbox" name="cb_minibus_gt[]"
+                                                    value="{{ $department->department_id }}"
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                <label for="default-checkbox"
+                                                    class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
+                                            </div>
+                                        @endforeach
                                     </div>
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+
                                 <label for="nama_ti"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
                                     Defined</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="user_defined_ti" name="user_defined_ti"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="User Defined" required>
+                                <select id="user_defined_gt" placeholder="User Defined"
+                                    class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                    autocomplete="off" name="user_defined_gt" required>
+                                    <option disabled selected value>Pilih User Defined</option>
+                                    @foreach ($user_defined as $item)
+                                        <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
+                                            {{ $item->desc }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="description"
@@ -471,20 +440,17 @@
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Merujuk</label>
-                                <div class="w-4"></div>
-                                <input type="text" id="description" name="description"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="Description" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Merujuk
-                                    TI</label>
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
+                                    Teknik</label>
                                 <div class="w-4"></div>
                                 <input
                                     class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
                                     id="multiple_files" type="file" multiple name="photos[]">
+                            </div>
+                            <button type="submit" class="hidden" id="submit_ti"></button>
+                            <div onclick="submitGT()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                Input Gambar Teknik
                             </div>
                     </form>
                 </div>
@@ -517,17 +483,20 @@
             });
         }
 
-        let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gambar_teknik, kode_komponen_ti, nomor_laporan_ti,
-            input_component_gambar_teknik, user_defined_ti;
+        let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gt, kode_komponen_ti, nomor_laporan_ti,
+            user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt;
 
         function refreshInput() {
             diperiksa_oleh = generateTom("#diperiksa_oleh")
-            diperiksa_oleh_gambar_teknik = generateTom("#diperiksa_oleh_gambar_teknik")
             kode_komponen_ti = generateTom("#kode_komponen_ti")
             level_proses_ti = generateTom("#level_proses_ti")
-            nomor_laporan_ti = dropdownInput("#nomor_laporan_ti")
-            user_defined_ti = dropdownInput("#user_defined_ti")
-            input_component_gambar_teknik = dropdownInput("#input-component-gambar-teknik")
+            nomor_laporan_ti = generateTom("#nomor_laporan_ti")
+            user_defined_ti = generateTom("#user_defined_ti")
+
+            kode_ti_gt = generateTom("#kode_ti_gt")
+            diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
+            kode_komponen_gt = generateTom("#kode_komponen_gt")
+            user_defined_gt = generateTom("#user_defined_gt")
         }
         refreshInput()
 
@@ -717,9 +686,73 @@
             $("#komponen_ti").html("");
         }
 
+
+        // kode_ti_gt = generateTom("#kode_ti_gt")
+        // diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
+        // kode_komponen_gt = generateTom("#kode_komponen_gt")
+        // user_defined_gt = generateTom("#user_defined_gt")
+        // function loadKodeGT(){
+
+        // }
+
+        function getGTByKodeTI(kode_ti) {
+            $.ajax({
+                url: `/master/input/gt/getGTByKodeTI`,
+                type: "POST",
+                cache: false,
+                data: {
+                    kode_ti: kode_ti
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $("#nomor_laporan_gt").val(response.input_ti.nomor_laporan);
+                        //item_components
+                        console.log(response.input_ti);
+                        let items = response.input_ti.item_component_ti;
+                        kode_komponen_gt.clear();
+                        kode_komponen_gt.clearOptions();
+                        items.forEach((item, key) => {
+                            //masih salah
+                            kode_komponen_gt.addOption({
+                                value: {
+                                    item_component_code_ti_id: item.pivot.item_component_code_ti_id
+                                },
+                                text: item.item_number
+                            });
+                        });
+                    }
+                }
+            });
+        }
+
+        function getComponentGT() {
+            if (kode_komponen_gt.items.length == 0) {
+                $("#level_proses_gt").val("");
+                $("#nama_komponen_gt").val("");
+            } else {
+                $.ajax({
+                    url: `/master/input/gt/getComponent`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        item_component_id: kode_komponen_gt.items[0]
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            //masih salah
+                            console.log(response.request.item_component_id);
+                            let items = response.request;
+
+                        }
+                    }
+                });
+            }
+        }
+
         //accordion agak bug
         setTimeout(() => {
             document.getElementById("btnApprovedBy1").click();
+            document.getElementById("btnApprovedBy2").click();
         }, 500);
     </script>
 @endsection

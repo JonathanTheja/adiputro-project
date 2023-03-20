@@ -33,7 +33,9 @@ class MasterInputController extends Controller
         $approved_by_bus = Department::where("access_database","SPK Mini Bus")->get();
         $approved_by_minibus = Department::where("access_database","SPK Bus")->get();
         $user_defined = UserDefined::all();
-        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined"));
+
+        $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
+        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","input_ti"));
     }
 
     function getLevelTI(Request $request)
@@ -219,6 +221,44 @@ class MasterInputController extends Controller
         $kode_ti = $input_ti->kode_ti;
 
         $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
-        return view('master.input.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti"));
+
+        $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
+        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti"));
+    }
+
+    function getGTByKodeTI(Request $request)
+    {
+        $input_ti = InputTI::where("kode_ti", $request->kode_ti)->where("status",1)->first();
+        $kode_komponen = $input_ti->item_component_ti;
+        $pivot = $input_ti->item_component_ti[0]->pivot;
+
+        //masih salah
+        return response()->json([
+            'success' => true,
+            'input_ti' => $input_ti
+        ]);
+    }
+
+    function getComponentGT(Request $request)
+    {
+        //masih salah
+        return response()->json([
+            'success' => true,
+            'request' => $request->item_component_id
+        ]);
+    }
+
+    function addGT(Request $request)
+    {
+        dd($request);
+        // $kode_ti = $request->kode_ti;
+        // $kode_ti = $request->kode_ti;
+        // $nomor_laporan_ti = $request->nomor_laporan_ti;
+        // $nama_ti = $request->nama_ti;
+        // $level_proses_ti = $request->level_proses_ti; //bisa banyak
+        // $kode_komponen_ti = $request->kode_komponen_ti; //bisa banyak
+        // $pembuat = Auth::user(); //user
+        // $model = $request->model; //department_id
+        // $diperiksa_oleh = $request->diperiksa_oleh; //bisa banyak
     }
 }
