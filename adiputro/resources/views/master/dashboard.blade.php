@@ -287,6 +287,7 @@
                     })
 
                     //load all process entries
+                    $("#pe_container").html("");
                     loadProcessEntries(response.data.process_entries,response.data.tables);
 
                     document.getElementById("loadingDashboard").classList.add("hidden");
