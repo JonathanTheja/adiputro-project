@@ -14,7 +14,7 @@ class InputTI extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['revisi','kode_ti','nomor_laporan','nama_ti','model','pembuat_id','user_defined_id','description','status'];
+    protected $fillable = ['revisi','kode_ti','process_entry_id','nomor_laporan','nama_ti','model','pembuat_id','user_defined_id','description','status'];
 
     function level_process_input_ti()
     {
@@ -24,12 +24,12 @@ class InputTI extends Model
 
     function item_level_ti()
     {
-        return $this->belongsToMany(ItemLevel::class,"item_component_code_ti",'input_ti_id','item_level_id')->withPivot('item_component_code_ti_id','item_component_id','created_at','updated_at','deleted_at');
+        return $this->belongsToMany(ItemLevel::class,"item_component_process_ti",'input_ti_id','item_level_id')->withPivot('item_component_process_ti_id','item_component_id','created_at','updated_at','deleted_at');
     }
 
     function item_component_ti()
     {
-        return $this->belongsToMany(ItemComponent::class,"item_component_code_ti",'input_ti_id','item_component_id')->withPivot('item_component_code_ti_id','item_level_id','created_at','updated_at','deleted_at');
+        return $this->belongsToMany(ItemComponent::class,"item_component_process_ti",'input_ti_id','item_component_id')->withPivot('item_component_process_ti_id','item_level_id','created_at','updated_at','deleted_at');
     }
 
     function checked_by_ti()

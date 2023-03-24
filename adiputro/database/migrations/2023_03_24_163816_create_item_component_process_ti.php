@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('item_component_code_ti', function (Blueprint $table) {
-            $table->id('item_component_code_ti_id');
+        Schema::create('item_component_process_ti', function (Blueprint $table) {
+            $table->id('item_component_process_ti_id');
             $table->integer('input_ti_id');
             $table->integer('item_level_id');
             $table->integer('item_component_id');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_component_code_ti');
+        Schema::dropIfExists('item_component_process_ti');
     }
 };

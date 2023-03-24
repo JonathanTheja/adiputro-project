@@ -39,7 +39,7 @@
             document.getElementById("accordion_input_ti").click();
         }, 500);
         setTimeout(() => {
-            loadKodeTI("{{ $kode_ti }}");
+            loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}");
         }, 1000);
 
         function slideImg(id_this, id_target) {

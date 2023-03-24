@@ -8,7 +8,7 @@ use App\Models\Department;
 use App\Models\FormReport;
 use App\Models\InputTI;
 use App\Models\ItemComponent;
-use App\Models\ItemComponentCodeTI;
+use App\Models\ItemComponentProcessTI;
 use App\Models\ItemComponentProcessEntry;
 use App\Models\ItemLevel;
 use App\Models\ItemLevelProcessEntry;
@@ -49,29 +49,50 @@ class MasterInputController extends Controller
         ]);
     }
 
-    function getCodeComponentTI(Request $request)
+    function getProcessEntryTI(Request $request)
     {
-        //$request->level_proses_ti -> kumpulan item_level untuk process entry
-        $item_level_process_entry = ItemLevelProcessEntry::whereIn("item_level_id",$request->level_proses_ti)->get();
-        $item_component_process_entry = [];
-        foreach ($item_level_process_entry as $keyItems => $items) {
-            foreach ($items->itemComponents as $keyItem => $item) {
-                $item_component_process_entry[] = $item;
-            }
-        }
+        $item_level_process_entry = ItemLevelProcessEntry::whereIn("item_level_id",$request->level_proses_ti)->with('process_entry')->get();
+
         return response()->json([
             'success' => true,
-            'item_component_process_entry' => $item_component_process_entry,
-            'level_proses_ti' => $request->level_proses_ti
+            'item_level_process_entry' => $item_level_process_entry
+        ]);
+    }
+
+    function getCodeComponentTI(Request $request)
+    {
+        //table many to many ambil item_component dari item_level_process_entry berdasarkan process_entry dari item_component_process_entry
+        $item_level_process_entry = ItemLevelProcessEntry::whereIn("item_level_id",$request->level_proses_ti)->where("process_entry_id",$request->process_entry_id)->with(['item_level','itemComponents'])->get();
+        return response()->json([
+            'success' => true,
+            'item_level_process_entry' => $item_level_process_entry,
         ]);
     }
 
     function getComponentTI(Request $request)
     {
-        $item_components = ItemComponent::whereIn("item_component_id",$request->item_component_ids)->get();
+        //ambil component dari item_component_process_entry telusuri item_level lewat item_level_process_entry
+        // $item_components = ItemComponent::whereIn("item_component_id",$request->item_component_ids)->get();
+        $item_component_process_entry = ItemComponentProcessEntry::whereIn('item_component_process_entry_id',$request->item_component_process_entry_ids)
+        ->with([
+            'item_level_process_entry',
+            'item_component',
+            'item_level_process_entry.item_level'
+        ])
+        ->orderBy('item_component_process_entry_id')
+        ->get();
         return response()->json([
             'success' => true,
-            'item_components' => $item_components
+            'item_component_process_entry' => $item_component_process_entry
+        ]);
+    }
+
+    function getUserDefinedDescTI(Request $request)
+    {
+        $user_defined = UserDefined::find($request->user_defined_id);
+        return response()->json([
+            'success' => true,
+            'user_defined' => $user_defined
         ]);
     }
 
@@ -80,8 +101,9 @@ class MasterInputController extends Controller
         $kode_ti = $request->kode_ti;
         $nomor_laporan_ti = $request->nomor_laporan_ti;
         $nama_ti = $request->nama_ti;
+        $process_entry_id = $request->process_entry_ti; //isinya process_entry_id
         $level_proses_ti = $request->level_proses_ti; //bisa banyak
-        $kode_komponen_ti = $request->kode_komponen_ti; //bisa banyak
+        $item_component_process_entry_ti = $request->kode_komponen_ti; //bisa banyak ini harusnya item_component_process_entry
         $pembuat = Auth::user(); //user
         $model = $request->model; //department_id
         $diperiksa_oleh = $request->diperiksa_oleh; //bisa banyak
@@ -94,7 +116,7 @@ class MasterInputController extends Controller
             $cb_ti = array_merge($cb_ti, $request->cb_bus_ti); //bisa banyak
         }
         $user_defined_ti = $request->user_defined_ti;
-        $description = $request->description;
+        // $description = $request->description;
         $photos = $request->photos; //bisa banyak
 
         //cek apakah kode_ti sudah ada, kalau sudah ada, dianggap sebagai revisi
@@ -110,7 +132,7 @@ class MasterInputController extends Controller
             $input_ti_lama->status = 0;
 
             //gabung approvedby department id dengan yang baru ditambah
-            $cb_ti = array_merge($cb_ti, $department_ids);
+            // $cb_ti = array_merge($cb_ti, $department_ids);
             // $input_ti->level_process_input_ti()->detach();
             // $input_ti->item_level_ti()->detach();
             // $input_ti->item_component_ti()->detach();
@@ -121,12 +143,13 @@ class MasterInputController extends Controller
         $input_ti = InputTI::create([
             "revisi" => $revisi,
             "kode_ti" => $kode_ti,
+            "process_entry_id" => $process_entry_id,
             "nomor_laporan" => $nomor_laporan_ti,
             "nama_ti" => $nama_ti,
             "model" => $model,
             "pembuat_id" => $pembuat->user_id,
             "user_defined_id" => $user_defined_ti,
-            "description" => $description,
+            // "description" => $description,
             "status" => 1,
         ]);
 
@@ -138,14 +161,15 @@ class MasterInputController extends Controller
         }
 
         //item component id with level process
-        foreach ($kode_komponen_ti as $key => $kode_komponen) {
-            $item_component_process_entry = ItemComponentProcessEntry::where("item_component_id",$kode_komponen)->first();
-            foreach ($item_component_process_entry->item_level_process_entry as $key => $item) {
-                $item_level_id = $item->item_level_id;
-                $item_level = ItemLevel::find($item_level_id);
-                // $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen, "kode_ti" => $kode_ti]);
-                $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen]);
-            }
+        //diperbaiki
+        foreach ($item_component_process_entry_ti as $key => $items) { //$items isinya item_component_process_entry_id
+            $item_component_process_entry = ItemComponentProcessEntry::find($items);
+            //$item isinya item_level_process_entry
+            $item_level = ItemLevel::find($item_component_process_entry->item_level_process_entry->item_level_id);
+            // $input_ti->item_level_ti()->attach($item_level, ["item_component_id" => $kode_komponen, "kode_ti" => $kode_ti]);
+            $input_ti->item_level_ti()->attach($item_level, [
+                "item_component_id" => $item_component_process_entry->item_component_id,
+            ]);
         }
 
         foreach ($diperiksa_oleh as $key => $user_id) {
@@ -179,6 +203,9 @@ class MasterInputController extends Controller
     function loadInputTI(Request $request)
     {
         $input_ti = InputTI::where("kode_ti",$request->kode_ti)->where("status",1)->first();
+        if($request->input_ti_id){
+            $input_ti = InputTI::find($request->input_ti_id);
+        }
 
         if(!$input_ti){
             return response()->json([
@@ -192,7 +219,7 @@ class MasterInputController extends Controller
         $checked_by_ti = $input_ti->checked_by_ti;
         $approved_by_ti = $input_ti->approved_by_ti;
         $user_defined_ti = $input_ti->user_defined;
-        $description = $input_ti->description;
+        // $description = $input_ti->description;
 
         return response()->json([
             "success" => true,
@@ -217,20 +244,24 @@ class MasterInputController extends Controller
         $approved_by_minibus = Department::where("access_database","SPK Bus")->get();
         $user_defined = UserDefined::all();
 
-        $input_ti = InputTI::find($request->input_ti_id);
-        $kode_ti = $input_ti->kode_ti;
+        $input_ti_detail = InputTI::find($request->input_ti_id);
+        $kode_ti = $input_ti_detail->kode_ti;
 
-        $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)));
 
         $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
-        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti"));
+        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail"));
     }
 
     function getGTByKodeTI(Request $request)
     {
         $input_ti = InputTI::where("kode_ti", $request->kode_ti)->where("status",1)->first();
         $kode_komponen = $input_ti->item_component_ti;
-        $pivot = $input_ti->item_component_ti[0]->pivot;
+        try {
+            $pivot = $input_ti->item_component_ti[0]->pivot;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         //masih salah
         return response()->json([

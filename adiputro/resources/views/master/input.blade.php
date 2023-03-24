@@ -18,7 +18,7 @@
             <div id="collapseOne" data-te-collapse-item data-te-collapse-show class="accordion-collapse collapse"
                 aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body py-4 px-5">
-                    <form action="{{ url('/master/input/ti/add') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('/master/input/ti/addTI') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
 
@@ -62,10 +62,25 @@
                             <div class="w-4"></div>
                             <select id="level_proses_ti" placeholder="Level Proses" required
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="level_proses_ti[]" multiple onchange="getCodeComponentTI()">
+                                autocomplete="off" name="level_proses_ti[]" multiple onchange="getProcessEntryTI()">
                                 {{-- @foreach ($departments as $department)
                                 <option value="{{ $department->department_id }}">{{ $department->name }}</option>
                             @endforeach --}}
+                            </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="nomor_laporan_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Process
+                                Entry</label>
+                            <div class="w-4"></div>
+                            <select id="process_entry_ti" placeholder="Process Entry" onchange="getCodeComponentTI()"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="process_entry_ti" required>
+                                <option disabled selected value>Pilih Process Entry</option>
+                                {{-- @foreach ($form_report_ti as $form_report)
+                                    <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
+                                    </option>
+                                @endforeach --}}
                             </select>
                         </div>
                         <div class="flex lg:flex-row flex-col">
@@ -96,6 +111,9 @@
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Nama Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Level
                                         </th>
                                     </tr>
                                 </thead>
@@ -194,6 +212,7 @@
                                     Defined</label>
                                 <div class="w-4"></div>
                                 <select id="user_defined_ti" placeholder="User Defined"
+                                    onchange="getUserDefinedDescTI();"
                                     class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                     autocomplete="off" name="user_defined_ti" required>
                                     <option disabled selected value>Pilih User Defined</option>
@@ -207,7 +226,7 @@
                                 <label for="description"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Description</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="description_ti" name="description"
+                                <input type="text" id="description_ti" name="description" readonly
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                     placeholder="Description" required>
                             </div>
@@ -302,7 +321,8 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <select id="kode_komponen_gt" placeholder="Kode Komponen" required onchange="getComponentGT()"
+                            <select id="kode_komponen_gt" placeholder="Kode Komponen" required
+                                onchange="getComponentGT()"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_gt">
                                 {{-- @foreach ($departments as $department)
@@ -483,7 +503,7 @@
             });
         }
 
-        let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gt, kode_komponen_ti, nomor_laporan_ti,
+        let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gt, process_entry_ti, kode_komponen_ti, nomor_laporan_ti,
             user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt;
 
         function refreshInput() {
@@ -492,6 +512,7 @@
             level_proses_ti = generateTom("#level_proses_ti")
             nomor_laporan_ti = generateTom("#nomor_laporan_ti")
             user_defined_ti = generateTom("#user_defined_ti")
+            process_entry_ti = generateTom("#process_entry_ti")
 
             kode_ti_gt = generateTom("#kode_ti_gt")
             diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
@@ -500,12 +521,12 @@
         }
         refreshInput()
 
-        //                                                  param    ini         dan     ini hanya untuk edit
-        function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti) {
+        //                                                  param    ini           ini               ini hanya untuk edit
+        function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
             //setiap kali nomor laporan diganti, reset
             resetDataTI();
             $.ajax({
-                url: `/master/input/ti/getLevel`,
+                url: `/master/input/ti/getLevelTI`,
                 type: "POST",
                 cache: false,
                 data: {
@@ -529,43 +550,89 @@
                                 level_proses_ti.addItem(level.item_level_id);
                             });
                             //show kode komponen dengan param item_component_ti
-                            getCodeComponentTI(item_component_ti);
+                            getProcessEntryTI(process_entry_id);
+                            setTimeout(() => {
+                                getCodeComponentTI(item_component_ti);
+                            }, 1000);
                         }
                     }
                 }
             });
         }
 
-        //                                  param ini hanya untuk edit
-        function getCodeComponentTI(item_component_ti) {
+        function getProcessEntryTI(process_entry_id) {
             if (level_proses_ti.items.length == 0) {
-                kode_komponen_ti.clear();
+                process_entry_ti.clear();
             } else {
                 $.ajax({
-                    url: `/master/input/ti/getCodeComponent`,
+                    url: `/master/input/ti/getProcessEntryTI`,
                     type: "POST",
                     cache: false,
                     data: {
-                        level_proses_ti: level_proses_ti.items
+                        level_proses_ti: level_proses_ti.items,
                     },
                     success: function(response) {
                         if (response.success) {
-                            console.log(response.level_proses_ti);
-                            // console.log(response.item_component_process_entry);
-                            let items = response.item_component_process_entry;
+                            console.log(response.item_level_process_entry);
+                            process_entry_ti.clear();
+                            process_entry_ti.clearOptions();
+                            response.item_level_process_entry.forEach((level, key) => {
+                                process_entry_ti.addOption({
+                                    value: level.process_entry_id,
+                                    text: level.process_entry.work_description,
+                                });
+                            });
+                            if (process_entry_id != undefined) {
+                                process_entry_ti.addItem(process_entry_id);
+                            }
+                        }
+                    }
+                })
+            };
+        }
+
+        //                                  param ini hanya untuk edit
+        function getCodeComponentTI(item_component_ti) {
+            if (level_proses_ti.items.length == 0 && process_entry_ti.items.length == 0) {
+                kode_komponen_ti.clear();
+            } else {
+                $.ajax({
+                    url: `/master/input/ti/getCodeComponentTI`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        level_proses_ti: level_proses_ti.items,
+                        process_entry_id: process_entry_ti.items[0]
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response);
+
+                            // // console.log(response.item_component_process_entry);
+                            let items = response.item_level_process_entry;
                             kode_komponen_ti.clear();
                             kode_komponen_ti.clearOptions();
                             items.forEach((item, key) => {
-                                kode_komponen_ti.addOption({
-                                    value: item.item_component_id,
-                                    text: item.item_number
+                                item.item_components.forEach((item_component, key) => {
+                                    kode_komponen_ti.addOption({
+                                        value: item_component.pivot
+                                            .item_component_process_entry_id,
+                                        text: `${item_component.item_number} (LV ${item.item_level.level})`
+                                    });
                                 });
                             });
                             //cek apakah edit kalau iya show kode komponen
+
+                            // kode_komponen_ti.addItem(1);
+                            // kode_komponen_ti.addItem(2);
                             if (item_component_ti != undefined) {
-                                // alert(item_component_ti.length);
                                 item_component_ti.forEach(item => {
-                                    kode_komponen_ti.addItem(item.item_component_id);
+                                    let options = kode_komponen_ti.options;
+                                    Object.keys(options).forEach(key => {
+                                        if (options[key].text.includes(item.item_number)) {
+                                            kode_komponen_ti.addItem(key);
+                                        }
+                                    });
                                 });
                             }
                         }
@@ -579,15 +646,16 @@
                 $("#komponen_ti").html("");
             } else {
                 $.ajax({
-                    url: `/master/input/ti/getComponent`,
+                    url: `/master/input/ti/getComponentTI`,
                     type: "POST",
                     cache: false,
                     data: {
-                        item_component_ids: kode_komponen_ti.items
+                        item_component_process_entry_ids: kode_komponen_ti.items
                     },
                     success: function(response) {
                         if (response.success) {
-                            let items = response.item_components;
+                            console.log(response.item_component_process_entry);
+                            let items = response.item_component_process_entry;
                             $("#komponen_ti").html("");
                             items.forEach((item, key) => {
                                 $("#komponen_ti").append(`<tr class="bg-white border-b">
@@ -595,10 +663,13 @@
                                     ${key+1}
                                 </th>
                                 <td class="px-6 py-4">
-                                    ${item.item_number}
+                                    ${item.item_component.item_number}
                                 </td>
                                 <td class="px-6 py-4">
-                                    ${item.item_description}
+                                    ${item.item_component.item_description}
+                                </td>
+                                <td class="px-6 py-4">
+                                    Level ${item.item_level_process_entry.item_level.level} ${item.item_level_process_entry.item_level.name}
                                 </td>
                             </tr>`);
                             });
@@ -608,25 +679,45 @@
             }
         }
 
-        function loadKodeTI(kode_ti) {
+        function getUserDefinedDescTI() {
+            $.ajax({
+                url: `/master/input/ti/getUserDefinedDescTI`,
+                type: "POST",
+                cache: false,
+                data: {
+                    user_defined_id: user_defined_ti.items[0]
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $("#description_ti").val(response.user_defined.desc);
+                    }
+                }
+            });
+        }
+
+        function loadKodeTI(kode_ti, input_ti_id) {
             // nomor_laporan_ti.addItem("LAP/0004/BW/AP/III/2023");
             $.ajax({
                 url: `/master/input/ti/loadInputTI`,
                 type: "POST",
                 cache: false,
                 data: {
-                    kode_ti: kode_ti
+                    kode_ti: kode_ti,
+                    input_ti_id: input_ti_id
                 },
                 success: function(response) {
                     if (response.success) {
-                        console.log(response.input_ti);
-                        //show nomor_laporan_ti
+                        console.log(response);
+                        // show nomor_laporan_ti
                         nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
-                        //show nama_ti
+                        // show nama_ti
                         $("#nama_ti").val(response.input_ti.nama_ti);
-                        //show level_proses dulu baru show kode komponen
+                        //show level_proses dulu, process entry dulu, show komponen
                         getLevelProsesTI(response.input_ti.nomor_laporan, response.input_ti
-                            .level_process_input_ti, response.input_ti.item_component_ti);
+                            .level_process_input_ti, response.input_ti.item_component_ti, response.input_ti
+                            .process_entry_id);
+
+
                         //show diperiksa_oleh / checkby
                         response.input_ti.checked_by_ti.forEach(user => {
                             // console.log(diperiksa_oleh);
@@ -634,13 +725,12 @@
                         });
                         //show user_defined
                         user_defined_ti.addItem(response.input_ti.user_defined.user_defined_id);
-                        $("#description_ti").val(response.input_ti.description);
+                        $("#description_ti").val(response.input_ti.user_defined.desc);
 
                         //show all of approvedby
                         //refresh cb_ti
                         $('input[type=checkbox].cb_ti').each(function() {
                             $(this).prop('checked', false);
-                            $(this).prop('disabled', false);
                         });
                         $('input[type=checkbox].cb_ti').each(function() {
                             var cb_ti = $(this);
@@ -648,10 +738,6 @@
                                 if (cb_ti.val() == department.department_id) {
                                     // alert("true");
                                     cb_ti.prop('checked', true);
-                                    cb_ti.prop('disabled', true);
-                                } else if (!cb_ti.prop('disabled')) {
-                                    cb_ti.prop('checked', false);
-                                    cb_ti.prop('disabled', false);
                                 }
                             })
                         });
@@ -675,9 +761,10 @@
             kode_komponen_ti.clear();
             kode_komponen_ti.clearOptions();
             diperiksa_oleh.clear();
+            process_entry_ti.clearOptions();
+            process_entry_ti.clear();
             $('input[type=checkbox].cb_ti').each(function() {
                 $(this).prop('checked', false);
-                $(this).prop('disabled', false);
             });
             user_defined_ti.clear();
             getCodeComponentTI();
@@ -715,7 +802,8 @@
                             //masih salah
                             kode_komponen_gt.addOption({
                                 value: {
-                                    item_component_code_ti_id: item.pivot.item_component_code_ti_id
+                                    item_component_code_ti_id: item.pivot
+                                        .item_component_code_ti_id
                                 },
                                 text: item.item_number
                             });

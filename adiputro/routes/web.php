@@ -40,10 +40,12 @@ Route::prefix('master')->group(function () {
         Route::get('/', [MasterInputController::class,'masterInput']);
 
         Route::prefix('ti')->group(function () {
-            Route::post('/getLevel', [MasterInputController::class,'getLevelTI']);
-            Route::post('/getComponent', [MasterInputController::class,'getComponentTI']);
-            Route::post('/getCodeComponent', [MasterInputController::class,'getCodeComponentTI']);
-            Route::post('/add', [MasterInputController::class,'addTI']);
+            Route::post('/getLevelTI', [MasterInputController::class,'getLevelTI']);
+            Route::post('/getProcessEntryTI', [MasterInputController::class,'getProcessEntryTI']);
+            Route::post('/getCodeComponentTI', [MasterInputController::class,'getCodeComponentTI']);
+            Route::post('/getComponentTI', [MasterInputController::class,'getComponentTI']);
+            Route::post('/getUserDefinedDescTI', [MasterInputController::class,'getUserDefinedDescTI']);
+            Route::post('/addTI', [MasterInputController::class,'addTI']);
             Route::post('/loadInputTI', [MasterInputController::class,'loadInputTI']);
 
             Route::prefix('detail')->group(function () {

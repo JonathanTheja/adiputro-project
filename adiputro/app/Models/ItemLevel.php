@@ -16,7 +16,7 @@ class ItemLevel extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['name','item_number','item_description','parent_id'];
+    protected $fillable = ['name','item_number','item_description','parent_id','level'];
 
     function departments()
     {

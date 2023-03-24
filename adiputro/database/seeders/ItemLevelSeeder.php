@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ItemLevel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,17 @@ class ItemLevelSeeder extends Seeder
      *
      * @return void
      */
+
+    function setItemLevels($item_levels, $level)
+    {
+        $item_levels->level = $level;
+        $item_levels->save();
+
+        foreach ($item_levels->children as $key => $item_level) {
+            $this->setItemLevels($item_level, $level+1);
+        }
+    }
+
     public function run()
     {
         //
@@ -75,5 +87,10 @@ class ItemLevelSeeder extends Seeder
             ],
 
         ]);
+
+        $item_levels = ItemLevel::tree()->get()->toTree();
+        foreach ($item_levels as $key => $item_level) {
+            $this->setItemLevels($item_level,0);
+        }
     }
 }

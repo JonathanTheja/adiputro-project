@@ -22,6 +22,16 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Builder;
 
 class MasterDataController extends Controller
 {
+    function setItemLevels($item_levels, $level)
+    {
+        $item_levels->level = $level;
+        $item_levels->save();
+
+        foreach ($item_levels->children as $key => $item_level) {
+            $this->setItemLevels($item_level, $level+1);
+        }
+    }
+
     function masterData(Request $request)
     {
         $item_levels = ItemLevel::tree()->get()->toTree();
@@ -50,6 +60,10 @@ class MasterDataController extends Controller
             "name" => $request->name,
             "parent_id" => $request->item_level_id,
         ]);
+        $item_levels = ItemLevel::tree()->get()->toTree();
+        foreach ($item_levels as $key => $item_level) {
+            $this->setItemLevels($item_level,0);
+        }
         Alert::success('Sukses!', 'Berhasil Tambah Komponen Baru!');
         return back();
     }
@@ -183,7 +197,10 @@ class MasterDataController extends Controller
 
     function deleteData(Request $request)
     {
-        $item_levels = ItemLevel::find($request->item_level_id)->descendantsAndSelf()->delete();
+        $item_levels = ItemLevel::find($request->item_level_id)->descendantsAndSelf()->get();
+        foreach ($item_levels as $key => $item_level) {
+            $item_level->delete();
+        }
         Alert::success('Sukses!', 'Berhasil Delete Komponen!');
         return back();
     }
@@ -361,7 +378,7 @@ class MasterDataController extends Controller
         $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
         if($total_qty >= $item_component_id){
             //delete
-            
+
         }
     }
 

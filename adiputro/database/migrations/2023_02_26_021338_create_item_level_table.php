@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('item_number',100)->nullable();
             $table->text('item_description',100)->nullable();
             $table->integer('parent_id')->nullable();
+            $table->integer('level')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
