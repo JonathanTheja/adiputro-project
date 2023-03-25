@@ -30,7 +30,8 @@ class ProcessEntryController extends Controller
             "process_number"=>$request->process_number,
             "stall_number"=>$request->stall_number,
             "work_description"=>$request->work_description,
-            "pic"=>$request->pic
+            "pic"=>$request->pic,
+            "status"=>'manual'
         ]);
         Alert::success('Sukses!', 'Berhasil Tambah Process Entry!');
         return back();

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->float('stall_number');
             $table->text('work_description');
             $table->text('pic');
+            $table->text('status');
             $table->timestamps();
             $table->softDeletes();
         });
