@@ -216,6 +216,28 @@
             }
         }
 
+        function updateQTY(table_id,item_number,qty){
+            $.ajax({
+                url: `/master/data/updateQty`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_number": item_number,
+                    "table_id": table_id,
+                    "qty":qty
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // let item = response.data.item;
+                        console.log(response);
+                    } else {
+                        //failed
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+
         //DONE
         function placeComponentToTable(table_id, item) {
             var rowCount = $(`#${table_id} tbody tr`).length;
@@ -232,10 +254,10 @@
 
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty}>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY('${table_id}','${item.item_number}',this.value)>
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}')>Hapus</button>
+                    <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}',this)>Hapus</button>
                 </td>
             </tr>
         `);

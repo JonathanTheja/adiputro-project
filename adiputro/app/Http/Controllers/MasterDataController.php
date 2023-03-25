@@ -355,8 +355,23 @@ class MasterDataController extends Controller
     {
         $item_number = $request->item_number;
         $table_id = $request->table_id;
-
         return $this->callUpdateSpecComponent($item_number,$table_id);
+    }
+
+    function updateQty(Request $request){
+        $qty = $request->qty;
+        $table_id = $request->table_id;
+        $item_number = $request->item_number;
+        $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
+        $table_comp = Session::get('sess.table.'.$table_id.".".$item_component_id);
+        $table_comp["item_component_qty"] = $qty;
+        Session::put('sess.table.'.$table_id.'.'.$item_component_id,$table_comp);
+        return response()->json([
+            'success' => true,
+            'message'=>'Berhasil update qty!',
+            'tables'=>Session::get("sess.table")
+        ]);
+        
     }
 
     function matchDataComponent(Request $request){
@@ -368,11 +383,9 @@ class MasterDataController extends Controller
                 $total_qty += $table[$item_component_id]["item_component_qty"];
             }
         }
-
         $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
         if($total_qty >= $item_component_id){
             //delete
-
         }
     }
 
@@ -391,7 +404,6 @@ class MasterDataController extends Controller
 
     function updateVirtualComponent(Request $request){
         //components virtual used to track the process entry data
-
     }
 
     function getComponents(Request $request){
