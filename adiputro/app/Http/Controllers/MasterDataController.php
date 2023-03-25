@@ -161,21 +161,15 @@ class MasterDataController extends Controller
 
             $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
 
-
             foreach($item_components as $item_component=>$ic){
                 $icomp = ItemComponent::find($item_component);
-                $icomp->ItemLevelProcessEntries()->detach();
+                ItemComponentProcessEntry::where('item_component_id',$item_component)->where('item_level_process_entry_id',$item_level_process_entry->item_level_process_entry_id)->delete();
             }
 
             //loop through every item components inside pe
             foreach($item_components as $item_component=>$ic){
                 //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
-                // ItemComponentProcessEntry::create([
-                //     'item_component_id'=>$icomp->item_component_id,
-                //     'item_level_process_entry_id'=>$item_level_process_entry->item_level_process_entry_id,
-                //     'item_component_qty'=>$ic["item_component_qty"]
-                // ]);
                 $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry,[
                     'item_component_qty'=>$ic["item_component_qty"]
                 ]);

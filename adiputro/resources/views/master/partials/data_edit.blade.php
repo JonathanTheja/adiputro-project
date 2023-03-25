@@ -46,6 +46,15 @@
                 @endforeach
             </select>
 
+            <label for="input-kode-process" class="block my-2 text-gray-900">Kode Komponen</label>
+            <select id="input-kode-process" multiple autocomplete="off" name="kode_komponen_process[]" onchange="updateProcess('0')">
+                @foreach ($item_components as $item_component)
+                <option value="{{ $item_component->item_component_id }}">
+                    {{ $item_component->item_number }} -
+                    {{ $item_component->item_description }}</option>
+                @endforeach
+            </select>
+
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
             <input
                 class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
@@ -365,5 +374,6 @@
         generateTom("#input-item-kit")
         generateTom("#input-bom")
         generateTom("#input-process")
+        generateTom("#input-kode-process")
     </script>
 @endsection
