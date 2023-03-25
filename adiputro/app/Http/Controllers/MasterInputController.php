@@ -24,6 +24,27 @@ use Illuminate\Support\Str;
 
 class MasterInputController extends Controller
 {
+    function generateNomorLaporan()
+    {
+        $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
+        $form_reports = FormReport::all();
+        $form_report = FormReport::all();
+        $form_report = $form_report[count($form_report)-1];
+        $tanggal = date('d-m-Y');
+        $tanggal = date('d-m-Y', strtotime($tanggal));
+        // echo substr($form_report->nomor_laporan,4,4);
+
+        $department_name = Auth::user()->department->name;
+        $initial = strtoupper($department_name[0].$department_name[1]);
+        if(strpos($department_name, " ")){
+            $initial = strtoupper($department_name[0].$department_name[strpos($department_name, " ")+1]);
+        }
+
+        $nomor_laporan = "LAP/".str_pad(intval(substr($form_report->nomor_laporan,4,4))+1, 4, "0", STR_PAD_LEFT)."/$initial/AP/".$bulan[intval(date('m'))]."/".date('Y');
+
+        return $nomor_laporan;
+    }
+
     function masterInput(Request $request)
     {
         $form_report_ti = FormReport::where("jenis","TI")->get();
@@ -41,6 +62,11 @@ class MasterInputController extends Controller
     function getLevelTI(Request $request)
     {
         $form_report = FormReport::where("nomor_laporan",$request->nomor_laporan_ti)->first();
+        if($form_report == null){
+            return response()->json([
+                'success' => false,
+            ]);
+        }
         $item_level_ti = ItemLevel::find($form_report->item_level_id)->ancestorsAndSelf()->OrderBy("item_level_id")->get();
 
         return response()->json([
@@ -202,6 +228,7 @@ class MasterInputController extends Controller
 
     function loadInputTI(Request $request)
     {
+        $nomor_laporan = $this->generateNomorLaporan();
         $input_ti = InputTI::where("kode_ti",$request->kode_ti)->where("status",1)->first();
         if($request->input_ti_id){
             $input_ti = InputTI::find($request->input_ti_id);
@@ -224,6 +251,7 @@ class MasterInputController extends Controller
         return response()->json([
             "success" => true,
             "input_ti" => $input_ti,
+            "nomor_laporan" => $nomor_laporan
             // "level_process_input_ti" => $level_process_input_ti,
             // "item_level_ti" => $item_level_ti,
             // "item_component_ti" => $item_component_ti,
@@ -249,7 +277,7 @@ class MasterInputController extends Controller
 
         $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)));
 
-        $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
+        $input_ti = InputTI::where("status",1)->with("form_report")->orderBy('kode_ti','asc')->get();
         return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail"));
     }
 

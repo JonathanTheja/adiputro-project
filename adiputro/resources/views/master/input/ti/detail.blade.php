@@ -39,7 +39,16 @@
             document.getElementById("accordion_input_ti").click();
         }, 500);
         setTimeout(() => {
-            loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}");
+            loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}", undefined, false);
+            setTimeout(() => {
+                // nomor_laporan_ti.clear();
+                // nomor_laporan_ti.clearOptions();
+                // nomor_laporan_ti.addOption({
+                //     value: "{{ $input_ti_detail->form_report->nomor_laporan }}",
+                //     text: "{{ $input_ti_detail->form_report->nomor_laporan }}",
+                // });
+                // nomor_laporan_ti.addItem("{{ $input_ti_detail->form_report->nomor_laporan }}");
+            }, 1000);
         }, 1000);
 
         function slideImg(id_this, id_target) {

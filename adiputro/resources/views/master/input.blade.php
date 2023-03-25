@@ -27,7 +27,8 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti" name="kode_ti" oninput="loadKodeTI(this.value)"
+                            <input type="text" id="kode_ti" name="kode_ti"
+                                oninput="loadKodeTI(this.value,undefined,{{ $form_report_ti }}, true)"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode TI" required>
                         </div>
@@ -524,6 +525,7 @@
         //                                                  param    ini           ini               ini hanya untuk edit
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
             //setiap kali nomor laporan diganti, reset
+            // alert("awpofje")
             resetDataTI();
             $.ajax({
                 url: `/master/input/ti/getLevelTI`,
@@ -695,8 +697,9 @@
             });
         }
 
-        function loadKodeTI(kode_ti, input_ti_id) {
+        function loadKodeTI(kode_ti, input_ti_id, form_report_ti, isEdit) {
             // nomor_laporan_ti.addItem("LAP/0004/BW/AP/III/2023");
+            console.log(form_report_ti);
             $.ajax({
                 url: `/master/input/ti/loadInputTI`,
                 type: "POST",
@@ -709,7 +712,24 @@
                     if (response.success) {
                         console.log(response);
                         // show nomor_laporan_ti
-                        nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
+                        nomor_laporan_ti.removeOption(response.nomor_laporan);
+                        if (isEdit) {
+                            // nomor_laporan_ti.clear();
+                            // nomor_laporan_ti.clearOptions();
+                            nomor_laporan_ti.addOption({
+                                value: response.nomor_laporan,
+                                text: response.nomor_laporan
+                            });
+                            nomor_laporan_ti.addItem(response.nomor_laporan);
+                        } else {
+                            nomor_laporan_ti.clear();
+                            nomor_laporan_ti.clearOptions();
+                            nomor_laporan_ti.addOption({
+                                value: response.input_ti.nomor_laporan,
+                                text: response.input_ti.nomor_laporan
+                            });
+                            nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
+                        }
                         // show nama_ti
                         $("#nama_ti").val(response.input_ti.nama_ti);
                         //show level_proses dulu, process entry dulu, show komponen
