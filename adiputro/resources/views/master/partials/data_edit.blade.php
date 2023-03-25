@@ -68,9 +68,63 @@
             </select>
 
             <h2 class="my-4 text-lg font-semibold text-gray-900">Daftar komponen</h2>
-            <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside" id="ol-components">
 
-            </ol>
+
+            <div class="flex flex-col">
+                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                  <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                    <div class="overflow-hidden">
+                      <table
+                        class="min-w-full border text-center text-sm font-light dark:border-neutral-500" id="table_components">
+                        <thead class="border-b font-medium dark:border-neutral-500">
+                          <tr>
+                            <th
+                              scope="col"
+                              class="border-r px-6 py-4 dark:border-neutral-500">
+                              No
+                            </th>
+                            <th
+                              scope="col"
+                              class="border-r px-6 py-4 dark:border-neutral-500">
+                              Kode Komponen
+                            </th>
+                            <th
+                              scope="col"
+                              class="border-r px-6 py-4 dark:border-neutral-500">
+                              Nama Komponen
+                            </th>
+                            <th
+                            scope="col"
+                            class="border-r px-6 py-4 dark:border-neutral-500">
+                            Item Kit
+                             </th>
+                             <th
+                             scope="col"
+                             class="border-r px-6 py-4 dark:border-neutral-500">
+                             BOM ID
+                           </th>
+                           <th
+                           scope="col"
+                           class="border-r px-6 py-4 dark:border-neutral-500">
+                          Total
+                            </th>
+                            <th
+                              scope="col"
+                              class="border-r px-6 py-4 dark:border-neutral-500">
+                              Satuan
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             <div id="pe_container">
 
@@ -136,14 +190,35 @@
                     "session_status": session_status
                 },
                 success: function(response) {
-                    $("#ol-components").html("");
                     let components = response.data.components;
+                    $("#table_components tbody").html("");
+                    let iter = 0;
                     $.each(components, function(key, comp) {
-                        $("#ol-components").append(`<li>
-                    <span class="font-semibold text-gray-900">` + comp.item_number + ` - ` + comp.item_description +
-                            ` - </span><span class="font-semibold text-gray-900"> ` + comp
-                            .item_component_qty + ` ` + comp.item_uofm + ` </span>
-                    </li>`);
+                        iter++;
+                        $("#table_components tbody").append(`<tr class="border-b dark:border-neutral-500">
+                            <td
+                              class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                                ${iter}
+                            </td>
+                            <td
+                              class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              ${comp.item_number}
+                            </td>
+                            <td
+                              class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                              ${comp.item_description}
+                            </td>
+                            <td
+                            class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                            ${comp.item_kit_count}
+                             </td>
+                            <td
+                            class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                            ${comp.bom_count}
+                            </td>
+                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
+                            <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
+                        </tr>`);
                     });
                 }
             });

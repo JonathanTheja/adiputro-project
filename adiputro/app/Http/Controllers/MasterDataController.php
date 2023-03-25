@@ -106,7 +106,9 @@ class MasterDataController extends Controller
                     "item_number"=>$ic->item_number,
                     "item_description"=>$ic->item_description,
                     "item_component_qty"=>$ic->pivot->item_component_qty,
-                    "item_uofm"=>$ic->item_uofm
+                    "item_uofm"=>$ic->item_uofm,
+                    "item_kit_count"=>0,
+                    "bom_count"=>0
                 ];
 
                 Session::put("sess.comp_temp.".$comp_id,$comp);
@@ -265,6 +267,7 @@ class MasterDataController extends Controller
                 if(Arr::exists($components,$comp_id)){
                     //icr
                     $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->item_component_qty;
+                    $components[$comp_id]["item_kit_count"] += $comp->pivot->item_component_qty;
                 }
                 else{
                     $new_comp = [
@@ -272,7 +275,9 @@ class MasterDataController extends Controller
                         "item_number"=>$comp->item_number,
                         "item_description"=>$comp->item_description,
                         "item_component_qty"=>$comp->pivot->item_component_qty,
-                        "item_uofm"=>$comp->item_uofm
+                        "item_uofm"=>$comp->item_uofm,
+                        "item_kit_count"=>$comp->pivot->item_component_qty,
+                        "bom_count"=>0
                     ];
                     $components[$comp_id] = $new_comp;
                 }
@@ -287,6 +292,7 @@ class MasterDataController extends Controller
                 if(Arr::exists($components,$comp_id)){
                     //icr
                     $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->consumed_qty;
+                    $components[$comp_id]["bom_count"] += $comp->pivot->consumed_qty;
                 }
                 else{
                     $new_comp = [
@@ -294,7 +300,9 @@ class MasterDataController extends Controller
                         "item_number"=>$comp->item_number,
                         "item_description"=>$comp->item_description,
                         "item_component_qty"=>$comp->pivot->consumed_qty,
-                        "item_uofm"=>$comp->item_uofm
+                        "item_uofm"=>$comp->item_uofm,
+                        "item_kit_count"=>0,
+                        "bom_count"=>$comp->pivot->consumed_qty
                     ];
                     $components[$comp_id] = $new_comp;
                 }
@@ -371,7 +379,7 @@ class MasterDataController extends Controller
             'message'=>'Berhasil update qty!',
             'tables'=>Session::get("sess.table")
         ]);
-        
+
     }
 
     function matchDataComponent(Request $request){
