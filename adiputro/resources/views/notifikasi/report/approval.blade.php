@@ -55,7 +55,7 @@
                                         <td class="p-2 py-4 text-center">{{ $input->model }}</td>
                                         <td class="p-2 py-4 text-center">{{ $input->pembuat->full_name }}</td>
                                         <td class="p-2 py-4 text-center">{{ $input->user_defined->name }}</td>
-                                        <td class="p-2 py-4 text-center">{{ $input->description }}</td>
+                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->desc }}</td>
 
                                         @if ($input->status == 0)
                                             <td class="p-2 py-4 text-center">Revisi</td>

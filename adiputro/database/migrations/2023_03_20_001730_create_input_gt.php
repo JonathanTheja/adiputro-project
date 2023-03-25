@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('input_gt', function (Blueprint $table) {
             $table->id("input_gt_id");
-            $table->string('kode_ti');
+            $table->string('kode_ti')->nullable();
             $table->string('kode_gt');
             $table->integer('revisi')->nullable();
             $table->string('nomor_laporan');
