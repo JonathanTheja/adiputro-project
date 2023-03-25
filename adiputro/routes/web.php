@@ -9,6 +9,8 @@ use App\Http\Controllers\MasterInputController;
 use App\Http\Controllers\MasterLevelController;
 use App\Http\Controllers\MasterStallController;
 use App\Http\Controllers\MasterUserController;
+use App\Http\Controllers\ProcessEntryController;
+use App\Models\ProcessEntry;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\AssignOp\Concat;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -83,6 +85,12 @@ Route::prefix('master')->group(function () {
         Route::post('/getComponents', [MasterDataController::class,'getComponents']);
         Route::post('/getDataTemp', [MasterDataController::class,'getDataTemp']);
     });
+
+
+});
+
+Route::prefix('process-entry')->group(function () {
+    Route::get('/', [ProcessEntryController::class,'index']);
 });
 
 Route::prefix('notifikasi')->group(function () {

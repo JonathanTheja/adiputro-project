@@ -59,6 +59,13 @@
             <span class="text-[15px] ml-4 text-gray-200">Master Input</span>
         </div>
     </a>
+    <a href="{{ url('/process-entry') }}">
+        <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
+            id="sidemenuInput">
+            <i class="bi bi-file-image"></i>
+            <span class="text-[15px] ml-4 text-gray-200">Process Entry</span>
+        </div>
+    </a>
     <hr class="my-4 text-gray-600">
     <a href="{{ url('/notifikasi/report') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"

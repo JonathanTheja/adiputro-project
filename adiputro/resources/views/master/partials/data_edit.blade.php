@@ -45,6 +45,7 @@
                         {{ $b->bom_number }} - {{ $b->bom_description }}</option>
                 @endforeach
             </select>
+
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
             <input
                 class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
@@ -65,6 +66,7 @@
             <div id="pe_container">
 
             </div>
+
 
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update
