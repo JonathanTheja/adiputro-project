@@ -1,7 +1,7 @@
 @extends("main")
 
 @section("container")
-<h1 class="text-center text-5xl font-semibold mb-4">Master Process Entry</h1>
+<h1 class="text-center text-5xl font-semibold mb-4">Process Entry</h1>
 
 <div id="pe_tables" class="my-10">
     <div class="flex flex-col">
@@ -52,7 +52,7 @@
 
 <div id="form-process">
     <h1 class="text-xl text-gray-800 my-5">Form Process Entry</h1>
-    <form action="{{ url('doRegister') }}" method="POST">
+    <form action="{{ url('/process-entry/add') }}" method="POST">
         @csrf
         <div class="mb-6">
             <label for="process_name" class="block mb-2 text-sm font-medium text-gray-900">Process Name</label>
@@ -100,11 +100,11 @@
             @enderror
         </div>
         <div class="mb-6">
-            <label for="skp_type" class="block mb-2 text-sm font-medium text-gray-900">SKP TYPE</label>
-            <input type="text" name="skp_type" id="skp_type"
+            <label for="spk_type" class="block mb-2 text-sm font-medium text-gray-900">SPK TYPE</label>
+            <input type="text" name="spk_type" id="spk_type"
                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="SKP Type" required>
-            @error('skp_type')
+                placeholder="Spk Type" required>
+            @error('spk_type')
                 <span class="text-sm text-red-600">{{ $message }}</span>
             @enderror
         </div>

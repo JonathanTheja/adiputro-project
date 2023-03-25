@@ -91,6 +91,7 @@ Route::prefix('master')->group(function () {
 
 Route::prefix('process-entry')->group(function () {
     Route::get('/', [ProcessEntryController::class,'index']);
+    Route::post('/add', [ProcessEntryController::class,'addNewProcessEntry']);
 });
 
 Route::prefix('notifikasi')->group(function () {
