@@ -110,11 +110,13 @@
     function openSidebar() {
         document.querySelector("#sidebar").classList.toggle("left-[-250px]");
         document.querySelector("#container").classList.toggle("ml-[250px]");
+        $("#searchNavbar").width($("#content").width());
     }
 
     function closeSidebar() {
         document.querySelector("#sidebar").classList.add("left-[-250px]");
         document.querySelector("#container").classList.remove("ml-[250px]");
+        $("#searchNavbar").width($("#content").width());
     }
 
     // function changeSideMenu(e, master) {

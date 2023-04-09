@@ -149,13 +149,21 @@ class MasterInputController extends Controller
         $input_ti_lama = InputTI::where("kode_ti",$kode_ti)->where("status",1)->first();
         $revisi = 0;
         if($input_ti_lama){
+            $form_report = FormReport::where("nomor_laporan",$input_ti_lama->nomor_laporan)->first();
+            $form_report_baru = FormReport::create([
+                "item_level_id" => $form_report->item_level_id,
+                "nomor_laporan" => $nomor_laporan_ti,
+                "tanggal" => now(),
+                "pelapor_id" => Auth::user()->user_id,
+                "kategori_report_id" => $form_report->kategori_report_id,
+                "temuan" => $form_report->temuan,
+                "jenis" => $form_report->jenis,
+            ]);
             //ambil approvedby department id sebelumnya
             $department_ids = array_map(function($department) {
                 return $department["department_id"];
             }, $input_ti_lama->approved_by_ti->toArray());
 
-            $revisi = $input_ti_lama->revisi + 1;
-            $input_ti_lama->status = 0;
 
             //gabung approvedby department id dengan yang baru ditambah
             // $cb_ti = array_merge($cb_ti, $department_ids);
@@ -164,6 +172,9 @@ class MasterInputController extends Controller
             // $input_ti->item_component_ti()->detach();
             // $input_ti->checked_by_ti()->detach();
             // $input_ti->approved_by_ti()->detach();
+
+            $revisi = $input_ti_lama->revisi + 1;
+            $input_ti_lama->status = 0;
             $input_ti_lama->save();
         }
         $input_ti = InputTI::create([

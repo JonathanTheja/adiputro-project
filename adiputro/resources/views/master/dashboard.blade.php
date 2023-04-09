@@ -3,173 +3,175 @@
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Dashboard</h1>
 
-    <form class="flex items-center my-4">
-        <label for="simple-search" class="sr-only">Search</label>
-        <div class="relative w-full">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"></path>
-                </svg>
+    <div id="searchNavbar" class="w-[72.3vw] relative bg-white z-50">
+        <form class="flex items-center my-4">
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <input type="text" id="simple-search"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
+                    placeholder="Search" required>
             </div>
-            <input type="text" id="simple-search"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
-                placeholder="Search" required>
-        </div>
-        <button type="submit"
-            class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-900 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <span class="sr-only">Search</span>
-        </button>
-    </form>
-    <div class="accordion pointer-events-none" id="accordionReport">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingTwo">
-                <button
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+            <button type="submit"
+                class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-900 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span class="sr-only">Search</span>
+            </button>
+        </form>
+        <div class="accordion pointer-events-none" id="accordionReport">
+            <div class="accordion-item bg-white border border-gray-200 rounded-lg">
+                <h2 class="accordion-header mb-0" id="headingTwo">
+                    <button
+                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
             bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                    aria-controls="collapseTwo">
-                    <h1 class="text-xl text-gray-800">
-                        Report
-                    </h1>
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body py-4 px-5">
-                    <form action="{{ url('/dashboard/report/add') }}" method="POST">
-                        @csrf
-                        <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
-                                Laporan</label>
-                            <div class="w-4"></div>
-                            <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Nomor Laporan" required>
-                            <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
-                                class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
-                                placeholder="Nomor Laporan" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col justify-start">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
-                            <div class="w-4"></div>
-                            <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Nomor Laporan">
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Pelapor</label>
-                            <div class="w-4"></div>
-                            <input disabled type="text" id="full_name" name="pelapor"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                value="{{ $pelapor->full_name }}" placeholder="Pelapor" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Departemen</label>
-                            <div class="w-4"></div>
-                            <input disabled type="text" id="full_name" name="departemen"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Jenis</label>
-                            <div class="w-4"></div>
-                            <select id="jenis" name="jenis"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
-                                <option value="TI">TI</option>
-                                <option value="Gambar Teknik">Gambar Teknik</option>
-                                <option value="Process Entry">Process Entry</option>
-                            </select>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
-                            <div class="w-4"></div>
-                            <select id="kategori_report" name="kategori_report_id"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
-                                @foreach ($kategori_report as $kategori)
-                                    <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}</option>
-                                @endforeach
-                                {{-- @foreach ($roles as $role)
+                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                        aria-controls="collapseTwo">
+                        <h1 class="text-xl text-gray-800">
+                            Report
+                        </h1>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body py-4 px-5">
+                        <form action="{{ url('/dashboard/report/add') }}" method="POST">
+                            @csrf
+                            <input class="hidden" type="text" name="item_level_id" id="item_level_id">
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
+                                    Laporan</label>
+                                <div class="w-4"></div>
+                                <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    placeholder="Nomor Laporan" required>
+                                <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
+                                    class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
+                                    placeholder="Nomor Laporan" required>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col justify-start">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
+                                <div class="w-4"></div>
+                                <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    placeholder="Nomor Laporan">
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Pelapor</label>
+                                <div class="w-4"></div>
+                                <input disabled type="text" id="full_name" name="pelapor"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    value="{{ $pelapor->full_name }}" placeholder="Pelapor" required>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Departemen</label>
+                                <div class="w-4"></div>
+                                <input disabled type="text" id="full_name" name="departemen"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Jenis</label>
+                                <div class="w-4"></div>
+                                <select id="jenis" name="jenis"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                    <option value="TI">TI</option>
+                                    <option value="Gambar Teknik">Gambar Teknik</option>
+                                    <option value="Process Entry">Process Entry</option>
+                                </select>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
+                                <div class="w-4"></div>
+                                <select id="kategori_report" name="kategori_report_id"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                    @foreach ($kategori_report as $kategori)
+                                        <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}</option>
+                                    @endforeach
+                                    {{-- @foreach ($roles as $role)
                                     <option value="{{ $role->access }}">{{ $role->name }}</option>
                                 @endforeach --}}
-                            </select>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="full_name"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Temuan</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="full_name" name="temuan"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
-                                placeholder="Temuan" required>
-                        </div>
-                        <button type="submit" class="hidden" id="submitReport"></button>
-                        <label for="my-modal-konfirmasi"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5 cursor-pointer">Tambah
-                            report baru</label>
-                    </form>
+                                </select>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="full_name"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Temuan</label>
+                                <div class="w-4"></div>
+                                <input type="text" id="full_name" name="temuan"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
+                                    placeholder="Temuan" required>
+                            </div>
+                            <button type="submit" class="hidden" id="submitReport"></button>
+                            <label for="my-modal-konfirmasi"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5 cursor-pointer">Tambah
+                                report baru</label>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div id="content">
+        <div class="w-full flex min-h-[60vh] mt-4">
+            <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
+                @foreach ($item_levels as $item_level)
+                    <x-level-item :item="$item_level" />
+                @endforeach
+            </div>
+            <div class="w-9/12 bg-slate-200 rounded-lg p-5">
+                <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
+                <div id="dashboard_container" class="hidden">
 
-    <div class="w-full flex min-h-[60vh] mt-4">
-        <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
-            @foreach ($item_levels as $item_level)
-                <x-level-item :item="$item_level" />
-            @endforeach
-        </div>
-        <div class="w-9/12 bg-slate-200 rounded-lg p-5">
-            <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
-            <div id="dashboard_container" class="hidden">
+                    <h1 class="text-lg" id="component_name">Name</h1>
 
-                <h1 class="text-lg" id="component_name">Name</h1>
+                    <div id="table_container">
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Kode Komponen
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Nama Komponen
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableCol">
 
-                <div id="table_container">
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        No
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Kode Komponen
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Komponen
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableCol">
-
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
 
-                <h1 class="my-4">Gambar Komponen</h1>
-                <div id="photosLoader" class="mb-4"></div>
+                    <h1 class="my-4">Gambar Komponen</h1>
+                    <div id="photosLoader" class="mb-4"></div>
+                    <div id="photosPagination" class="mb-4 flex justify-center"></div>
 
+                    <div id="pe_container">
 
-                <div id="pe_container">
-
-                    {{-- <div class="pe_table">
+                        {{-- <div class="pe_table">
                         <h1>Persiapan pembongkaran Unit sesuai dengan Jadwal</h1>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-500">
@@ -205,11 +207,13 @@
                         </div>
                     </div> --}}
 
-                </div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
+
 
     <div class="hidden" id="modalKonfirmasi">
         <input type="checkbox" id="my-modal-konfirmasi" class="modal-toggle" />
@@ -262,6 +266,7 @@
                     })
 
                     $("#photosLoader").html("");
+                    $("#photosPagination").html("");
                     $.each(response.data.all_photos, function(key, value) {
                         let id_target_left = key - 1;
                         let id_target_right = key + 1;
@@ -274,21 +279,27 @@
                             id_target_right = 0;
                         }
                         $('#photosLoader').append(
-                            `<div id='img${key}' class='w-full flex items-center justify-between ${!boleh && "hidden"}'>
-                                <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_left})'>
+                            `<div class='img${key} img w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_left})'>
                                     <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
                                 <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
-                                <div class="text-center cursor-pointer" onclick='slideImg(${key},${id_target_right})'>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_right})'>
                                     <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
-                            </div>`
+                            </div>
+                            `
+                        );
+                        $('#photosPagination').append(
+                            `
+                            <div id='imgPagination${key}' class='img${key} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImg(${key})'>${key+1}</div>
+                            `
                         );
                     })
 
                     //load all process entries
                     $("#pe_container").html("");
-                    loadProcessEntries(response.data.process_entries,response.data.tables);
+                    loadProcessEntries(response.data.process_entries, response.data.tables);
 
                     document.getElementById("loadingDashboard").classList.add("hidden");
                     document.getElementById("dashboard_container").classList.remove("hidden");
@@ -328,9 +339,15 @@
             // document.getElementById(btnDown).classList.toggle("rotate-180");
         }
 
-        function slideImg(id_this, id_target) {
-            document.getElementById(`img${id_this}`).classList.add("hidden");
-            document.getElementById(`img${id_target}`).classList.remove("hidden");
+        function slideImg(id_target) {
+            $(`.img`).addClass("hidden");
+            $(`.img${id_target}`).removeClass("hidden");
+            $(`.imgPagination`).removeClass("bg-blue-500");
+            $(`.imgPagination`).addClass("bg-white");
+            $(`#imgPagination${id_target}`).removeClass("bg-white");
+            $(`#imgPagination${id_target}`).addClass("bg-blue-500");
+            // document.getElementById(`img${id_this}`).classList.add("hidden");
+            // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
 
         setTimeout(() => {
@@ -386,7 +403,7 @@
                 </div>`);
         }
 
-            //DONE
+        //DONE
         function placeComponentToTable(table_id, item) {
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`<tr class="bg-white border-b">
@@ -414,7 +431,7 @@
             </tr>`);
         }
 
-        function loadProcessEntries(process_entries,tables) {
+        function loadProcessEntries(process_entries, tables) {
             $.each(process_entries, function(key, pe) {
                 let table_id = 'pe_table_' + pe.process_entry_id;
                 generateTable(pe.process_entry_id, pe.work_description, table_id);
@@ -426,12 +443,12 @@
                         item_number: item.item_number,
                         item_description: item.item_description,
                         item_component_qty: item.pivot.item_component_qty,
-                        item_uofm:item.item_uofm
+                        item_uofm: item.item_uofm
                     };
                     placeComponentToTable(table_id, it);
                 });
-        });
-    }
+            });
+        }
 
 
 
@@ -464,8 +481,24 @@
             }
         }
 
-
-
         selectedDashboard();
+    </script>
+    <script type="text/javascript">
+        var nav = document.getElementById("searchNavbar");
+        var content = document.getElementById("content");
+        var offset = 125;
+
+        window.onscroll = function() {
+            if (window.pageYOffset > offset) {
+                nav.style.position = "fixed";
+                nav.style.top = 0;
+                $('#content').css('margin-top', $("#searchNavbar").height() + 10);
+            } else {
+                nav.style.position = "relative";
+                nav.style.top = offset;
+                $('#content').css('margin-top', "0px");
+            }
+            $("#searchNavbar").width($("#content").width());
+        };
     </script>
 @endsection

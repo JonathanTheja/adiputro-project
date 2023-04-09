@@ -714,8 +714,8 @@
                         // show nomor_laporan_ti
                         nomor_laporan_ti.removeOption(response.nomor_laporan);
                         if (isEdit) {
-                            // nomor_laporan_ti.clear();
-                            // nomor_laporan_ti.clearOptions();
+                            nomor_laporan_ti.clear();
+                            nomor_laporan_ti.clearOptions();
                             nomor_laporan_ti.addOption({
                                 value: response.nomor_laporan,
                                 text: response.nomor_laporan
