@@ -518,15 +518,16 @@
             }
         };
 
-        if ("{{ Session::has('qrcode') }}" == 1) {
+        //cek dari return with dalam session
+        if ("{{ Session::has('qrcode') }}") {
             let html = `{{ Session::get('qrcode') }}`;
             html = html.split("?>");
             html = html[1];
             setTimeout(() => {
                 Swal.fire({
-                    title: 'Berhasil Tambah Report Baru!',
                     // text: "You won't be able to revert this!",
                     icon: 'success',
+                    title: 'Berhasil Tambah Report Baru!',
                     // showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',

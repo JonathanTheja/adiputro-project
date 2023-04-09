@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FormReport;
 use App\Models\ItemLevel;
 use App\Models\KategoriReport;
+use DateTime;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +57,27 @@ class DashboardController extends Controller
             "kategori_report_id" => $request->kategori_report_id,
             "temuan" => $request->temuan,
         ]);
-        $qrcode = QrCode::size(200)->generate(now());
+        // $qrcode = QrCode::size(200)->generate(now());
+        date_default_timezone_set('Asia/Jakarta');
+        $date = new DateTime();
+        $day = date('l');
+        $hari = [
+            "Sunday" => "Minggu",
+            "Monday" => "Senin",
+            "Tuesday" => "Selasa",
+            "Wednesday" => "Rabu",
+            "Thursday" => "Kamis",
+            "Friday" => "Jumat",
+            "Saturday" => "Sabtu",
+        ];
+        $formatted_date = $date->format('j F Y; h:i A');
+
+        $qrcode = QrCode::size(200)->generate(
+            Auth::user()->full_name.'; '.
+            Auth::user()->role->name.'; '.
+            Auth::user()->department->name.'; '.
+            $hari[$day].'; '.$formatted_date
+        );
         // Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
         return redirect('/dashboard')->with(['qrcode' => $qrcode]);
     }
