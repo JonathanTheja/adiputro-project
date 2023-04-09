@@ -376,9 +376,10 @@ class MasterDataController extends Controller
                 ]);
             }
             $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
+            Session::put("sess.table.".$table_id.".".$item_component_id,$item);
             $this->updateTotalUsedComponentList($item_component_id);
             //success, no data found, create a new one
-            Session::put("sess.table.".$table_id.".".$item_component_id,$item);
+
             $components = Session::get("sess.comp_temp");
             return response()->json([
                 'success' => true,
@@ -418,21 +419,21 @@ class MasterDataController extends Controller
         $tables = Session::get("sess.table");
         // dd($tables);
         $total_qty = 0;
-
+        $ids = [];
         foreach($tables as $id=>$table){
             if(array_key_exists($item_component_id."",$table) && $id != $table_id){
+                $ids[] = $id;
                 $total_qty += $table[$item_component_id.""]["item_component_qty"];
             }
         }
 
-        if(($total_qty + $qty) > $total_available){
+        if($qty > $total_available){
             return response()->json([
                 'success' => false,
                 'message'=>'qty tidak cukup!',
                 'tables'=>Session::get("sess.table"),
                 'current_qty' => $table_comp["item_component_qty"],
-                'total_qty' => ($total_qty + $qty),
-                'available'=>$total_available
+               
             ]);
         }
 
