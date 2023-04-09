@@ -68,11 +68,13 @@ class MasterDataController extends Controller
         return back();
     }
 
+
     function updateTotalUsedComponentList($item_component_id){
         $tables = Session::get("sess.table");
         // dd($tables);
-        $total_qty = 0;
         $item_component_id = $item_component_id."";
+        $total_qty = 0;
+
         foreach($tables as $table){
             if(array_key_exists($item_component_id,$table)){
 
@@ -285,7 +287,6 @@ class MasterDataController extends Controller
             foreach($item_kit_lists as $item_kit){
                 $ikit_components = $item_kit->itemComponents;
                 foreach ($ikit_components as $comp) {
-
                     # code...
                 $comp_id = (($comp->item_component_id)."");
                 if(Arr::exists($components,$comp_id)){
@@ -362,8 +363,6 @@ class MasterDataController extends Controller
 
     }
 
-
-
     function callUpdateSpecComponent($item_number,$table_id){
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
@@ -376,14 +375,16 @@ class MasterDataController extends Controller
                     'message'=>'Komponen sudah ada pada tabel!'
                 ]);
             }
+            $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
+            $this->updateTotalUsedComponentList($item_component_id);
             //success, no data found, create a new one
             Session::put("sess.table.".$table_id.".".$item_component_id,$item);
-
-
+            $components = Session::get("sess.comp_temp");
             return response()->json([
                 'success' => true,
                 'data'    => [
                     "item"=>$item,
+                    "components"=>$components,
                     "table"=>Session::get($table_id)
                 ],
             ]);
@@ -409,6 +410,32 @@ class MasterDataController extends Controller
         $item_number = $request->item_number;
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $table_comp = Session::get('sess.table.'.$table_id.".".$item_component_id);
+
+        //check enough or not ?
+        $temp_comp = Session::get('sess.comp_temp.'.$item_component_id);
+        $total_available = $temp_comp["item_component_qty"] - $temp_comp["total_item_used"] + $table_comp["item_component_qty"];
+
+        $tables = Session::get("sess.table");
+        // dd($tables);
+        $total_qty = 0;
+
+        foreach($tables as $id=>$table){
+            if(array_key_exists($item_component_id."",$table) && $id != $table_id){
+                $total_qty += $table[$item_component_id.""]["item_component_qty"];
+            }
+        }
+
+        if(($total_qty + $qty) > $total_available){
+            return response()->json([
+                'success' => false,
+                'message'=>'qty tidak cukup!',
+                'tables'=>Session::get("sess.table"),
+                'current_qty' => $table_comp["item_component_qty"],
+                'total_qty' => ($total_qty + $qty),
+                'available'=>$total_available
+            ]);
+        }
+
         $table_comp["item_component_qty"] = $qty;
         Session::put('sess.table.'.$table_id.'.'.$item_component_id,$table_comp);
         $this->updateTotalUsedComponentList($item_component_id);
