@@ -47,11 +47,12 @@
             </select>
 
             <label for="input-kode-process" class="block my-2 text-gray-900">Kode Komponen</label>
-            <select id="input-kode-process" multiple autocomplete="off" name="kode_komponen_process[]" onchange="updateProcess('0')">
+            <select id="input-kode-process" multiple autocomplete="off" name="kode_komponen_process[]"
+                onchange="updateProcess('0')">
                 @foreach ($item_components as $item_component)
-                <option value="{{ $item_component->item_component_id }}">
-                    {{ $item_component->item_number }} -
-                    {{ $item_component->item_description }}</option>
+                    <option value="{{ $item_component->item_component_id }}">
+                        {{ $item_component->item_number }} -
+                        {{ $item_component->item_description }}</option>
                 @endforeach
             </select>
 
@@ -72,59 +73,51 @@
 
             <div class="flex flex-col">
                 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                      <table
-                        class="min-w-full border text-center text-sm font-light dark:border-neutral-500" id="table_components">
-                        <thead class="border-b font-medium dark:border-neutral-500">
-                          <tr>
-                            <th
-                              scope="col"
-                              class="border-r px-6 py-4 dark:border-neutral-500">
-                              No
-                            </th>
-                            <th
-                              scope="col"
-                              class="border-r px-6 py-4 dark:border-neutral-500">
-                              Kode Komponen
-                            </th>
-                            <th
-                              scope="col"
-                              class="border-r px-6 py-4 dark:border-neutral-500">
-                              Nama Komponen
-                            </th>
-                            <th
-                            scope="col"
-                            class="border-r px-6 py-4 dark:border-neutral-500">
-                            Item Kit
-                             </th>
-                             <th
-                             scope="col"
-                             class="border-r px-6 py-4 dark:border-neutral-500">
-                             BOM ID
-                           </th>
-                           <th
-                           scope="col"
-                           class="border-r px-6 py-4 dark:border-neutral-500">
-                          Total
-                            </th>
-                            <th
-                              scope="col"
-                              class="border-r px-6 py-4 dark:border-neutral-500">
-                              Satuan
-                            </th>
-                          </tr>
-                        </thead>
+                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full border text-center text-sm font-light dark:border-neutral-500"
+                                id="table_components">
+                                <thead class="border-b font-medium dark:border-neutral-500">
+                                    <tr>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            No
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Kode Komponen
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Nama Komponen
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Item Kit
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            BOM ID
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Total
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Total Digunakan
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Total Tersedia
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Satuan
+                                        </th>
+                                    </tr>
+                                </thead>
 
-                        <tbody>
+                                <tbody>
 
-                        </tbody>
+                                </tbody>
 
-                      </table>
+                            </table>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+            </div>
 
             <div id="pe_container">
 
@@ -176,6 +169,45 @@
         }
         //------------------
 
+        function reloadComponentListTable(components){
+            $("#table_components tbody").html("");
+            let iter = 0;
+            $.each(components, function(key, comp) {
+                iter++;
+                let appendedClass = "border-b dark:border-neutral-500";
+                let total_available = comp.item_component_qty - comp.total_item_used;
+                if (!comp.is_available) {
+                    appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
+                }
+                $("#table_components tbody").append(`<tr class="${appendedClass}">
+                    <td
+                        class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
+                        ${iter}
+                    </td>
+                    <td
+                        class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        ${comp.item_number}
+                    </td>
+                    <td
+                        class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        ${comp.item_description}
+                    </td>
+                    <td
+                    class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                    ${comp.item_kit_count}
+                        </td>
+                    <td
+                    class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                    ${comp.bom_count}
+                    </td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.total_item_used}</td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${total_available}</td>
+                    <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
+                </tr>`);
+            });
+        }
+
         //----------------DONE
         function updateProcess(session_status) {
             let item_kits = $("#input-item-kit").val();
@@ -191,40 +223,11 @@
                 },
                 success: function(response) {
                     let components = response.data.components;
-                    $("#table_components tbody").html("");
-                    let iter = 0;
-                    $.each(components, function(key, comp) {
-                        iter++;
-                        $("#table_components tbody").append(`<tr class="border-b dark:border-neutral-500">
-                            <td
-                              class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
-                                ${iter}
-                            </td>
-                            <td
-                              class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                              ${comp.item_number}
-                            </td>
-                            <td
-                              class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                              ${comp.item_description}
-                            </td>
-                            <td
-                            class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                            ${comp.item_kit_count}
-                             </td>
-                            <td
-                            class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                            ${comp.bom_count}
-                            </td>
-                            <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
-                            <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
-                        </tr>`);
-                    });
+                    reloadComponentListTable(components);
                 }
             });
         }
         //------------------------
-
         function generateTable(pe_id, pe_text, table_id) {
             $("#pe_container").append(
                 `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
@@ -291,7 +294,7 @@
             }
         }
 
-        function updateQTY(table_id,item_number,qty){
+        function updateQTY(table_id, item_number, qty) {
             $.ajax({
                 url: `/master/data/updateQty`,
                 type: "POST",
@@ -299,12 +302,11 @@
                 data: {
                     "item_number": item_number,
                     "table_id": table_id,
-                    "qty":qty
+                    "qty": qty
                 },
                 success: function(response) {
                     if (response.success) {
-                        // let item = response.data.item;
-                        console.log(response);
+                        reloadComponentListTable(response.components);
                     } else {
                         //failed
                         alert(response.message);
@@ -360,7 +362,7 @@
 
         }
 
-        function updateInputTable($table_id,$item_number){
+        function updateInputTable($table_id, $item_number) {
             $.ajax({
                 url: `/master/data/updateInputTable`,
                 type: "POST",
@@ -391,7 +393,6 @@
 
 
         //call the placeComponentToTable
-
         function refreshTable(table_id) {
 
             $.ajax({
@@ -408,14 +409,13 @@
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
 
-                        if(items != null){
-                             //foreach
-                            $.each(items, function(key,item) {
-                                placeComponentToTable(table_id,item);
+                        if (items != null) {
+                            //foreach
+                            $.each(items, function(key, item) {
+                                placeComponentToTable(table_id, item);
                             });
                         }
-                    }
-                    else{
+                    } else {
                         //refresh multiple tables
                         let tables = response.tables;
                         let process_entries = response.process_entries;
@@ -462,8 +462,8 @@
         }
 
         setTimeout(() => {
-           refreshTable("all");
-           updateProcess('1');
+            refreshTable("all");
+            updateProcess('0');
         }, 1000);
 
         generateTom("#input-departemen")

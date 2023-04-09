@@ -14,7 +14,7 @@ class ItemComponentProcessEntry extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['item_component_id','item_level_process_entry_id','department_id','item_component_qty'];
+    protected $fillable = ['item_component_id','item_level_process_entry_id','department_id','item_kit_count','bom_count','item_component_qty'];
 
     function item_level_process_entry()
     {

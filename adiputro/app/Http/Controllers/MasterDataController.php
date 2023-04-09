@@ -68,6 +68,28 @@ class MasterDataController extends Controller
         return back();
     }
 
+    function updateTotalUsedComponentList($item_component_id){
+        $tables = Session::get("sess.table");
+        // dd($tables);
+        $total_qty = 0;
+        $item_component_id = $item_component_id."";
+        foreach($tables as $table){
+            if(array_key_exists($item_component_id,$table)){
+
+                $total_qty += $table[$item_component_id]["item_component_qty"];
+            }
+        }
+        $comp_temp = Session::get('sess.comp_temp.'.$item_component_id);
+        $comp_temp["total_item_used"] = $total_qty;
+        if($total_qty >= $comp_temp["item_component_qty"]){
+            $comp_temp["is_available"] = false;
+        }
+        else{
+            $comp_temp["is_available"] = true;
+        }
+        Session::put('sess.comp_temp.'.$item_component_id,$comp_temp);
+    }
+
     function toUpdate(Request $request)
     {
         Session::forget("sess");
@@ -107,14 +129,14 @@ class MasterDataController extends Controller
                     "item_description"=>$ic->item_description,
                     "item_component_qty"=>$ic->pivot->item_component_qty,
                     "item_uofm"=>$ic->item_uofm,
-                    "item_kit_count"=>0,
-                    "bom_count"=>0
+                    "item_kit_count"=>$ic->pivot->item_kit_count,
+                    "bom_count"=>$ic->pivot->bom_count,
+                    "total_item_used"=>0
                 ];
 
-                Session::put("sess.comp_temp.".$comp_id,$comp);
                 Session::put("sess.table.".$table_id.".".$ic->item_component_id,$comp);
+
             }
-            // dd(Session::get("sess.table"));
         }
         //---
         return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry"));
@@ -173,7 +195,9 @@ class MasterDataController extends Controller
                 //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
                 $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry,[
-                    'item_component_qty'=>$ic["item_component_qty"]
+                    'item_component_qty'=>$ic["item_component_qty"],
+                    'item_kit_count'=>$ic["item_kit_count"],
+                    'bom_count'=>$ic["bom_count"]
                 ]);
             }
         }
@@ -277,7 +301,9 @@ class MasterDataController extends Controller
                         "item_component_qty"=>$comp->pivot->item_component_qty,
                         "item_uofm"=>$comp->item_uofm,
                         "item_kit_count"=>$comp->pivot->item_component_qty,
-                        "bom_count"=>0
+                        "total_item_used"=>0,
+                        "bom_count"=>0,
+                        "is_available"=>true
                     ];
                     $components[$comp_id] = $new_comp;
                 }
@@ -302,7 +328,9 @@ class MasterDataController extends Controller
                         "item_component_qty"=>$comp->pivot->consumed_qty,
                         "item_uofm"=>$comp->item_uofm,
                         "item_kit_count"=>0,
-                        "bom_count"=>$comp->pivot->consumed_qty
+                        "total_item_used"=>0,
+                        "bom_count"=>$comp->pivot->consumed_qty,
+                        "is_available"=>true
                     ];
                     $components[$comp_id] = $new_comp;
                 }
@@ -310,6 +338,11 @@ class MasterDataController extends Controller
             }
             //ok
             Session::put("sess.comp_temp",$components);
+            foreach ($components as $component) {
+                $this->updateTotalUsedComponentList($component["item_component_id"]);
+            }
+
+            $components = Session::get("sess.comp_temp");
             return response()->json([
                 'success' => true,
                 'data'    => [
@@ -329,6 +362,8 @@ class MasterDataController extends Controller
 
     }
 
+
+
     function callUpdateSpecComponent($item_number,$table_id){
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
@@ -343,6 +378,8 @@ class MasterDataController extends Controller
             }
             //success, no data found, create a new one
             Session::put("sess.table.".$table_id.".".$item_component_id,$item);
+
+
             return response()->json([
                 'success' => true,
                 'data'    => [
@@ -374,28 +411,33 @@ class MasterDataController extends Controller
         $table_comp = Session::get('sess.table.'.$table_id.".".$item_component_id);
         $table_comp["item_component_qty"] = $qty;
         Session::put('sess.table.'.$table_id.'.'.$item_component_id,$table_comp);
+        $this->updateTotalUsedComponentList($item_component_id);
+
+        $components = Session::get('sess.comp_temp');
+
         return response()->json([
             'success' => true,
             'message'=>'Berhasil update qty!',
-            'tables'=>Session::get("sess.table")
+            'tables'=>Session::get("sess.table"),
+            'components' => $components
         ]);
 
     }
 
-    function matchDataComponent(Request $request){
-        $item_component_id = $request->item_component_id;
-        $tables = Session::get("sess.table");
-        $total_qty = 0;
-        foreach($tables as $table){
-            if($table[$item_component_id]!=null){
-                $total_qty += $table[$item_component_id]["item_component_qty"];
-            }
-        }
-        $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
-        if($total_qty >= $item_component_id){
-            //delete
-        }
-    }
+    // function matchDataComponent(Request $request){
+    //     $item_component_id = $request->item_component_id;
+    //     $tables = Session::get("sess.table");
+    //     $total_qty = 0;
+    //     foreach($tables as $table){
+    //         if($table[$item_component_id]!=null){
+    //             $total_qty += $table[$item_component_id]["item_component_qty"];
+    //         }
+    //     }
+    //     $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
+    //     if($total_qty >= $item_component_id){
+    //         //delete
+    //     }
+    // }
 
     function deleteComponentTable(Request $request){
         $item_number = $request->item_number;

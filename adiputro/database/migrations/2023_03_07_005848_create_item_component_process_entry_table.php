@@ -19,6 +19,8 @@ return new class extends Migration
             $table->bigInteger('item_component_id');
             $table->bigInteger('item_level_process_entry_id');
             $table->bigInteger('department_id')->nullable();
+            $table->integer('item_kit_count');
+            $table->integer('bom_count');
             $table->integer('item_component_qty');
             $table->text('info')->nullable();
             $table->softDeletes();
