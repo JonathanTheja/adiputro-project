@@ -454,6 +454,7 @@
                 success: function(response) {
                     if (response.success) {
                         refreshTable(table_id);
+                        reloadComponentListTable(response.components);
                     } else {
                         //failed
                         alert(response.message);

@@ -375,6 +375,12 @@ class MasterDataController extends Controller
                     'message'=>'Komponen sudah ada pada tabel!'
                 ]);
             }
+            if(!$item["is_available"]){
+                return response()->json([
+                    'success' => false,
+                    'message' => "Jumlah item tidak mencukupi!"
+                ]);
+            }
             $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
             Session::put("sess.table.".$table_id.".".$item_component_id,$item);
             $this->updateTotalUsedComponentList($item_component_id);
@@ -433,7 +439,7 @@ class MasterDataController extends Controller
                 'message'=>'qty tidak cukup!',
                 'tables'=>Session::get("sess.table"),
                 'current_qty' => $table_comp["item_component_qty"],
-               
+
             ]);
         }
 
@@ -452,20 +458,6 @@ class MasterDataController extends Controller
 
     }
 
-    // function matchDataComponent(Request $request){
-    //     $item_component_id = $request->item_component_id;
-    //     $tables = Session::get("sess.table");
-    //     $total_qty = 0;
-    //     foreach($tables as $table){
-    //         if($table[$item_component_id]!=null){
-    //             $total_qty += $table[$item_component_id]["item_component_qty"];
-    //         }
-    //     }
-    //     $item_temp_qty = Session::get('sess.comp_temp')[$item_component_id]["item_component_qty"];
-    //     if($total_qty >= $item_component_id){
-    //         //delete
-    //     }
-    // }
 
     function deleteComponentTable(Request $request){
         $item_number = $request->item_number;
@@ -473,10 +465,13 @@ class MasterDataController extends Controller
         //delete
         $table_id = $request->table_id;
         Session::forget("sess.table.".$table_id.".".$item_component_id);
+        $this->updateTotalUsedComponentList($item_component_id);
+        $components = Session::get("sess.comp_temp");
         return response()->json([
             'success' => true,
             'message'=>'Berhasil hapus komponen dari tabel!',
-            'tables'=>Session::get("sess.table")
+            'tables'=>Session::get("sess.table"),
+            'components'=>$components
         ]);
     }
 
