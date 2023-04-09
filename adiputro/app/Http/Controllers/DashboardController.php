@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FormReport;
 use App\Models\ItemLevel;
 use App\Models\KategoriReport;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -55,8 +56,9 @@ class DashboardController extends Controller
             "kategori_report_id" => $request->kategori_report_id,
             "temuan" => $request->temuan,
         ]);
-        Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
-        return back();
+        $qrcode = QrCode::size(200)->generate(now());
+        // Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
+        return redirect('/dashboard')->with(['qrcode' => $qrcode]);
     }
 
     function updateReport(Request $request)

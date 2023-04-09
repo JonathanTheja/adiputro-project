@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "realrashid/sweet-alert": "^6.0",
+        "simplesoftwareio/simple-qrcode": "~4",
         "staudenmeir/laravel-adjacency-list": "1.12.1"
     },
     "require-dev": {

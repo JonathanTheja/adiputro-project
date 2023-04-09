@@ -173,7 +173,8 @@
                                 <div id="collapseCB1" class="p-4" aria-labelledby="headingCB" data-te-collapse-item
                                     data-te-collapse-show data-bs-parent="#accordionCBApprovedBy">
                                     {{-- @if ($pembuat->department->access_database == 'SPK Mini Bus') --}}
-                                    <div class="text-center text-xl mb-2">All Minibus</div>
+                                    <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer"
+                                        onclick="allMinibusTI()">All Minibus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_minibus as $department)
                                             {{-- department minibus --}}
@@ -182,14 +183,15 @@
                                                     @if ($pembuat->department->access_database == 'SPK Mini Bus') {{ 'checked' }} @endif
                                                     type="checkbox" name="cb_minibus_ti[]"
                                                     value="{{ $department->department_id }}"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti minibus">
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
                                         @endforeach
                                     </div>
                                     {{-- @else --}}
-                                    <div class="text-center text-xl mb-2">All Bus</div>
+                                    <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer" onclick="allBusTI()">
+                                        All Bus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_bus as $department)
                                             {{-- department bus --}}
@@ -198,7 +200,7 @@
                                                     @if ($pembuat->department->access_database == 'SPK Bus') {{ 'checked' }} @endif
                                                     type="checkbox" name="cb_bus_ti[]"
                                                     value="{{ $department->department_id }}"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti bus">
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
@@ -249,7 +251,11 @@
                                     Input Technical Instruction
                                 </div>
                             </div>
-                            @yield('photos_ti')
+                            <div class="lg:mb-4 mb-2 ">
+                                @yield('photos_ti')</div>
+                            <div id="photosPagination" class="mb-4 flex justify-center">
+                                @stack('photosPaginationTI')
+                            </div>
                     </form>
                 </div>
             </div>
@@ -521,6 +527,18 @@
             user_defined_gt = generateTom("#user_defined_gt")
         }
         refreshInput()
+
+        function allMinibusTI() {
+            $('input[type=checkbox].cb_ti.minibus').each(function() {
+                $(this).prop('checked', true);
+            });
+        }
+
+        function allBusTI() {
+            $('input[type=checkbox].cb_ti.bus').each(function() {
+                $(this).prop('checked', true);
+            });
+        }
 
         //                                                  param    ini           ini               ini hanya untuk edit
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {

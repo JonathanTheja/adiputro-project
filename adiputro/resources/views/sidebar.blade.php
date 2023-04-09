@@ -61,8 +61,8 @@
     </a>
     <a href="{{ url('/process-entry') }}">
         <div class="sidemenu p-2.5 mt-3 flex items-center rounded-md px-4 cursor-pointer hover:bg-blue-600 text-white"
-            id="sidemenuInput">
-            <i class="bi bi-file-image"></i>
+            id="sidemenuProcessEntry">
+            <i class="bi bi-hdd-stack"></i>
             <span class="text-[15px] ml-4 text-gray-200">Process Entry</span>
         </div>
     </a>
@@ -153,6 +153,8 @@
         document.getElementById("sidemenuData").classList.add("bg-blue-600");
     } else if (master.includes("master/input")) {
         document.getElementById("sidemenuInput").classList.add("bg-blue-600");
+    } else if (master.includes("process-entry")) {
+        document.getElementById("sidemenuProcessEntry").classList.add("bg-blue-600");
     } else if (master.includes("notifikasi/report") && !master.includes("notifikasi/report/approval")) {
         document.getElementById("sidemenuNotifikasiReport").classList.add("bg-blue-600");
     } else if (master.includes("notifikasi/report/approval")) {

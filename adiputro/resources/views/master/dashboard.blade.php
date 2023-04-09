@@ -3,6 +3,13 @@
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Dashboard</h1>
 
+    {{-- @if (Session::has('qrcode'))
+        <script>
+            alert('{{ Session::has('qrcode') }}')
+        </script>
+        {{ Session::get('qrcode') }}
+    @endif --}}
+
     <div id="searchNavbar" class="w-[72.3vw] relative bg-white z-50">
         <form class="flex items-center my-4">
             <label for="simple-search" class="sr-only">Search</label>
@@ -340,12 +347,14 @@
         }
 
         function slideImg(id_target) {
+            let selectedClass = "bg-blue-500";
+            let unselectedClass = "bg-white";
             $(`.img`).addClass("hidden");
             $(`.img${id_target}`).removeClass("hidden");
-            $(`.imgPagination`).removeClass("bg-blue-500");
-            $(`.imgPagination`).addClass("bg-white");
-            $(`#imgPagination${id_target}`).removeClass("bg-white");
-            $(`#imgPagination${id_target}`).addClass("bg-blue-500");
+            $(`.imgPagination`).removeClass(selectedClass);
+            $(`.imgPagination`).addClass(unselectedClass);
+            $(`#imgPagination${id_target}`).removeClass(unselectedClass);
+            $(`#imgPagination${id_target}`).addClass(selectedClass);
             // document.getElementById(`img${id_this}`).classList.add("hidden");
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
@@ -473,11 +482,15 @@
         }
 
         function selectedDashboard() {
-            var url = window.location.href;
-            getId = url.split("/dashboard/");
-            getId = getId[1];
-            if (getId != "") {
-                selectDashboard2(getId);
+            try {
+                var url = window.location.href;
+                getId = url.split("/dashboard/");
+                getId = getId[1];
+                if (getId != "") {
+                    selectDashboard2(getId);
+                }
+            } catch (error) {
+
             }
         }
 
@@ -489,16 +502,39 @@
         var offset = 125;
 
         window.onscroll = function() {
-            if (window.pageYOffset > offset) {
-                nav.style.position = "fixed";
-                nav.style.top = 0;
-                $('#content').css('margin-top', $("#searchNavbar").height() + 10);
-            } else {
-                nav.style.position = "relative";
-                nav.style.top = offset;
-                $('#content').css('margin-top', "0px");
+            try {
+                if (window.pageYOffset > offset) {
+                    nav.style.position = "fixed";
+                    nav.style.top = 0;
+                    $('#content').css('margin-top', $("#searchNavbar").height() + 10);
+                } else {
+                    nav.style.position = "relative";
+                    nav.style.top = offset;
+                    $('#content').css('margin-top', "0px");
+                }
+                $("#searchNavbar").width($("#content").width());
+            } catch (error) {
+
             }
-            $("#searchNavbar").width($("#content").width());
         };
+
+        if ("{{ Session::has('qrcode') }}" == 1) {
+            let html = `{{ Session::get('qrcode') }}`;
+            html = html.split("?>");
+            html = html[1];
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'Berhasil Tambah Report Baru!',
+                    // text: "You won't be able to revert this!",
+                    icon: 'success',
+                    // showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                    // confirmButtonText: 'Yes, Update it!'
+                    allowOutsideClick: false
+                })
+            }, 500);
+        }
     </script>
 @endsection
