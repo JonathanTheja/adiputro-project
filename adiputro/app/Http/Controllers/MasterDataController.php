@@ -266,8 +266,10 @@ class MasterDataController extends Controller
             //item kit , bom id
             $item_kit_list_id = $request->item_kits ?? [];
             $bom_list_id = $request->boms ?? [];
+            $code_components = $request->code_components ?? [];
             $item_kit_lists = [];
             $bom_lists = [];
+
 
             //returned components (merged)
             $components = [];
@@ -278,6 +280,7 @@ class MasterDataController extends Controller
             foreach($bom_list_id as $bom_id){
                 $bom_lists[] = Bom::find($bom_id);
             }
+
 
             //components
             // - component-id
@@ -335,6 +338,28 @@ class MasterDataController extends Controller
                     ];
                     $components[$comp_id] = $new_comp;
                 }
+                }
+            }
+            foreach($code_components as $code_component){
+                $comp = ItemComponent::find($code_component["id"]);
+                $comp_id = (($comp->item_component_id)."");
+                if(Arr::exists($components,$comp_id)){
+                    //icr
+                    $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $code_component["qty"];
+                }
+                else{
+                    $new_comp = [
+                        "item_component_id"=>$comp->item_component_id,
+                        "item_number"=>$comp->item_number,
+                        "item_description"=>$comp->item_description,
+                        "item_component_qty"=>$code_component["qty"],
+                        "item_uofm"=>$comp->item_uofm,
+                        "item_kit_count"=>0,
+                        "total_item_used"=>0,
+                        "bom_count"=>0,
+                        "is_available"=>true
+                    ];
+                    $components[$comp_id] = $new_comp;
                 }
             }
             //ok
