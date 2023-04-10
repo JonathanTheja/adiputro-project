@@ -24,7 +24,7 @@ class ItemLevelProcessEntry extends Model
 
     function item_component_process_entry()
     {
-        return $this->belongsTo(ItemComponentProcessEntry::class,'item_level_process_entry_id','item_level_process_entry_id');
+        return $this->hasMany(ItemComponentProcessEntry::class,'item_level_process_entry_id','item_level_process_entry_id');
     }
 
     function process_entry()

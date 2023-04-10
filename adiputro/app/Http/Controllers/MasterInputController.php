@@ -48,6 +48,7 @@ class MasterInputController extends Controller
     function masterInput(Request $request)
     {
         $form_report_ti = FormReport::where("jenis","TI")->get();
+        $form_report_gt = FormReport::where("jenis","Gambar Teknik")->get();
         $form_report_gambar = FormReport::where("jenis","Gambar Teknik")->get();
         $pembuat = Auth::user();
         $diperiksa_oleh = Role::where("name","Manager Engineering")->first()->users;
@@ -56,7 +57,7 @@ class MasterInputController extends Controller
         $user_defined = UserDefined::all();
 
         $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
-        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","input_ti"));
+        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","input_ti", "form_report_gt"));
     }
 
     function getLevelTI(Request $request)
@@ -81,7 +82,7 @@ class MasterInputController extends Controller
 
         return response()->json([
             'success' => true,
-            'item_level_process_entry' => $item_level_process_entry
+            'item_level_process_entry' => $item_level_process_entry,
         ]);
     }
 
@@ -295,6 +296,13 @@ class MasterInputController extends Controller
     function getGTByKodeTI(Request $request)
     {
         $input_ti = InputTI::where("kode_ti", $request->kode_ti)->where("status",1)->first();
+
+        if(!isset($input_ti)){
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+
         $kode_komponen = $input_ti->item_component_ti;
         try {
             $pivot = $input_ti->item_component_ti[0]->pivot;
@@ -302,19 +310,48 @@ class MasterInputController extends Controller
             //throw $th;
         }
 
-        //masih salah
         return response()->json([
             'success' => true,
             'input_ti' => $input_ti
         ]);
     }
 
-    function getComponentGT(Request $request)
+    function getProcessEntryGT(Request $request)
     {
-        //masih salah
+        $form_report_gt = FormReport::where("nomor_laporan", $request->nomor_laporan)->first();
+
         return response()->json([
             'success' => true,
-            'request' => $request->item_component_id
+            'item_level_process_entry' => $form_report_gt->item_level_process_entry()->with("process_entry")->get(),
+            'item_level_id' => $form_report_gt->item_level_id,
+            'level' => $form_report_gt->item_level->level,
+        ]);
+    }
+
+    function getComponentGT(Request $request)
+    {
+        $item_level_process_entry = ItemLevelProcessEntry::where("item_level_id",$request->item_level_id)->where("process_entry_id",$request->process_entry_id)->with(['item_component_process_entry'])->first();
+
+        $item_components = [];
+        foreach ($item_level_process_entry->item_component_process_entry as $key => $entry) {
+            $item_components[] = ItemComponent::find($entry->item_component_id);
+        }
+
+        return response()->json([
+            'success' => true,
+            // 'item_level_process_entry' => $item_level_process_entry,
+            'item_components' => $item_components,
+        ]);
+    }
+
+    function getDetailComponentGT(Request $request)
+    {
+        $item_component = ItemComponent::where("item_number", $request->item_number)->first();
+
+        return response()->json([
+            'success' => true,
+            // 'item_level_process_entry' => $item_level_process_entry,
+            'item_component' => $item_component,
         ]);
     }
 

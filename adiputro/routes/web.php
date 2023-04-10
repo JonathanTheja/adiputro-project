@@ -58,7 +58,9 @@ Route::prefix('master')->group(function () {
         Route::prefix('gt')->group(function () {
             Route::post('/add', [MasterInputController::class,'addGT']);
             Route::post('/getGTByKodeTI', [MasterInputController::class,'getGTByKodeTI']);
-            Route::post('/getComponent', [MasterInputController::class,'getComponentGT']);
+            Route::post('/getProcessEntryGT', [MasterInputController::class,'getProcessEntryGT']);
+            Route::post('/getComponentGT', [MasterInputController::class,'getComponentGT']);
+            Route::post('/getDetailComponentGT', [MasterInputController::class,'getDetailComponentGT']);
         });
 
     });

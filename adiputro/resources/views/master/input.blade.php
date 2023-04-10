@@ -295,24 +295,40 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
+                            <input type="text" id="kode_ti_gt" name="kode_ti_gt" oninput="getGTByKodeTI(this.value)"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode TI">
                             {{-- kode_ti_gt -> kode_ti punya gt --}}
-                            <select id="kode_ti_gt" placeholder="Kode TI" required onchange="getGTByKodeTI(this.value)"
+                            {{-- <select id="kode_ti_gt" placeholder="Kode TI" required onchange="getGTByKodeTI(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_ti_gt">
                                 <option disabled selected value>Pilih Kode TI</option>
                                 @foreach ($input_ti as $input)
                                     <option value="{{ $input->kode_ti }}">{{ $input->kode_ti }}</option>
                                 @endforeach
-                            </select>
+                            </select> --}}
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nomor_laporan"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
                                 Laporan</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nomor_laporan_gt" name="nomor_laporan_gt" readonly
+                            {{-- <input type="text" id="nomor_laporan_gt" name="nomor_laporan_gt" readonly
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Nomor Laporan" required>
+                                placeholder="Nomor Laporan" required> --}}
+                            <select id="nomor_laporan_gt" placeholder="Nomor Laporan"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="nomor_laporan_gt" required
+                                onchange="getProcessEntryGT(this.value)">
+                                <option disabled selected value>Pilih Nomor Laporan</option>
+                                @foreach ($form_report_gt as $form_report)
+                                    <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
+                                    </option>
+                                @endforeach
+                                <option value="tambah">
+                                    Tambah Baru
+                                </option>
+                            </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_gt"
@@ -324,12 +340,28 @@
                                 placeholder="Nama Gambar">
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="process_entry_gt"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Process
+                                Entry</label>
+                            <div class="w-4"></div>
+                            <select id="process_entry_gt" placeholder="Process Entry"
+                                onchange="getComponentGT(this.value)"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="process_entry_gt" required>
+                                <option disabled selected value>Pilih Process Entry</option>
+                                {{-- @foreach ($form_report_ti as $form_report)
+                                    <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
+                                    </option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
                                 Komponen</label>
                             <div class="w-4"></div>
                             <select id="kode_komponen_gt" placeholder="Kode Komponen" required
-                                onchange="getComponentGT()"
+                                onchange="getDetailComponentGT(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_gt">
                                 {{-- @foreach ($departments as $department)
@@ -353,7 +385,7 @@
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-52">Nama
                                     Komponen</label>
                                 <div class="w-4"></div>
-                                <input type="text" readonly id="name" name="nama_komponen_gt"
+                                <input type="text" readonly id="nama_komponen_gt" name="nama_komponen_gt"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     placeholder="Nama Komponen" required>
                             </div>
@@ -521,7 +553,9 @@
             user_defined_ti = generateTom("#user_defined_ti")
             process_entry_ti = generateTom("#process_entry_ti")
 
-            kode_ti_gt = generateTom("#kode_ti_gt")
+            // kode_ti_gt = generateTom("#kode_ti_gt")
+            nomor_laporan_gt = generateTom("#nomor_laporan_gt")
+            process_entry_gt = generateTom("#process_entry_gt")
             diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
             kode_komponen_gt = generateTom("#kode_komponen_gt")
             user_defined_gt = generateTom("#user_defined_gt")
@@ -851,28 +885,88 @@
             });
         }
 
-        function getComponentGT() {
-            if (kode_komponen_gt.items.length == 0) {
-                $("#level_proses_gt").val("");
-                $("#nama_komponen_gt").val("");
-            } else {
+        let item_level_id_gt;
+        let level_gt;
+
+        function getProcessEntryGT(nomor_laporan) {
+            // alert(nomor_laporan)
+            if (nomor_laporan == "tambah") {
+                window.location.href = "/dashboard";
+            } else if (nomor_laporan != "") {
                 $.ajax({
-                    url: `/master/input/gt/getComponent`,
+                    url: `/master/input/gt/getProcessEntryGT`,
                     type: "POST",
                     cache: false,
                     data: {
-                        item_component_id: kode_komponen_gt.items[0]
+                        nomor_laporan: nomor_laporan
                     },
                     success: function(response) {
                         if (response.success) {
-                            //masih salah
-                            console.log(response.request.item_component_id);
-                            let items = response.request;
-
+                            item_level_id_gt = response.item_level_id;
+                            level_gt = response.level;
+                            response.item_level_process_entry.forEach((item_level, key) => {
+                                process_entry_gt.addOption({
+                                    value: item_level.process_entry_id,
+                                    text: item_level.process_entry.work_description,
+                                });
+                            });
+                            console.log(process_entry_gt.options);
                         }
                     }
                 });
             }
+        }
+
+        function getComponentGT(process_entry_id) {
+            if (process_entry_gt.items.length == 0) {
+                $("#level_proses_gt").val("");
+                $("#nama_komponen_gt").val("");
+            } else {
+                $.ajax({
+                    url: `/master/input/gt/getComponentGT`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        process_entry_id: process_entry_gt.items[0],
+                        item_level_id: item_level_id_gt
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response.item_components);
+                            // alert(response.item_components.length)
+                            response.item_components.forEach(item_component => {
+                                kode_komponen_gt.addOption({
+                                    value: item_component.item_number,
+                                    // item_description: item_component.item_description,
+                                    text: `Level ${level_gt} ${item_component.item_number}`
+                                });
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        function getDetailComponentGT(item_number) {
+            $.ajax({
+                url: `/master/input/gt/getDetailComponentGT`,
+                type: "POST",
+                cache: false,
+                data: {
+                    item_number: item_number,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.item_component);
+                        $('#level_proses_gt').val(level_gt);
+                        $('#nama_komponen_gt').val(response.item_component.item_description);
+                    }
+                }
+            });
+        }
+
+        function getLevelProsesGT(nomor_laporan) {
+
         }
 
         //accordion agak bug
