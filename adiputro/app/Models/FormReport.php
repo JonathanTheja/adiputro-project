@@ -27,4 +27,13 @@ class FormReport extends Model
     function kategori_report(){
         return $this->belongsTo(KategoriReport::class,"kategori_report_id","kategori_report_id");
     }
+
+    function item_level_process_entry(){
+        return $this->hasMany(ItemLevelProcessEntry::class,"item_level_id","item_level_id");
+    }
+
+    function item_level()
+    {
+        return $this->hasOne(ItemLevel::class,"item_level_id","item_level_id");
+    }
 }
