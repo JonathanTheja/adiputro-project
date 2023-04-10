@@ -70,7 +70,7 @@ class MasterDataController extends Controller
 
 
     function updateTotalUsedComponentList($item_component_id){
-        $tables = Session::get("sess.table");
+        $tables = Session::get("sess.table") ?? [];
         // dd($tables);
         $item_component_id = $item_component_id."";
         $total_qty = 0;
@@ -339,6 +339,7 @@ class MasterDataController extends Controller
             }
             //ok
             Session::put("sess.comp_temp",$components);
+
             foreach ($components as $component) {
                 $this->updateTotalUsedComponentList($component["item_component_id"]);
             }
