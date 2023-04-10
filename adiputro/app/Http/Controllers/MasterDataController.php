@@ -109,8 +109,9 @@ class MasterDataController extends Controller
         $item_kit = ItemKit::all();
         $bom = Bom::all();
         $process_entry = ProcessEntry::all();
-
         $item_level_pes = $item_level->processEntries;
+
+        $partial_components = $item_level->codeComponents()->get();
 
         //DONE--
         foreach ($item_level_pes as $item_level_pe) {
@@ -135,13 +136,11 @@ class MasterDataController extends Controller
                     "bom_count"=>$ic->pivot->bom_count,
                     "total_item_used"=>0
                 ];
-
                 Session::put("sess.table.".$table_id.".".$ic->item_component_id,$comp);
-
             }
         }
         //---
-        return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry"));
+        return view('master.partials.data_edit',compact("item_level","departments","item_components","item_kit","bom","process_entry","partial_components"));
     }
 
     function updateData(Request $request)
@@ -152,10 +151,13 @@ class MasterDataController extends Controller
         $item_level->itemComponents()->detach();
         $item_level->itemKits()->detach();
         $item_level->boms()->detach();
+        $item_level->codeComponents()->detach();
 
         $departments = $request->departments ?? [];
         $components = $request->components ?? [];
         $item_kits = $request->item_kits ?? [];
+        $item_components = $request->item_components ?? [];
+        $qtys = $request->item_components_qty ?? [];
         $boms = $request->boms ?? [];
 
         //update departments
@@ -174,6 +176,15 @@ class MasterDataController extends Controller
         foreach ($boms as $bom) {
             # code...
             $item_level->boms()->attach($bom);
+        }
+
+        $icr = 0;
+        foreach ($item_components as $comp) {
+            # code...
+            $item_level->codeComponents()->attach($comp,[
+                'item_component_qty'=> $qtys[$icr]
+            ]);
+            $icr++;
         }
         $process_entries = Session::get("sess.table");
         $item_level->processEntries()->detach();
@@ -270,7 +281,6 @@ class MasterDataController extends Controller
             $item_kit_lists = [];
             $bom_lists = [];
 
-
             //returned components (merged)
             $components = [];
 
@@ -280,7 +290,6 @@ class MasterDataController extends Controller
             foreach($bom_list_id as $bom_id){
                 $bom_lists[] = Bom::find($bom_id);
             }
-
 
             //components
             // - component-id
@@ -340,6 +349,7 @@ class MasterDataController extends Controller
                 }
                 }
             }
+
             foreach($code_components as $code_component){
                 $comp = ItemComponent::find($code_component["id"]);
                 $comp_id = (($comp->item_component_id)."");

@@ -50,7 +50,23 @@
             <label for="input-kode-process" class="block my-2 text-gray-900">Kode Komponen</label>
             <button type="button" class="add_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2">Tambah kode komponen</button>
             <div id="item_components" class="h-500 overflow-y-auto">
-
+                @foreach ($partial_components as $partial_component)
+                    <div class="flex items-center mb-4">
+                        <select name="item_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300" required>
+                            <option value="">Pilih Komponen</option>
+                            @foreach ($item_components as $item_component)
+                                <option value="{{ $item_component->item_component_id }}" @if ($item_component->item_component_id == $partial_component->item_component_id)
+                                    selected
+                                @endif>
+                                    {{ $item_component->item_number }} -
+                                    {{ $item_component->item_description }}</option>
+                            @endforeach
+                        </select>
+                        <input type="number" name="item_components_qty[]" class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty" value={{ $partial_component->pivot->item_component_qty }} required>
+                        <button type="button" class="remove_item bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 mx-2">-</button>
+                        <button type="button" class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2" onclick="updateProcess('0')">Konfirmasi</button>
+                    </div>
+                @endforeach
             </div>
 
 

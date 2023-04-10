@@ -28,6 +28,10 @@ class ItemComponent extends Model
     function ItemLevelProcessEntries(){
         return $this->belongsToMany(ItemLevelProcessEntry::class,'item_component_process_entry','item_component_id','item_level_process_entry_id')->withPivot(['item_component_id','item_level_process_entry_id','department_id','item_kit_count','bom_count','item_component_qty']);
     }
+    function procItemLevel()
+    {
+        return $this->belongsToMany(ItemLevel::class,'item_level_code_component','item_component_id','item_level_id')->withPivot('item_component_id','item_level_id','item_component_qty');
+    }
     function boms()
     {
         return $this->belongsToMany(ItemComponent::class,'bom_item_component','consumed_item_id','bom_id')->withPivot(['consumed_qty']);
