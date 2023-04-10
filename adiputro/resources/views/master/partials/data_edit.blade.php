@@ -46,7 +46,26 @@
                 @endforeach
             </select>
 
+
             <label for="input-kode-process" class="block my-2 text-gray-900">Kode Komponen</label>
+            <div id="item_components" class="h-500 overflow-y-auto">
+                <div class="flex items-center mb-4">
+                    <select name="item_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300" required>
+                        <option value="">Select Item</option>
+                        @foreach ($item_components as $item_component)
+                        <option value="{{ $item_component->item_component_id }}">
+                            {{ $item_component->item_number }} -
+                            {{ $item_component->item_description }}</option>
+                        @endforeach
+                    </select>
+                    <input type="number" name="item_components_qty[]" class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty" required>
+                    <button type="button" class="add_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2">+</button>
+
+                </div>
+            </div>
+
+
+{{--
             <select id="input-kode-process" multiple autocomplete="off" name="kode_komponen_process[]"
                 onchange="updateProcess('0')">
                 @foreach ($item_components as $item_component)
@@ -54,7 +73,7 @@
                         {{ $item_component->item_number }} -
                         {{ $item_component->item_description }}</option>
                 @endforeach
-            </select>
+            </select> --}}
 
             <label class="block mb-2 font-medium text-gray-900 my-2" for="multiple_files">Upload Gambar</label>
             <input
@@ -462,6 +481,31 @@
                 }
             });
         }
+
+        let addItemButton = document.querySelector('.add_item');
+        let itemsContainer = document.querySelector('#item_components');
+        let itemInputFields = `<div class="flex items-center mb-4">
+                                    <select name="item_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300" required>
+                                        <option value="">Select Item</option>
+                                        @foreach ($item_components as $item_component)
+                                        <option value="{{ $item_component->item_component_id }}">
+                                            {{ $item_component->item_number }} -
+                                            {{ $item_component->item_description }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="number" name="item_components_qty[]" class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty" required>
+                                    <button type="button" class="remove_item bg-red-500 hover:bg-red-600 text-white font-bold rounded-r-lg px-4 py-2">-</button>
+                                </div>`;
+        addItemButton.addEventListener('click', () => {
+            itemsContainer.insertAdjacentHTML('beforeend', itemInputFields);
+        });
+
+
+        itemsContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('remove_item')) {
+                event.target.parentNode.remove();
+            }
+        });
 
         setTimeout(() => {
             refreshTable("all");
