@@ -306,7 +306,7 @@
 
                     //load all process entries
                     $("#pe_container").html("");
-                    loadProcessEntries(response.data.process_entries, response.data.tables);
+                    loadProcessEntries(response.data.process_entries, response.data.tables,response.data.table_tier);
 
                     document.getElementById("loadingDashboard").classList.add("hidden");
                     document.getElementById("dashboard_container").classList.remove("hidden");
@@ -378,6 +378,10 @@
                     <div id="pe_${pe_id}">
                         <h1>${pe_text}</h1>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <div class="flex items-center justify-evenly bg-gray-100 p-4 rounded-lg shadow-md">
+                                <div class="text-lg font-medium text-gray-800 mr-4" id="tier_${table_id}">Teks 1</div>
+                                <div class="text-lg font-medium text-gray-800 mr-4" id="tier_desc_${table_id}">Teks 2</div>
+                            </div>
                             <table class="w-full text-sm text-left text-gray-500" id="${table_id}">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
@@ -440,12 +444,14 @@
             </tr>`);
         }
 
-        function loadProcessEntries(process_entries, tables) {
+        function loadProcessEntries(process_entries,tables,table_tier) {
             $.each(process_entries, function(key, pe) {
                 let table_id = 'pe_table_' + pe.process_entry_id;
                 generateTable(pe.process_entry_id, pe.work_description, table_id);
+                    
 
-                console.log(tables[table_id]);
+                $("#tier_"+table_id).text(table_tier[table_id].item_component_name);
+                $("#tier_desc_"+table_id).text(table_tier[table_id].desc);
 
                 $.each(tables[table_id], function(key, item) {
                     let it = {
