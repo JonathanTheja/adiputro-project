@@ -405,7 +405,6 @@ class MasterDataController extends Controller
                 ],
             ]);
         }
-
     }
 
     function callUpdateSpecComponent($item_number,$table_id){

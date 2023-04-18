@@ -4,7 +4,7 @@
     <h1 class="text-center text-5xl font-semibold mb-4">Edit Data</h1>
 
     <div class="overflow-x-auto">
-        <form action="/master/data/doUpdate" method="post" enctype="multipart/form-data">
+        <form action="/master/data/doUpdate" method="post" enctype="multipart/form-data" id="editForm">
             @csrf
             <h3 class="text-lg font-bold" id="titleModalUpdate"></h3>
             <div class="py-4" id="bodyModalUpdate"></div>
@@ -144,8 +144,8 @@
             </div>
 
 
-            <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Update
+            <button type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5" onclick="checkSafeSubmit()">Update
                 Komponen</button>
             <button onclick="getDataComponent()"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5"
@@ -321,6 +321,34 @@
                     </div>
                 </div>`
             );
+        }
+
+        function checkSafeSubmit(){
+            $.ajax({
+                url: `/master/data/getProcessEntryItem`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "session_status": 1
+                },
+                success: function(response) {
+                    let components = response.data.components;
+                    let isFound = false;
+                        for (const [key, value] of Object.entries(components)) {
+                        if (value.is_available) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if(!isFound){
+                        //submit
+                        document.getElementById("editForm").submit();
+                    }
+                    else{
+                        alert("Masih terdapat komponen yang belum digunakan!");
+                    }
+                }
+            });
         }
 
         //-----------------------DONE
