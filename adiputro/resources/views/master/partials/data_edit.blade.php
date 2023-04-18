@@ -170,6 +170,14 @@
                 persist: false,
                 // create: true,
                 onDelete: function(values) {
+                    if(id == "#input-item-kit"){
+
+                    }
+                    else if(id == "#input-bom"){
+
+                    }
+
+
                     return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
                         ' items?' : 'Apakah anda yakin ingin menghapus?');
                 }
@@ -183,7 +191,7 @@
                 type: "POST",
                 cache: false,
                 success: function(response) {
-                    console.log(response);
+
                 }
             });
         }
@@ -192,7 +200,7 @@
         function reloadComponentListTable(components){
             $("#table_components tbody").html("");
             let iter = 0;
-            console.log(components);
+
             $.each(components, function(key, comp) {
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
@@ -203,8 +211,8 @@
                 let item_kit_numbers = comp.item_kit_numbers.join(", ");
                 let bom_numbers = comp.bom_numbers.join(", ");
 
-                if(item_kit_numbers == ""){item_kit_numbers = "-"}
-                if(bom_numbers == ""){bom_numbers = "-"}
+                if(item_kit_numbers == ""){item_kit_numbers = "-"};
+                if(bom_numbers == ""){bom_numbers = "-"};
                 $("#table_components tbody").append(`<tr class="${appendedClass}">
                     <td
                         class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
@@ -293,6 +301,19 @@
                             </div>
                         </div>
 
+                        <div class="container">
+                            <select name="tier_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300" id="tier_${table_id}" required>
+                                <option value="">Pilih Komponen</option>
+                                @foreach ($item_components as $item_component)
+                                <option value="{{ $item_component->item_component_id }}">
+                                    {{ $item_component->item_number }} -
+                                    {{ $item_component->item_description }}</option>
+                                @endforeach
+                            </select>
+                            <input type="text" name="inputan_desc[]" id="input_tier_${table_id}" class="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Masukkan deskripsi">
+                            <button class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2" onclick="placeComponentToProcess('tier_${table_id}','input_tier_${table_id}','${table_id}')" type="button">Submit</button>
+                        </div>
+
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-500" id="${table_id}">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -323,8 +344,41 @@
             );
         }
 
-        function checkSafeSubmit(){
+        function placeComponentToProcess(select_val, input_val, table_id){
+            const selectedComp = $("#"+select_val).val();
+            const desc = $("#"+input_val).val();
             $.ajax({
+                url: `/master/data/placeComponentToProcess`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_component_id":selectedComp,
+                    "desc":desc,
+                    "table_id":table_id
+                },
+                success: function(response) {
+                    alert(response.message);
+                }
+            });
+        }
+
+        function checkSafeSubmit(){
+
+            let item_components= $("select[name=\'tier_components[]\']").map(function() {
+                return $(this).val();
+            }).toArray();
+            let desc_components= $("input[name=\'inputan_desc[]\']").map(function() {
+                return $(this).val();
+            }).toArray();
+
+            let emptySelect = item_components.indexOf("");
+            let emptyDesc = desc_components.indexOf("");
+
+            if(emptySelect!=-1 || emptyDesc != -1){
+                alert("Harap isi semua komponen dan desc nya pada process entry!");
+            }
+            else{
+                $.ajax({
                 url: `/master/data/getProcessEntryItem`,
                 type: "POST",
                 cache: false,
@@ -349,6 +403,7 @@
                     }
                 }
             });
+            }
         }
 
         //-----------------------DONE
@@ -397,7 +452,7 @@
 
         //DONE
         function placeComponentToTable(table_id, item) {
-            console.log(item);
+
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`
             <tr>
@@ -484,10 +539,14 @@
                 },
                 success: function(response) {
                     if (!response.is_multiple) {
+
                         //just refresh the current table
                         let items = response.items;
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
+                        let tier = response.table_tier;
+                        $("#input_tier_"+table_id).val(tier.desc);
+                        $("#tier_"+table_id).val(tier.item_component_id);
 
                         if (items != null) {
                             //foreach
@@ -503,6 +562,11 @@
                         $.each(process_entries, function(key, pe) {
                             let table_id = 'pe_table_' + pe.process_entry_id;
                             generateTable(pe.process_entry_id, pe.work_description, table_id);
+
+                            let tier = (response.table_tier)[table_id];
+                            $("#input_tier_"+table_id).val(tier.desc);
+                            $("#tier_"+table_id).val(tier.item_component_id);
+
 
                             $.each(tables[table_id], function(key, item) {
                                 let it = {
@@ -521,7 +585,7 @@
         }
 
         function deleteComponentTable(table_id, item_number) {
-            console.log(table_id, item_number);
+
             $.ajax({
                 url: `/master/data/deleteComponentTable`,
                 type: "POST",
@@ -545,7 +609,7 @@
         function callConfirmed(button){
             updateProcess('0');
             button.parentNode.removeChild(button);
-            console.log(button);
+
         }
 
         let addItemButton = document.querySelector('.add_item');

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id('item_level_process_entry_id');
             $table->bigInteger('item_level_id');
             $table->bigInteger('process_entry_id');
+            $table->bigInteger('item_component_id')->nullable();
+            $table->text('desc')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

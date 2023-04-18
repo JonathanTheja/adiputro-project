@@ -125,6 +125,11 @@ class MasterDataController extends Controller
             //push to session table
             $table_id = "pe_table_".$item_level_pe->process_entry_id;
 
+            Session::put("sess.table_tier.".$table_id,[
+                "item_component_id"=>$itl_pe->item_component_id,
+                "desc"=>$itl_pe->desc
+            ]);
+
             foreach ($ics as $ic) {
                 $comp_id = (($ic->item_component_id)."");
                 $comp = [
@@ -193,9 +198,12 @@ class MasterDataController extends Controller
 
         foreach ($process_entries as $pe=>$item_components) {
             $process_entry_id = substr($pe, strpos($pe,'pe_table_')+strlen('pe_table_'));
-
+            $tier_component = Session::get("sess.table_tier.".$pe);
             //attach to item level process entry
-            $item_level->processEntries()->attach($process_entry_id);
+            $item_level->processEntries()->attach($process_entry_id,[
+                "item_component_id"=>$tier_component["item_component_id"],
+                "desc"=>$tier_component["desc"]
+            ]);
 
             $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
 
@@ -250,12 +258,18 @@ class MasterDataController extends Controller
         //get all process entries
         $item_level_process_entries = $item_level->processEntries;
         $tables = [];
+        $table_tier = [];
         foreach ($item_level_process_entries as $item_level_process_entry) {
             $table_id = 'pe_table_'.$item_level_process_entry->process_entry_id;
             //get all item
-            $items = ItemLevelProcessEntry::find($item_level_process_entry->pivot->item_level_process_entry_id)->itemComponents;
+            $item_lv_process = ItemLevelProcessEntry::find($item_level_process_entry->pivot->item_level_process_entry_id);
+            $items = $item_lv_process->itemComponents;
 
             $tables[$table_id] = $items;
+            $table_tier[$table_id] = [
+                "item_component_name"=>ItemComponent::find($item_lv_process->item_component_id)->item_description,
+                "desc"=>$item_lv_process->desc
+            ];
         }
 
         return response()->json([
@@ -265,7 +279,8 @@ class MasterDataController extends Controller
                 "item_components"=>$item_components,
                 "all_photos"=>$allPhotos,
                 "process_entries"=>$item_level_process_entries,
-                "tables"=>$tables
+                "tables"=>$tables,
+                "table_tier"=>$table_tier
             ],
         ]);
     }
@@ -407,6 +422,30 @@ class MasterDataController extends Controller
         }
     }
 
+    function checkToBeDeleted($resource,$id){
+        $components = Session::get("sess.comp_temp");
+        if($resource == "item_kit"){
+            $item_kit_id = $id;
+            $item_kit = ItemKit::find($id);
+            $item_kit_number = $item_kit->item_kit_number;
+            foreach ($components as $component_id => $comp) {
+                if (in_array('comp.item_kit_numbers', $item_kit_number)) {
+
+                }
+            }
+        }
+        else if($resource == "bom"){
+            $bom_id = $id;
+            $bom = Bom::find($id);
+            $bom_number = $bom->bom_number;
+            foreach ($components as $component_id => $comp) {
+                if (in_array('comp.bom_numbers', $bom_number)) {
+
+                }
+            }
+        }
+    }
+
     function callUpdateSpecComponent($item_number,$table_id){
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
         $item_component_id = $item_component_id."";
@@ -519,6 +558,20 @@ class MasterDataController extends Controller
         ]);
     }
 
+    function placeComponentToProcess(Request $request){
+        $item_component_id = $request->item_component_id;
+        $desc = $request->desc;
+        $table_id = $request->table_id;
+        Session::put("sess.table_tier.".$table_id,[
+            "item_component_id"=>$item_component_id,
+            "desc"=>$desc
+        ]);
+        return response()->json([
+            'success' => true,
+            'message'=>'Berhasil memasang komponen pada tabel!',
+        ]);
+    }
+
     function updateVirtualComponent(Request $request){
         //components virtual used to track the process entry data
     }
@@ -527,9 +580,9 @@ class MasterDataController extends Controller
         //table_id
         $table_id = $request->table_id;
         $tables = Session::get('sess.table') ?? [];
+        $table_tier = Session::get('sess.table_tier') ?? [];
         $pes = [];
         if($table_id == "all"){
-
             foreach ($tables as $pe_table_id=>$table) {
                 $pe_id = substr($pe_table_id, strpos($pe_table_id,'pe_table_')+strlen('pe_table_'));
 
@@ -544,6 +597,7 @@ class MasterDataController extends Controller
                 'success' => true,
                 'is_multiple'=>true,
                 'tables' => $tables,
+                'table_tier'=>$table_tier,
                 'process_entries'=>$pes
             ]);
         }
@@ -551,6 +605,7 @@ class MasterDataController extends Controller
             return response()->json([
                 'success' => true,
                 'is_multiple'=>false,
+                'table_tier'=>$table_tier[$table_id],
                 'items' => $tables[$table_id]
             ]);
         }
