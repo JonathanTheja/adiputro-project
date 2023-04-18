@@ -97,6 +97,7 @@ class MasterDataController extends Controller
         Session::forget("sess");
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
+
         $item_level_parent = $item_level->parent()->first();
         $department = null;
         if($item_level_parent == null){
@@ -303,11 +304,14 @@ class MasterDataController extends Controller
                 $comp_id = (($comp->item_component_id)."");
                 if(Arr::exists($components,$comp_id)){
                     //icr
+                    $components[$comp_id]["item_kit_numbers"][] = $item_kit->item_kit_number;
                     $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->item_component_qty;
                     $components[$comp_id]["item_kit_count"] += $comp->pivot->item_component_qty;
                 }
                 else{
                     $new_comp = [
+                        "item_kit_numbers"=>[$item_kit->item_kit_number],
+                        "bom_numbers"=>[],
                         "item_component_id"=>$comp->item_component_id,
                         "item_number"=>$comp->item_number,
                         "item_description"=>$comp->item_description,
@@ -330,11 +334,14 @@ class MasterDataController extends Controller
                 $comp_id = (($comp->item_component_id)."");
                 if(Arr::exists($components,$comp_id)){
                     //icr
+                    $components[$comp_id]["bom_numbers"][] = $bom->bom_number;
                     $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $comp->pivot->consumed_qty;
                     $components[$comp_id]["bom_count"] += $comp->pivot->consumed_qty;
                 }
                 else{
                     $new_comp = [
+                        "item_kit_numbers"=>[],
+                        "bom_numbers"=>[$bom->bom_number],
                         "item_component_id"=>$comp->item_component_id,
                         "item_number"=>$comp->item_number,
                         "item_description"=>$comp->item_description,
@@ -359,6 +366,8 @@ class MasterDataController extends Controller
                 }
                 else{
                     $new_comp = [
+                        "item_kit_numbers"=>[],
+                        "bom_numbers"=>[],
                         "item_component_id"=>$comp->item_component_id,
                         "item_number"=>$comp->item_number,
                         "item_description"=>$comp->item_description,

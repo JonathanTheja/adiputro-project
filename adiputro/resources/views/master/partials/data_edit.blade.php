@@ -97,6 +97,12 @@
                                             No
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Item Kit ID
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
+                                            Bom ID
+                                        </th>
+                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
                                             Kode Komponen
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
@@ -186,6 +192,7 @@
         function reloadComponentListTable(components){
             $("#table_components tbody").html("");
             let iter = 0;
+            console.log(components);
             $.each(components, function(key, comp) {
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
@@ -193,10 +200,23 @@
                 if (!comp.is_available) {
                     appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
                 }
+                let item_kit_numbers = comp.item_kit_numbers.join(", ");
+                let bom_numbers = comp.bom_numbers.join(", ");
+
+                if(item_kit_numbers == ""){item_kit_numbers = "-"}
+                if(bom_numbers == ""){bom_numbers = "-"}
                 $("#table_components tbody").append(`<tr class="${appendedClass}">
                     <td
                         class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
                         ${iter}
+                    </td>
+                    <td
+                        class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        ${item_kit_numbers}
+                    </td>
+                    <td
+                        class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        ${bom_numbers}
                     </td>
                     <td
                         class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
@@ -494,6 +514,12 @@
             });
         }
 
+        function callConfirmed(button){
+            updateProcess('0');
+            button.parentNode.removeChild(button);
+            console.log(button);
+        }
+
         let addItemButton = document.querySelector('.add_item');
         let itemsContainer = document.querySelector('#item_components');
         let itemInputFields = `<div class="flex items-center mb-4">
@@ -507,7 +533,7 @@
                                     </select>
                                     <input type="number" name="item_components_qty[]" class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty" required>
                                     <button type="button" class="remove_item bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 mx-2">-</button>
-                                    <button type="button" class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2" onclick="updateProcess('0')">Konfirmasi</button>
+                                    <button type="button" class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2" onclick="callConfirmed(this)">Konfirmasi</button>
                                 </div>`;
         addItemButton.addEventListener('click', () => {
             itemsContainer.insertAdjacentHTML('beforeend', itemInputFields);
