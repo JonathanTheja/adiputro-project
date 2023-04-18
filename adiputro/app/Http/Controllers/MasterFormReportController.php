@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\FormReport;
+use App\Models\InputGT;
 use App\Models\InputTI;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,6 +60,7 @@ class MasterFormReportController extends Controller
     function reportApproval(Request $request)
     {
         $input_ti = InputTI::orderBy("kode_ti", "asc")->orderBy("revisi", "asc")->get();
-        return view("notifikasi.report.approval", compact("input_ti"));
+        $input_gt = InputGT::orderBy("kode_gt", "asc")->orderBy("revisi", "asc")->get();
+        return view("notifikasi.report.approval", compact("input_ti","input_gt"));
     }
 }

@@ -92,8 +92,69 @@
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample">
-                <div class="accordion-body py-4 px-5">
+                <div class="accordion-body py-2 overflow-x-auto">
+                    <div class="py-4">
+                        <table class="w-full text-md bg-white shadow-md rounded mb-2">
+                            <tbody>
+                                <tr class="border-b">
+                                    <th scope="col" class="px-6 pb-3">Kode TI</th>
+                                    <th scope="col" class="px-6 pb-3">Kode GT</th>
+                                    <th scope="col" class="px-6 pb-3">Process Entry</th>
+                                    <th scope="col" class="px-6 pb-3">Revisi</th>
+                                    <th scope="col" class="px-6 pb-3">Nomor Laporan</th>
+                                    <th scope="col" class="px-6 pb-3">Nama GT</th>
+                                    {{-- <th scope="col" class="px-6 pb-3">Model</th>
+                                    <th scope="col" class="px-6 pb-3">Pembuat</th> --}}
+                                    <th scope="col" class="px-6 pb-3">User Defined</th>
+                                    <th scope="col" class="px-6 pb-3">Description</th>
+                                    <th scope="col" class="px-6 pb-3">Action</th>
+                                </tr>
+                                @foreach ($input_gt as $input)
+                                    <form action="/notifikasi/report/approval/doApprove" method="POST">
+                                        <input type="text" class="hidden" name="input_gt_id"
+                                            value="{{ $input->input_gt_id }}">
+                                        <input type="text" class="hidden" name="penyetuju_id"
+                                            value="{{ Auth::user()->user_id }}">
+                                        <button class="hidden" id="input{{ $input->input_ti_id }}"></button>
+                                    </form>
+                                    <tr class="border-b hover:bg-orange-100 bg-gray-100 text-md">
+                                        <td class="p-2 py-4"><a class="hover:bg-blue-200"
+                                                href="/master/input/gt/detail/{{ $input->input_gt_id }}">{{ $input->kode_gt }}</a>
+                                        </td>
+                                        @if ($input->revisi == 0)
+                                            <td class="p-2 py-4 text-center">Pertama dibuat</td>
+                                        @else
+                                            <td class="p-2 py-4 text-center">Revisi {{ $input->revisi }}</td>
+                                        @endif
 
+                                        <td class="p-2 py-4 text-center">{{ $input->process_entry->work_description }}
+                                        </td>
+                                        @if ($input->revisi == 0)
+                                            <td class="p-2 py-4 text-center">Pertama dibuat</td>
+                                        @else
+                                            <td class="p-2 py-4 text-center">Revisi {{ $input->revisi }}</td>
+                                        @endif
+                                        <td class="p-2 py-4 whitespace-nowrap"><a class="hover:bg-blue-200"
+                                                href="/dashboard/{{ $input->form_report->item_level_id }}">{{ $input->nomor_laporan }}</a>
+                                        </td>
+                                        <td class="p-2 py-4 text-center">{{ $input->nama_gt }}</td>
+                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->name }}</td>
+                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->desc }}</td>
+                                        @if ($input->status == 0)
+                                            <td class="p-2 py-4 text-center">Revisi</td>
+                                        @else
+                                            <td class="border-collapse">
+                                                <a href="/master/input/ti/detail/{{ $input->input_ti_id }}">
+                                                    <button
+                                                        class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium w-full py-7 text-center">Approve
+                                                    </button></a>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

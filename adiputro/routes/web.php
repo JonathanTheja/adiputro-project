@@ -61,6 +61,7 @@ Route::prefix('master')->group(function () {
             Route::post('/getProcessEntryGT', [MasterInputController::class,'getProcessEntryGT']);
             Route::post('/getComponentGT', [MasterInputController::class,'getComponentGT']);
             Route::post('/getDetailComponentGT', [MasterInputController::class,'getDetailComponentGT']);
+            Route::post('/getUserDefinedDescGT', [MasterInputController::class,'getUserDefinedDescGT']);
         });
 
     });

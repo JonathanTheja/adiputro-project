@@ -6,6 +6,7 @@ use App\Models\ApprovedByTI;
 use App\Models\CheckedByTI;
 use App\Models\Department;
 use App\Models\FormReport;
+use App\Models\InputGT;
 use App\Models\InputTI;
 use App\Models\ItemComponent;
 use App\Models\ItemComponentProcessTI;
@@ -355,17 +356,72 @@ class MasterInputController extends Controller
         ]);
     }
 
+    function getUserDefinedDescGT(Request $request)
+    {
+        $user_defined = UserDefined::find($request->user_defined_id);
+        return response()->json([
+            'success' => true,
+            'user_defined' => $user_defined
+        ]);
+    }
+
     function addGT(Request $request)
     {
-        dd($request);
-        // $kode_ti = $request->kode_ti;
-        // $kode_ti = $request->kode_ti;
-        // $nomor_laporan_ti = $request->nomor_laporan_ti;
-        // $nama_ti = $request->nama_ti;
-        // $level_proses_ti = $request->level_proses_ti; //bisa banyak
-        // $kode_komponen_ti = $request->kode_komponen_ti; //bisa banyak
-        // $pembuat = Auth::user(); //user
-        // $model = $request->model; //department_id
-        // $diperiksa_oleh = $request->diperiksa_oleh; //bisa banyak
+        // dd($request);
+        $kode_gt =$request->kode_gt; //
+        $kode_ti = $request->kode_ti_gt;
+        $nomor_laporan = $request->nomor_laporan_gt;
+        $nama_gt = $request->nama_gt;
+        $process_entry_gt = $request->process_entry_gt;
+        $kode_komponen_gt = $request->kode_komponen_gt; // item_number
+        $level_proses_gt = $request->level_proses_gt;
+        $nama_komponen_gt = $request->nama_komponen_gt;
+        $diperiksa_oleh_gt = $request->diperiksa_oleh_gt; // bisa banyak
+        $cb_minibus_gt = $request->cb_minibus_gt; // bisa banyak
+        $cb_bus_gt = $request->cb_bus_gt; // bisa banyak
+        $user_defined_gt = $request->user_defined_gt; // user_defined_id
+        $description_gt = $request->description_gt;
+
+        $cb_gt = [];
+        if($request->cb_minibus_gt){
+            $cb_gt = array_merge($cb_gt, $request->cb_minibus_gt); //bisa banyak
+        }
+        if($request->cb_bus_gt){
+            $cb_gt = array_merge($cb_gt, $request->cb_bus_gt); //bisa banyak
+        }
+
+        $revisi = 0;
+        $item_component = ItemComponent::where("item_number", $kode_komponen_gt)->first();
+
+        $input_gt = InputGT::create([
+            "revisi" => $revisi,
+            "kode_ti" => $kode_ti,
+            "kode_gt" => $kode_gt,
+            "process_entry_id" => $process_entry_gt,
+            "nomor_laporan" => $nomor_laporan,
+            "nama_gt" => $nama_gt,
+            "item_component_id" => $item_component->item_component_id,
+            "user_defined_id" => $user_defined_gt,
+            "status" => 1
+            // "model" => $model,
+            // "pembuat_id" => $pembuat->user_id,
+            // "item_component_"
+            // "status" => 1,
+        ]);
+
+        foreach ($diperiksa_oleh_gt as $key => $user_id) {
+            $user = User::find($user_id);
+            // $input_ti->checked_by_ti()->attach($user, ["kode_ti" => $kode_ti]);
+            $input_gt->checked_by_gt()->attach($user);
+        }
+
+        foreach ($cb_gt as $key => $department_id) {
+            $department = Department::find($department_id);
+            // $input_ti->approved_by_ti()->attach($department, ["kode_ti" => $kode_ti]);
+            $input_gt->approved_by_gt()->attach($department);
+        }
+
+        Alert::success('Sukses!', 'Berhasil Tambah Gambar Teknik!');
+        return redirect("/master/input");
     }
 }

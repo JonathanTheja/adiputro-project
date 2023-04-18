@@ -16,15 +16,16 @@ return new class extends Migration
         Schema::create('input_gt', function (Blueprint $table) {
             $table->id("input_gt_id");
             $table->string('kode_ti')->nullable();
+            $table->integer('process_entry_id');
             $table->string('kode_gt');
             $table->integer('revisi')->nullable();
             $table->string('nomor_laporan');
             $table->string('nama_gt');
-            $table->integer('item_component_code_ti_id');
+            $table->integer('item_component_id');
             $table->integer('user_defined_id');
             //diperiksa oleh / checkedbygt sendiri many to many
             //approvedbygt table sendiri many to many
-            $table->string('description');
+            // $table->string('description');
             $table->integer('status');
             $table->timestamps();
             $table->softDeletes();

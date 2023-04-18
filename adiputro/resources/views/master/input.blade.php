@@ -286,7 +286,7 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 Gambar</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_gt" name="nomor"
+                            <input type="text" id="kode_gt" name="kode_gt"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode Gambar" required>
                         </div>
@@ -439,7 +439,8 @@
                                 <div id="collapseCB2" class="p-4" data-te-collapse-item data-te-collapse-show
                                     aria-labelledby="headingCB" data-bs-parent="#accordionCB">
                                     {{-- @if ($pembuat->department->access_database == 'SPK Mini Bus') --}}
-                                    <div class="text-center text-xl mb-2">All Minibus</div>
+                                    <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer"
+                                        onclick="allMinibusGT()">All Minibus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_minibus as $department)
                                             {{-- department minibus --}}
@@ -448,23 +449,24 @@
                                                     @if ($pembuat->department->name == $department->name) {{ 'checked' }} @endif
                                                     type="checkbox" name="cb_minibus_gt[]"
                                                     value="{{ $department->department_id }}"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_gt minibus">
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
                                         @endforeach
                                     </div>
                                     {{-- @else --}}
-                                    <div class="text-center text-xl mb-2">All Bus</div>
+                                    <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer" onclick="allBusGT()">
+                                        All Bus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
                                         @foreach ($approved_by_bus as $department)
                                             {{-- department bus --}}
                                             <div>
                                                 <input id="default-checkbox"
                                                     @if ($pembuat->department->name == $department->name) {{ 'checked' }} @endif
-                                                    type="checkbox" name="cb_minibus_gt[]"
+                                                    type="checkbox" name="cb_bus_gt[]"
                                                     value="{{ $department->department_id }}"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_ti">
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cb_gt bus">
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
@@ -481,7 +483,7 @@
                                 <div class="w-4"></div>
                                 <select id="user_defined_gt" placeholder="User Defined"
                                     class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                    autocomplete="off" name="user_defined_gt" required>
+                                    autocomplete="off" name="user_defined_gt" required onchange="getUserDefinedDescGT(this.value)">
                                     <option disabled selected value>Pilih User Defined</option>
                                     @foreach ($user_defined as $item)
                                         <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
@@ -493,7 +495,7 @@
                                 <label for="description"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="description" name="description"
+                                <input type="text" id="description_gt" name="description_gt"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                     placeholder="Description" required>
                             </div>
@@ -506,7 +508,7 @@
                                     class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
                                     id="multiple_files" type="file" multiple name="photos[]">
                             </div>
-                            <button type="submit" class="hidden" id="submit_ti"></button>
+                            <button type="submit" class="hidden" id="submit_gt"></button>
                             <div onclick="submitGT()"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
                                 Input Gambar Teknik
@@ -570,6 +572,18 @@
 
         function allBusTI() {
             $('input[type=checkbox].cb_ti.bus').each(function() {
+                $(this).prop('checked', true);
+            });
+        }
+
+        function allMinibusGT() {
+            $('input[type=checkbox].cb_gt.minibus').each(function() {
+                $(this).prop('checked', true);
+            });
+        }
+
+        function allBusGT() {
+            $('input[type=checkbox].cb_gt.bus').each(function() {
                 $(this).prop('checked', true);
             });
         }
@@ -827,6 +841,15 @@
             }
         }
 
+        function submitGT() {
+            let cb_ti = $('input[type=checkbox].cb_gt:checked');
+            if (cb_ti.length == 0) {
+                alert("Pilih setidaknya approved by 1 departemen ");
+            } else {
+                $("#submit_gt").click();
+            }
+        }
+
         function resetDataTI() {
             level_proses_ti.clear();
             level_proses_ti.clearOptions();
@@ -904,6 +927,8 @@
                         if (response.success) {
                             item_level_id_gt = response.item_level_id;
                             level_gt = response.level;
+                            process_entry_gt.clear();
+                            process_entry_gt.clearOptions();
                             response.item_level_process_entry.forEach((item_level, key) => {
                                 process_entry_gt.addOption({
                                     value: item_level.process_entry_id,
@@ -934,6 +959,8 @@
                         if (response.success) {
                             console.log(response.item_components);
                             // alert(response.item_components.length)
+                            kode_komponen_gt.clear();
+                            kode_komponen_gt.clearOptions();
                             response.item_components.forEach(item_component => {
                                 kode_komponen_gt.addOption({
                                     value: item_component.item_number,
@@ -965,7 +992,23 @@
             });
         }
 
-        function getLevelProsesGT(nomor_laporan) {
+        function getUserDefinedDescGT(user_defined_id) {
+            $.ajax({
+                url: `/master/input/gt/getUserDefinedDescGT`,
+                type: "POST",
+                cache: false,
+                data: {
+                    user_defined_id: user_defined_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $("#description_gt").val(response.user_defined.desc);
+                    }
+                }
+            });
+        }
+
+        function addGT(){
 
         }
 
