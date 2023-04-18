@@ -539,11 +539,11 @@
                 },
                 success: function(response) {
                     if (!response.is_multiple) {
+
                         //just refresh the current table
                         let items = response.items;
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
-                        let table_id = 'pe_table_' + pe.process_entry_id;
                         let tier = response.table_tier;
                         $("#input_tier_"+table_id).val(tier.desc);
                         $("#tier_"+table_id).val(tier.item_component_id);
