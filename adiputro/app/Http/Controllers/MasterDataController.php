@@ -422,14 +422,25 @@ class MasterDataController extends Controller
         }
     }
 
-    function checkToBeDeleted($resource,$id){
+    function checkToBeDeleted(Request $request){
+        $resource = $request->resource;
+        $id = $request->id;
+        $is_allowed = true;
         $components = Session::get("sess.comp_temp");
+        $item = null;
+        $ret = [];
         if($resource == "item_kit"){
             $item_kit_id = $id;
             $item_kit = ItemKit::find($id);
+
             $item_kit_number = $item_kit->item_kit_number;
+            // $ret = $components;
             foreach ($components as $component_id => $comp) {
-                if (in_array('comp.item_kit_numbers', $item_kit_number)) {
+                if (in_array($item_kit_number,$comp["item_kit_numbers"])) {
+
+                    if($comp["total_item_used"] > 0){
+                        $is_allowed = false;
+                    }
 
                 }
             }
@@ -438,12 +449,22 @@ class MasterDataController extends Controller
             $bom_id = $id;
             $bom = Bom::find($id);
             $bom_number = $bom->bom_number;
+            $ret = $components;
             foreach ($components as $component_id => $comp) {
-                if (in_array('comp.bom_numbers', $bom_number)) {
-
+                if (in_array($bom_number,$comp["item_kit_numbers"])) {
+                    if($comp["total_item_used"] > 0){
+                        $is_allowed = false;
+                    }
                 }
             }
         }
+        return response()->json([
+            'success' => $is_allowed,
+            'ret'=>$ret,
+            'is_allowed'=>$is_allowed
+            // 'item'=>$item,
+            // 'id'=>$id
+        ]);
     }
 
     function callUpdateSpecComponent($item_number,$table_id){

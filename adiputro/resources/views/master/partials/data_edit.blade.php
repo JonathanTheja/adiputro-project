@@ -171,15 +171,27 @@
                 // create: true,
                 onDelete: function(values) {
                     if(id == "#input-item-kit"){
-
+                        if(checkToBeDeleted("item_kit",values)){
+                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
+                            ' items?' : 'Apakah anda yakin ingin menghapus?');
+                        }
+                        else{
+                            alert("Item kit terdapat dalam process entry!");
+                            return false;
+                        }
                     }
                     else if(id == "#input-bom"){
+                        if(checkToBeDeleted("bom",values)){
+                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
+                            ' items?' : 'Apakah anda yakin ingin menghapus?');
+                        }
+                        else{
+                            alert("BOM terdapat dalam process entry!");
+                            return false;
+                        }
 
                     }
 
-
-                    return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
-                        ' items?' : 'Apakah anda yakin ingin menghapus?');
                 }
             });
         }
@@ -497,6 +509,30 @@
                 }
             });
 
+        }
+
+        function checkToBeDeleted(resource,id) {
+            let resp = false;
+            $.ajax({
+                url: `/master/data/checkToBeDeleted`,
+                type: "POST",
+                cache: false,
+                async: false,
+                data: {
+                    'resource':resource,
+                    'id':id[0]
+                },
+                success: function(response) {
+                   console.log(response);
+                   if(response.is_allowed){
+                     resp = true;
+                   }
+                   else{
+                     resp = false;
+                   }
+                }
+            });
+            return resp;
         }
 
         function updateInputTable($table_id, $item_number) {

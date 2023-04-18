@@ -86,6 +86,7 @@ Route::prefix('master')->group(function () {
         Route::post('/updateSpecComponent', [MasterDataController::class,'updateSpecComponent']);
         Route::post('/placeComponentToProcess', [MasterDataController::class,'placeComponentToProcess']);
         Route::post('/deleteComponentTable', [MasterDataController::class,'deleteComponentTable']);
+        Route::post('/checkToBeDeleted', [MasterDataController::class,'checkToBeDeleted']);
         Route::post('/getComponents', [MasterDataController::class,'getComponents']);
         Route::post('/getDataTemp', [MasterDataController::class,'getDataTemp']);
         Route::post('/updateQty', [MasterDataController::class,'updateQty']);
