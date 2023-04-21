@@ -56,9 +56,11 @@ class MasterInputController extends Controller
         $approved_by_bus = Department::where("access_database","SPK Mini Bus")->get();
         $approved_by_minibus = Department::where("access_database","SPK Bus")->get();
         $user_defined = UserDefined::all();
+        $item_components = ItemComponent::all();
+        $gts = InputGT::all();
 
         $input_ti = InputTI::where("status",1)->orderBy('kode_ti','asc')->get();
-        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","input_ti", "form_report_gt"));
+        return view("master.input", compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","input_ti", "form_report_gt","item_components","gts"));
     }
 
     function getLevelTI(Request $request)
@@ -353,6 +355,25 @@ class MasterInputController extends Controller
             'success' => true,
             // 'item_level_process_entry' => $item_level_process_entry,
             'item_component' => $item_component,
+        ]);
+    }
+
+    function getDetailComponentModel(Request $request)
+    {
+        $item_component = ItemComponent::find($request->item_component_id);
+
+        return response()->json([
+            'success' => true,
+            'item_component' => $item_component,
+        ]);
+    }
+    function getDetailGTModel(Request $request)
+    {
+        $gt = InputGT::find($request->gt_id)->with('user_defined')->get();
+
+        return response()->json([
+            'success' => true,
+            'gt' => $gt,
         ]);
     }
 

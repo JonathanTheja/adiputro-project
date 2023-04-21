@@ -541,32 +541,46 @@
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
 
+
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="kode_model"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_komponen_model" name="kode_model"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode Model" required>
+                            <select id="kode_komponen_model" placeholder="Kode Komponen" required
+                                onchange="getDetailComponentModel(this.value)"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="kode_komponen_model">
+                                @foreach ($item_components as $item_component)
+                                <option value="{{ $item_component->item_component_id }}">{{ $item_component->item_number }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_komponen_model"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Nama
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nama_komponen_model" name="kode_komponen_model" oninput="getGTByKodeTI(this.value)"
+                            <input type="text" id="nama_komponen_model" name="kode_komponen_model" oninput=""
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nama Komponen">
                         </div>
+
+
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="kode_gt_model"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 Gambar Teknik</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_gt_model" name="kode_gt_model" oninput="getGTByKodeTI(this.value)"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode Gambar Teknik">
+                            <select id="kode_gt_model" placeholder="Kode Gambar Teknik" required
+                                onchange="getDetailGTModel(this.value)"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="kode_gt_model">
+                                @foreach ($gts as $gt)
+                                <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="user_defined_model"
@@ -596,11 +610,14 @@
                                 placeholder="Merujuk" required>
                         </div>
 
+
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="input_gambar_model"
                             class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Input Gambar Model
                             </label>
                             <div class="container py-10">
+
+
                                 <div class="bg-white rounded-lg overflow-hidden">
                                   <div class="md:flex">
                                     <!-- Image Live Preview -->
@@ -634,12 +651,9 @@
                                   </div>
                                 </div>
                             </div>
-
                         </div>
 
-
-
-                            <button type="submit" class="hidden" id="submit_gt"></button>
+                        <button type="submit" class="hidden" id="submit_gt"></button>
                             <div onclick="submitGT()"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
                                 Input Model
@@ -649,8 +663,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <script>
@@ -721,7 +733,7 @@
         }
 
         let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gt, process_entry_ti, kode_komponen_ti, nomor_laporan_ti,
-            user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt;
+            user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt,kode_komponen_model;
 
         function refreshInput() {
             diperiksa_oleh = generateTom("#diperiksa_oleh")
@@ -737,6 +749,12 @@
             diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
             kode_komponen_gt = generateTom("#kode_komponen_gt")
             user_defined_gt = generateTom("#user_defined_gt")
+
+            // nomor_laporan_gt = generateTom("#nomor_laporan_gt")
+            // process_entry_gt = generateTom("#process_entry_gt")
+            // diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
+            kode_komponen_model = generateTom("#kode_komponen_model")
+            kode_komponen_model = generateTom("#kode_gt_model")
         }
         refreshInput()
 
@@ -1167,6 +1185,45 @@
                 }
             });
         }
+
+        function getDetailComponentModel(item_id) {
+            $.ajax({
+                url: `/master/input/model/getDetailComponentModel`,
+                type: "POST",
+                cache: false,
+                data: {
+                    item_component_id: item_id,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#nama_komponen_model').val(response.item_component.item_description);
+                    }
+                }
+            });
+        }
+
+        function getDetailGTModel(gt_id) {
+            $.ajax({
+                url: `/master/input/model/getDetailGTModel`,
+                type: "POST",
+                cache: false,
+                data: {
+                    gt_id: gt_id,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let gt = response.gt[0];
+                        console.log(gt);
+                        // $('#level_proses_gt').val(level_gt);
+                        // $('#nama_komponen_gt').val(response.item_component.item_description);
+                        $('#user_defined_model').val(gt.user_defined.name);
+                        $("#desc_model").val(gt.user_defined.desc);
+                    }
+                }
+            });
+        }
+
+
 
         function getUserDefinedDescGT(user_defined_id) {
             $.ajax({

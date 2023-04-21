@@ -217,6 +217,9 @@
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
                 let total_available = comp.item_component_qty - comp.total_item_used;
+                if(comp.total_item_used!=0){
+                    appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
+                }
                 if (!comp.is_available) {
                     appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
                 }
