@@ -209,6 +209,7 @@
                                     {{-- @endif --}}
                                 </div>
                             </div>
+                        </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="nama_ti"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
@@ -475,6 +476,7 @@
                                     {{-- @endif --}}
                                 </div>
                             </div>
+                        </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
 
                                 <label for="nama_ti"
@@ -512,6 +514,92 @@
                             <div onclick="submitGT()"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
                                 Input Gambar Teknik
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion mt-4 accordion_input_model" id="accordionExample">
+        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
+            <h2 class="accordion-header mb-0" id="headingThree">
+                <button
+                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                    aria-controls="collapseThree">
+                    <h1 class="text-xl text-gray-800">
+                        Tambah Model [Input 4]
+                    </h1>
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body py-4 px-5">
+                    <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input class="hidden" type="text" name="item_level_id" id="item_level_id">
+
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                Komponen</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="kode_komponen_model" name="kode_model"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode Model" required>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="nama_komponen_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Nama
+                                Komponen</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="nama_komponen_model" name="kode_komponen_model" oninput="getGTByKodeTI(this.value)"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Nama Komponen">
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_gt_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                Gambar Teknik</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="kode_gt_model" name="kode_gt_model" oninput="getGTByKodeTI(this.value)"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode Gambar Teknik">
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="user_defined_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">User
+                                Defined (OPT)</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="user_defined_model" name="user_defined_model"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="User Defined Model" required>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="desc_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Desc
+                                 (OPT)</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="desc_model" name="desc_model"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Desc Model" required>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="merujuk_model"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Merujuk
+                                </label>
+                            <div class="w-4"></div>
+                            <input type="text" id="merujuk_model" name="merujuk_model"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Merujuk" required>
+                        </div>
+
+                            <button type="submit" class="hidden" id="submit_gt"></button>
+                            <div onclick="submitGT()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                Input Model
                             </div>
                     </form>
                 </div>
