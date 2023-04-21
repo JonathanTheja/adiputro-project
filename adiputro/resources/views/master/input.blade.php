@@ -596,6 +596,49 @@
                                 placeholder="Merujuk" required>
                         </div>
 
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="input_gambar_model"
+                            class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Input Gambar Model
+                            </label>
+                            <div class="container py-10">
+                                <div class="bg-white rounded-lg overflow-hidden">
+                                  <div class="md:flex">
+                                    <!-- Image Live Preview -->
+                                    <div class="w-full">
+                                    <label for="text_model"
+                                    class="flex items-center justify-center font-weight-bold">TAMPAK DEPAN
+                                    </label>
+                                    <span id="image-name" class="text-gray-500 text-sm"></span>
+                                      <img id="preview-image" class="h-64 w-full object-cover" src="">
+                                    </div>
+
+                                  </div>
+                                  <div class="flex flex-row justify-around mt-2">
+
+                                    <input id="load-image" type="file" accept="image/*" class="hidden">
+                                    <label for="load-image" class="w-full mr-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Upload Gambar</label>
+
+                                    <button type="button" id="remove-image" class="w-full ml-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus Gambar</button>
+                                  </div>
+
+                                  <div class="flex flex-row justify-center mt-2">
+                                    <button type="button" id="back_model_preview" class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                                        Kembali
+                                      </button>
+                                    <button type="button" id="prev-image" class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                                      <<
+                                    </button>
+                                    <button type="button" id="next-image" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                                      >>
+                                    </button>
+                                  </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
                             <button type="submit" class="hidden" id="submit_gt"></button>
                             <div onclick="submitGT()"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
@@ -606,6 +649,51 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <script>
+        const previewImage = document.getElementById('preview-image');
+        const loadImage = document.getElementById('load-image');
+        const imageName = document.getElementById('image-name');
+        const removeImage = document.getElementById('remove-image');
+        const prevImage = document.getElementById('prev-image');
+        const nextImage = document.getElementById('next-image');
+
+        let currentIndex = 0;
+        const images = [
+          'https://source.unsplash.com/featured/?landscape',
+          'https://source.unsplash.com/featured/?nature',
+          'https://source.unsplash.com/featured/?architecture',
+          'https://source.unsplash.com/featured/?cityscape'
+        ];
+
+        // Load image when input changes
+        loadImage.addEventListener('change', () => {
+          const file = loadImage.files[0];
+          const reader = new FileReader();
+          reader.onload = () => {
+            previewImage.src = reader.result;
+            imageName.textContent = file.name;
+          };
+          reader.readAsDataURL(file);
+        });
+
+        // Remove image when button is clicked
+        removeImage.addEventListener('click', () => {
+          previewImage.src = '';
+          loadImage.value = '';
+          imageName.textContent = '';
+        });
+
+        // Navigate to previous image
+        prevImage.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + images.length) % images.length;
+          previewImage.src = images[currentIndex];
+          console.log(previewImage.src);
+        });
+     </script>
 
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
