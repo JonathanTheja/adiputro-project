@@ -65,6 +65,16 @@ Route::prefix('master')->group(function () {
             Route::post('/getUserDefinedDescGT', [MasterInputController::class,'getUserDefinedDescGT']);
         });
 
+        Route::prefix('model')->group(function () {
+            // Route::post('/add', [MasterInputController::class,'addGT']);
+            // Route::post('/getGTByKodeTI', [MasterInputController::class,'getGTByKodeTI']);
+            // Route::post('/getProcessEntryGT', [MasterInputController::class,'getProcessEntryGT']);
+            // Route::post('/getComponentGT', [MasterInputController::class,'getComponentGT']);
+            Route::post('/getDetailComponentModel', [MasterInputController::class,'getDetailComponentModel']);
+            Route::post('/getDetailGTModel', [MasterInputController::class,'getDetailGTModel']);
+            // Route::post('/getUserDefinedDescGT', [MasterInputController::class,'getUserDefinedDescGT']);
+        });
+
     });
 
     Route::prefix('departemen')->group(function () {
