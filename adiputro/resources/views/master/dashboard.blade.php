@@ -306,7 +306,8 @@
 
                     //load all process entries
                     $("#pe_container").html("");
-                    loadProcessEntries(response.data.process_entries, response.data.tables,response.data.table_tier);
+                    loadProcessEntries(response.data.process_entries, response.data.tables, response.data
+                        .table_tier);
 
                     document.getElementById("loadingDashboard").classList.add("hidden");
                     document.getElementById("dashboard_container").classList.remove("hidden");
@@ -444,14 +445,14 @@
             </tr>`);
         }
 
-        function loadProcessEntries(process_entries,tables,table_tier) {
+        function loadProcessEntries(process_entries, tables, table_tier) {
             $.each(process_entries, function(key, pe) {
                 let table_id = 'pe_table_' + pe.process_entry_id;
                 generateTable(pe.process_entry_id, pe.work_description, table_id);
-                    
 
-                $("#tier_"+table_id).text(table_tier[table_id].item_component_name);
-                $("#tier_desc_"+table_id).text(table_tier[table_id].desc);
+
+                $("#tier_" + table_id).text(table_tier[table_id].item_component_name);
+                $("#tier_desc_" + table_id).text(table_tier[table_id].desc);
 
                 $.each(tables[table_id], function(key, item) {
                     let it = {

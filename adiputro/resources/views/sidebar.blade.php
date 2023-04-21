@@ -1,7 +1,7 @@
 <span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="openSidebar();" id="openSidebar">
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
-<div class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900" id="sidebar">
+<div class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900 z-50" id="sidebar">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">
@@ -108,10 +108,28 @@
 {{-- <script src="{{ asset('js/sidebar.js') }}"></script> --}}
 <script>
     function openSidebar() {
-        document.querySelector("#sidebar").classList.toggle("left-[-250px]");
-        document.querySelector("#container").classList.toggle("ml-[250px]");
+        if (window.innerWidth > 1200) {
+            document.querySelector("#sidebar").classList.toggle("left-[-250px]");
+            document.querySelector("#container").classList.toggle("ml-[250px]");
+        } else {
+            document.querySelector("#sidebar").classList.toggle("left-[-250px]");
+        }
         $("#searchNavbar").width($("#content").width());
     }
+
+    function toggleSidebarByInnerWidth() {
+        if (window.innerWidth > 1200) {
+            document.querySelector("#sidebar").classList.remove("left-[-250px]");
+            document.querySelector("#container").classList.add("ml-[250px]");
+        } else {
+            document.querySelector("#sidebar").classList.add("left-[-250px]");
+            document.querySelector("#container").classList.remove("ml-[250px]");
+        }
+    }
+    setTimeout(() => {
+        toggleSidebarByInnerWidth();
+    }, 10);
+    window.addEventListener("resize", toggleSidebarByInnerWidth);
 
     function closeSidebar() {
         document.querySelector("#sidebar").classList.add("left-[-250px]");
