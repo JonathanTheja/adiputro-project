@@ -48,6 +48,7 @@ Route::prefix('master')->group(function () {
             Route::post('/getComponentTI', [MasterInputController::class,'getComponentTI']);
             Route::post('/getUserDefinedDescTI', [MasterInputController::class,'getUserDefinedDescTI']);
             Route::post('/addTI', [MasterInputController::class,'addTI']);
+            Route::post('/loadKodeTI', [MasterInputController::class,'loadKodeTI']);
             Route::post('/loadInputTI', [MasterInputController::class,'loadInputTI']);
 
             Route::prefix('detail')->group(function () {

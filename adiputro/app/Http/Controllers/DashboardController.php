@@ -54,6 +54,7 @@ class DashboardController extends Controller
             "tanggal" => now(),
             "pelapor_id" => Auth::user()->user_id,
             "jenis" => $request->jenis,
+            "kode" => $request->kode,
             "kategori_report_id" => $request->kategori_report_id,
             "temuan" => $request->temuan,
         ]);

@@ -103,6 +103,14 @@
                                 </select>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="kode"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kode</label>
+                                <div class="w-4"></div>
+                                <input type="text" id="full_name" name="kode"
+                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                    value="" placeholder="Kode" required>
+                            </div>
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="full_name"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
                                 <div class="w-4"></div>
@@ -508,7 +516,7 @@
         var content = document.getElementById("content");
         var offset = 125;
 
-        window.onscroll = function() {
+        function changeNavbarSize() {
             try {
                 if (window.pageYOffset > offset) {
                     nav.style.position = "fixed";
@@ -523,7 +531,13 @@
             } catch (error) {
 
             }
-        };
+        }
+        window.onscroll = changeNavbarSize;
+
+        setTimeout(() => {
+            changeNavbarSize();
+        }, 1000);
+        window.addEventListener("resize", changeNavbarSize);
 
         //cek dari return with dalam session
         if ("{{ Session::has('qrcode') }}") {

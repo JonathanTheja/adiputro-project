@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('form_report_id');
             $table->integer('item_level_id');
             $table->string('nomor_laporan');
+            $table->string('kode');//bisa ti atau gambar teknik
             $table->dateTime('tanggal');
             $table->integer('pelapor_id');
             $table->integer('kategori_report_id');

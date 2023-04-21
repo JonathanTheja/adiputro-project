@@ -27,8 +27,7 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti" name="kode_ti"
-                                oninput="loadKodeTI(this.value,undefined,{{ $form_report_ti }}, true)"
+                            <input readonly type="text" id="kode_ti" name="kode_ti" {{-- oninput="loadInputTI(this.value,undefined,{{ $form_report_ti }}, true);alert(this.value)" --}}
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode TI" required>
                         </div>
@@ -39,7 +38,11 @@
                             <div class="w-4"></div>
                             <select id="nomor_laporan_ti" placeholder="Nomor Laporan"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="nomor_laporan_ti" required onchange="getLevelProsesTI(this.value)">
+                                autocomplete="off" name="nomor_laporan_ti" required
+                                onchange="loadKodeTI(this.value);
+
+                                getLevelProsesTI(this.value)
+                                ">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
                                 @foreach ($form_report_ti as $form_report)
                                     <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
@@ -210,53 +213,52 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="nama_ti"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
-                                    Defined</label>
-                                <div class="w-4"></div>
-                                <select id="user_defined_ti" placeholder="User Defined"
-                                    onchange="getUserDefinedDescTI();"
-                                    class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                    autocomplete="off" name="user_defined_ti" required>
-                                    <option disabled selected value>Pilih User Defined</option>
-                                    @foreach ($user_defined as $item)
-                                        <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
-                                            {{ $item->desc }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="nama_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
+                                Defined</label>
+                            <div class="w-4"></div>
+                            <select id="user_defined_ti" placeholder="User Defined" onchange="getUserDefinedDescTI();"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="user_defined_ti" required>
+                                <option disabled selected value>Pilih User Defined</option>
+                                @foreach ($user_defined as $item)
+                                    <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
+                                        {{ $item->desc }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="description"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Description</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="description_ti" name="description" readonly
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Description" required>
+                        </div>
+                        {{-- saat lihat detail upload photo dimatikan --}}
+                        {{-- saat lihat detail button submit dimatikan --}}
+                        <div id="photos_ti">
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Description</label>
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
+                                    TI</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="description_ti" name="description" readonly
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="Description" required>
+                                <input
+                                    class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
+                                    id="multiple_files" type="file" multiple name="photos[]" required>
                             </div>
-                            {{-- saat lihat detail upload photo dimatikan --}}
-                            {{-- saat lihat detail button submit dimatikan --}}
-                            <div id="photos_ti">
-                                <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                    <label for="description"
-                                        class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
-                                        TI</label>
-                                    <div class="w-4"></div>
-                                    <input
-                                        class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
-                                        id="multiple_files" type="file" multiple name="photos[]" required>
-                                </div>
-                                <button type="submit" class="hidden" id="submit_ti"></button>
-                                <div onclick="submitTI()"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                                    Input Technical Instruction
-                                </div>
+                            <button type="submit" class="hidden" id="submit_ti"></button>
+                            <div onclick="submitTI()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                Input Technical Instruction
                             </div>
-                            <div class="lg:mb-4 mb-2 ">
-                                @yield('photos_ti')</div>
-                            <div id="photosPagination" class="mb-4 flex justify-center">
-                                @stack('photosPaginationTI')
-                            </div>
+                        </div>
+                        <div class="lg:mb-4 mb-2 ">
+                            @yield('photos_ti')</div>
+                        <div id="photosPagination" class="mb-4 flex justify-center">
+                            @stack('photosPaginationTI')
+                        </div>
                     </form>
                 </div>
             </div>
@@ -322,13 +324,13 @@
                                 autocomplete="off" name="nomor_laporan_gt" required
                                 onchange="getProcessEntryGT(this.value)">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
-                                @foreach ($form_report_gt as $form_report)
+                                {{-- @foreach ($form_report_gt as $form_report)
                                     <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
                                     </option>
                                 @endforeach
                                 <option value="tambah">
                                     Tambah Baru
-                                </option>
+                                </option> --}}
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -477,44 +479,45 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
 
-                                <label for="nama_ti"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
-                                    Defined</label>
-                                <div class="w-4"></div>
-                                <select id="user_defined_gt" placeholder="User Defined"
-                                    class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                    autocomplete="off" name="user_defined_gt" required onchange="getUserDefinedDescGT(this.value)">
-                                    <option disabled selected value>Pilih User Defined</option>
-                                    @foreach ($user_defined as $item)
-                                        <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
-                                            {{ $item->desc }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
-                                <div class="w-4"></div>
-                                <input type="text" id="description_gt" name="description_gt"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="Description" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="description"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
-                                    Teknik</label>
-                                <div class="w-4"></div>
-                                <input
-                                    class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
-                                    id="multiple_files" type="file" multiple name="photos[]">
-                            </div>
-                            <button type="submit" class="hidden" id="submit_gt"></button>
-                            <div onclick="submitGT()"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                                Input Gambar Teknik
-                            </div>
+                            <label for="nama_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">User
+                                Defined</label>
+                            <div class="w-4"></div>
+                            <select id="user_defined_gt" placeholder="User Defined"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="user_defined_gt" required
+                                onchange="getUserDefinedDescGT(this.value)">
+                                <option disabled selected value>Pilih User Defined</option>
+                                @foreach ($user_defined as $item)
+                                    <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
+                                        {{ $item->desc }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="description"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="description_gt" name="description_gt"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Description" required>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="description"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
+                                Teknik</label>
+                            <div class="w-4"></div>
+                            <input
+                                class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
+                                id="multiple_files" type="file" multiple name="photos[]">
+                        </div>
+                        <button type="submit" class="hidden" id="submit_gt"></button>
+                        <div onclick="submitGT()"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                            Input Gambar Teknik
+                        </div>
                     </form>
                 </div>
             </div>
@@ -555,7 +558,8 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Nama
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nama_komponen_model" name="kode_komponen_model" oninput="getGTByKodeTI(this.value)"
+                            <input type="text" id="nama_komponen_model" name="kode_komponen_model"
+                                oninput="getGTByKodeTI(this.value)"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nama Komponen">
                         </div>
@@ -564,7 +568,8 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 Gambar Teknik</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_gt_model" name="kode_gt_model" oninput="getGTByKodeTI(this.value)"
+                            <input type="text" id="kode_gt_model" name="kode_gt_model"
+                                oninput="getGTByKodeTI(this.value)"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode Gambar Teknik">
                         </div>
@@ -580,7 +585,7 @@
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="desc_model"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Desc
-                                 (OPT)</label>
+                                (OPT)</label>
                             <div class="w-4"></div>
                             <input type="text" id="desc_model" name="desc_model"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
@@ -589,18 +594,18 @@
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="merujuk_model"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Merujuk
-                                </label>
+                            </label>
                             <div class="w-4"></div>
                             <input type="text" id="merujuk_model" name="merujuk_model"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Merujuk" required>
                         </div>
 
-                            <button type="submit" class="hidden" id="submit_gt"></button>
-                            <div onclick="submitGT()"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                                Input Model
-                            </div>
+                        <button type="submit" class="hidden" id="submit_gt"></button>
+                        <div onclick="submitGT()"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                            Input Model
+                        </div>
                     </form>
                 </div>
             </div>
@@ -679,8 +684,7 @@
         //                                                  param    ini           ini               ini hanya untuk edit
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
             //setiap kali nomor laporan diganti, reset
-            // alert("awpofje")
-            resetDataTI();
+            // resetDataTI();
             $.ajax({
                 url: `/master/input/ti/getLevelTI`,
                 type: "POST",
@@ -692,8 +696,10 @@
                     if (response.success) {
                         console.log(response.item_level_ti);
                         console.log(level_proses_ti);
-                        level_proses_ti.clear();
-                        level_proses_ti.clearOptions();
+                        if (level_process_input_ti == undefined) {
+                            level_proses_ti.clear();
+                            level_proses_ti.clearOptions();
+                        }
                         response.item_level_ti.forEach((level, key) => {
                             level_proses_ti.addOption({
                                 value: level.item_level_id,
@@ -709,7 +715,7 @@
                             getProcessEntryTI(process_entry_id);
                             setTimeout(() => {
                                 getCodeComponentTI(item_component_ti);
-                            }, 1000);
+                            }, 2000);
                         }
                     }
                 }
@@ -845,13 +851,42 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        $("#description_ti").val(response.user_defined.desc);
+                        try {
+                            $("#description_ti").val(response.user_defined.desc);
+                        } catch (error) {
+
+                        }
                     }
                 }
             });
         }
 
-        function loadKodeTI(kode_ti, input_ti_id, form_report_ti, isEdit) {
+        function loadKodeTI(nomor_laporan) {
+            $("#nama_ti").val("");
+            $("#kode_ti").val("");
+            if (!nomor_laporan) {
+                resetDataTI();
+                return true;
+            }
+            // resetDataTI()
+            $.ajax({
+                url: `/master/input/ti/loadKodeTI`,
+                type: "POST",
+                cache: false,
+                data: {
+                    nomor_laporan: nomor_laporan
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // console.log(response.kode_ti);
+                        $('#kode_ti').val(response.kode_ti);
+                        loadInputTI(response.kode_ti, response.input_ti_id);
+                    }
+                }
+            });
+        }
+
+        function loadInputTI(kode_ti, input_ti_id, form_report_ti, isEdit) {
             // nomor_laporan_ti.addItem("LAP/0004/BW/AP/III/2023");
             console.log(form_report_ti);
             $.ajax({
@@ -866,30 +901,34 @@
                     if (response.success) {
                         console.log(response);
                         // show nomor_laporan_ti
-                        nomor_laporan_ti.removeOption(response.nomor_laporan);
-                        if (isEdit) {
-                            nomor_laporan_ti.clear();
-                            nomor_laporan_ti.clearOptions();
-                            nomor_laporan_ti.addOption({
-                                value: response.nomor_laporan,
-                                text: response.nomor_laporan
-                            });
-                            nomor_laporan_ti.addItem(response.nomor_laporan);
-                        } else {
-                            nomor_laporan_ti.clear();
-                            nomor_laporan_ti.clearOptions();
-                            nomor_laporan_ti.addOption({
-                                value: response.input_ti.nomor_laporan,
-                                text: response.input_ti.nomor_laporan
-                            });
-                            nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
-                        }
+                        // nomor_laporan_ti.removeOption(response.nomor_laporan);
+                        // if (isEdit) {
+                        // nomor_laporan_ti.clear();
+                        // nomor_laporan_ti.clearOptions();
+                        // nomor_laporan_ti.addOption({
+                        //     value: response.nomor_laporan,
+                        //     text: response.nomor_laporan
+                        // });
+                        // nomor_laporan_ti.addItem(response.nomor_laporan);
+                        //     nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
+                        // } else {
+                        // nomor_laporan_ti.clear();
+                        // nomor_laporan_ti.clearOptions();
+                        // nomor_laporan_ti.addOption({
+                        //     value: response.input_ti.nomor_laporan,
+                        //     text: response.input_ti.nomor_laporan
+                        // });
+                        //     nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
+                        // }
                         // show nama_ti
                         $("#nama_ti").val(response.input_ti.nama_ti);
                         //show level_proses dulu, process entry dulu, show komponen
-                        getLevelProsesTI(response.input_ti.nomor_laporan, response.input_ti
-                            .level_process_input_ti, response.input_ti.item_component_ti, response.input_ti
-                            .process_entry_id);
+                        setTimeout(() => {
+                            getLevelProsesTI(response.input_ti.nomor_laporan, response.input_ti
+                                .level_process_input_ti, response.input_ti.item_component_ti,
+                                response.input_ti
+                                .process_entry_id);
+                        }, 100);
 
 
                         //show diperiksa_oleh / checkby
@@ -899,7 +938,9 @@
                         });
                         //show user_defined
                         user_defined_ti.addItem(response.input_ti.user_defined.user_defined_id);
-                        $("#description_ti").val(response.input_ti.user_defined.desc);
+                        setTimeout(() => {
+                            $("#description_ti").val(response.input_ti.user_defined.desc);
+                        }, 500);
 
                         //show all of approvedby
                         //refresh cb_ti
@@ -1096,7 +1137,7 @@
             });
         }
 
-        function addGT(){
+        function addGT() {
 
         }
 

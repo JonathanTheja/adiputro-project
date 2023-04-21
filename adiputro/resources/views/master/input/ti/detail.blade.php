@@ -40,12 +40,13 @@
     @endforeach
     <script>
         document.getElementById("photos_ti").classList.add("hidden");
-        document.getElementById("kode_ti").value = "{{ $kode_ti }}";
+        document.getElementById("nomor_laporan_ti").value = "{{ $input_ti_detail->nomor_laporan }}";
         setTimeout(() => {
             document.getElementById("accordion_input_ti").click();
         }, 500);
         setTimeout(() => {
-            loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}", undefined, false);
+            loadKodeTI($("#nomor_laporan_ti").val());
+            // loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}", undefined, false);
             setTimeout(() => {
                 // nomor_laporan_ti.clear();
                 // nomor_laporan_ti.clearOptions();

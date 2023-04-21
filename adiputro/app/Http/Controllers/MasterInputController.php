@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Spatie\PdfToImage\Pdf;
 
 class MasterInputController extends Controller
 {
@@ -152,15 +153,16 @@ class MasterInputController extends Controller
         $revisi = 0;
         if($input_ti_lama){
             $form_report = FormReport::where("nomor_laporan",$input_ti_lama->nomor_laporan)->first();
-            $form_report_baru = FormReport::create([
-                "item_level_id" => $form_report->item_level_id,
-                "nomor_laporan" => $nomor_laporan_ti,
-                "tanggal" => now(),
-                "pelapor_id" => Auth::user()->user_id,
-                "kategori_report_id" => $form_report->kategori_report_id,
-                "temuan" => $form_report->temuan,
-                "jenis" => $form_report->jenis,
-            ]);
+            // $form_report_baru = FormReport::create([
+            //     "item_level_id" => $form_report->item_level_id,
+            //     "nomor_laporan" => $nomor_laporan_ti,
+            //     "kode" => $kode_ti,
+            //     "tanggal" => now(),
+            //     "pelapor_id" => Auth::user()->user_id,
+            //     "kategori_report_id" => $form_report->kategori_report_id,
+            //     "temuan" => $form_report->temuan,
+            //     "jenis" => $form_report->jenis,
+            // ]);
             //ambil approvedby department id sebelumnya
             $department_ids = array_map(function($department) {
                 return $department["department_id"];
@@ -226,17 +228,44 @@ class MasterInputController extends Controller
 
         // $kode_urutan = preg_replace('/\D/', '', $kode_ti);
         // $kode = str_pad($kode_urutan, 3, "0", STR_PAD_LEFT);
-        if($request->file("photos") != null){
-            foreach($request->file("photos") as $key => $photo){
-                #code ..
-                $namafile = ($key+1).".".$photo->getClientOriginalExtension();
-                $namafolder = "images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp));
-                $photo->storeAs($namafolder,$namafile,'public');
+        $file = $request->file("photos")[0];
+        $file->storeAs("pdf/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)), $file->getClientOriginalName(), 'public');
+        $path = Storage::disk('public')->path('pdf/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'.$file->getClientOriginalName());
+        // dd(Storage::url($pdf));
+        $pdf = new Pdf($path);
+        if($request->file('photos')[0]->getClientOriginalExtension() == 'pdf'){
+            if (!Storage::exists('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)))) {
+                Storage::makeDirectory('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+            }
+            foreach(range(1, $pdf->getNumberOfPages()) as $pageNumber) {
+                $pdf->setPage($pageNumber)
+                    ->setOutputFormat('png')
+                    ->saveImage(Storage::disk('public')->path('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'));
+            };
+        }
+        else{
+            if($request->file("photos") != null){
+                foreach($request->file("photos") as $key => $photo){
+                    #code ..
+                    $namafile = ($key+1).".".$photo->getClientOriginalExtension();
+                    $namafolder = "images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp));
+                    $photo->storeAs($namafolder,$namafile,'public');
+                }
             }
         }
 
         Alert::success('Sukses!', 'Berhasil Tambah TI!');
         return redirect("/master/input");
+    }
+
+    function loadKodeTI(Request $request)
+    {
+        $input_ti = FormReport::where("nomor_laporan", $request->nomor_laporan)->first();
+        return response()->json([
+            "success" => true,
+            "kode_ti" => $input_ti->kode,
+            "input_ti_id" => $input_ti->input_ti_id
+        ]);
     }
 
     function loadInputTI(Request $request)
