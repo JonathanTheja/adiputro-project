@@ -624,8 +624,74 @@
                             </label>
                             <div class="container py-10">
 
+                                <div class="flex flex-col" id="table_model">
+                                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                                        <div class="overflow-hidden">
+                                          <table class="min-w-full text-left text-sm font-light">
+                                            <thead class="border-b font-medium dark:border-neutral-500">
+                                              <tr>
+                                                <th scope="col" class="px-6 py-4">Tampak</th>
+                                                <th scope="col" class="px-6 py-4">Cek</th>
+                                                <th scope="col" class="px-6 py-4">Opsi</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Isometri</td>
+                                                <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(0)">Edit</a>
+                                                </td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Depan</td>
+                                                <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(1)">Edit</a>
+                                                </td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Belakang</td>
+                                                <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a  href="javascript:void(0);" onclick="toggleToShowImage(2)">Edit</a>
+                                                </td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Atas</td>
+                                                <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                <td class="whitespace-nowrap px-6 py-4">Edit</td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah</td>
+                                                <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(3)">Edit</a>
+                                                </td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Samping Kanan</td>
+                                                <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(4)">Edit</a>
+                                                </td>
+                                              </tr>
+                                              <tr class="border-b dark:border-neutral-500">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">Samping Kiri</td>
+                                                <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(5)">Edit</a>
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
 
-                                <div class="bg-white rounded-lg overflow-hidden">
+                                <div class="bg-white rounded-lg overflow-hidden hidden" id="prev_images_container_model">
                                     <div class="md:flex">
                                         <!-- Image Live Preview -->
                                         <div class="w-full">
@@ -651,7 +717,7 @@
 
                                     <div class="flex flex-row justify-center mt-2">
                                         <button type="button" id="back_model_preview"
-                                            class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                                            class="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" onclick="toggleToShowImage(-1)">
                                             Kembali
                                         </button>
                                         <button type="button" id="prev-image"
@@ -723,6 +789,25 @@
 
             $("#text_model").text(texts[currentIndex]);
         });
+        nextImage.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1 + images.length) % images.length;
+            previewImage.src = images[currentIndex];
+            console.log(currentIndex);
+
+            $("#text_model").text(texts[currentIndex]);
+        });
+
+        function toggleToShowImage(current_index) {
+            if(current_index!=-1){
+                $("#table_model").addClass("hidden");
+                $("#prev_images_container_model").removeClass("hidden");
+                previewImage.src = images[current_index];
+            }
+            else{
+                $("#table_model").removeClass("hidden");
+                $("#prev_images_container_model").addClass("hidden");
+            }
+        }
     </script>
 
 
@@ -799,6 +884,8 @@
                 $(this).prop('checked', true);
             });
         }
+
+
 
         //                                                  param    ini           ini               ini hanya untuk edit
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
