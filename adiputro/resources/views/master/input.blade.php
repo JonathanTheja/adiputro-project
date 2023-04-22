@@ -554,10 +554,12 @@
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_model">
-                                @foreach ($item_components as $item_component)
-                                    <option value="{{ $item_component->item_component_id }}">
-                                        {{ $item_component->item_number }}</option>
-                                @endforeach
+                                @if (isset($item_components))
+                                    @foreach ($item_components as $item_component)
+                                        <option value="{{ $item_component->item_component_id }}">
+                                            {{ $item_component->item_number }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
@@ -581,9 +583,11 @@
                                 onchange="getDetailGTModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_gt_model">
-                                @foreach ($gts as $gt)
-                                    <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
-                                @endforeach
+                                @if (isset($gts))
+                                    @foreach ($gts as $gt)
+                                        <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -720,6 +724,13 @@
             currentIndex = (currentIndex - 1 + images.length) % images.length;
             previewImage.src = images[currentIndex];
             console.log(previewImage.src);
+        });
+
+        // Navigate to next image
+        nextImage.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1 + images.length) % images.length;
+            nextImage.src = images[currentIndex];
+            console.log(nextImage.src);
         });
     </script>
 

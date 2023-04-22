@@ -7,13 +7,14 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "realrashid/sweet-alert": "^6.0",
         "simplesoftwareio/simple-qrcode": "~4",
-        "staudenmeir/laravel-adjacency-list": "1.12.1",
-        "spatie/pdf-to-image": "^2.2"
+        "spatie/pdf-to-image": "^2.2",
+        "staudenmeir/laravel-adjacency-list": "1.12.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

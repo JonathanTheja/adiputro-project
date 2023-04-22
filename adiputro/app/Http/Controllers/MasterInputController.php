@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Spatie\PdfToImage\Pdf;
+use Intervention\Image\Facades\Image as ImageInter;
 
 class MasterInputController extends Controller
 {
@@ -234,8 +235,8 @@ class MasterInputController extends Controller
         $file->storeAs("pdf/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)), $file->getClientOriginalName(), 'public');
         $path = Storage::disk('public')->path('pdf/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'.$file->getClientOriginalName());
         // dd(Storage::url($pdf));
-        $pdf = new Pdf($path);
         if($request->file('photos')[0]->getClientOriginalExtension() == 'pdf'){
+            $pdf = new Pdf($path);
             if (!Storage::exists('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)))) {
                 Storage::makeDirectory('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
             }
@@ -254,6 +255,17 @@ class MasterInputController extends Controller
                     $photo->storeAs($namafolder,$namafile,'public');
                 }
             }
+        }
+        //tambah watermark, ambil fotonya yang baru disimpan
+        // $watermark = ImageInter::make(public_path(('img/controlled_copy.png')));
+        // $watermark = ImageInter::make('public\controlled_copy.png');
+        $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        foreach ($photos as $key => $photo) {
+            $path = Storage::disk('public')->path($photo);
+            $img = ImageInter::make($path);
+            $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
+            // dump(public_path("$photo"));
+            $img->save(Storage::disk('public')->path($photo));
         }
 
         Alert::success('Sukses!', 'Berhasil Tambah TI!');
