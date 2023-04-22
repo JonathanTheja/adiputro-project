@@ -630,7 +630,7 @@
                                         <!-- Image Live Preview -->
                                         <div class="w-full">
                                             <label for="text_model"
-                                                class="flex items-center justify-center font-weight-bold">TAMPAK DEPAN
+                                                class="flex items-center justify-center font-weight-bold" id="text_model">TAMPAK DEPAN
                                             </label>
                                             <span id="image-name" class="text-gray-500 text-sm"></span>
                                             <img id="preview-image" class="h-64 w-full object-cover" src="">
@@ -686,12 +686,15 @@
         const prevImage = document.getElementById('prev-image');
         const nextImage = document.getElementById('next-image');
 
+        let texts = ["TAMPAK ISOMETRI","TAMPAK DEPAN","TAMPAK ATAS","TAMPAK BAWAH","TAMPAK SAMPING KIRI","TAMPAK SAMPING KANAN"]
         let currentIndex = 0;
         const images = [
             'https://source.unsplash.com/featured/?landscape',
             'https://source.unsplash.com/featured/?nature',
             'https://source.unsplash.com/featured/?architecture',
-            'https://source.unsplash.com/featured/?cityscape'
+            'https://source.unsplash.com/featured/?cityscape',
+            'https://source.unsplash.com/featured/?computer',
+            'https://source.unsplash.com/featured/?food'
         ];
 
         // Load image when input changes
@@ -716,7 +719,9 @@
         prevImage.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + images.length) % images.length;
             previewImage.src = images[currentIndex];
-            console.log(previewImage.src);
+            console.log(currentIndex);
+
+            $("#text_model").text(texts[currentIndex]);
         });
     </script>
 
