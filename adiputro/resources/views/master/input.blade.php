@@ -554,6 +554,7 @@
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_model">
+                                <option value=""></option>
                                 @foreach ($item_components as $item_component)
                                     <option value="{{ $item_component->item_component_id }}">
                                         {{ $item_component->item_number }}</option>
@@ -581,6 +582,7 @@
                                 onchange="getDetailGTModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_gt_model">
+                                <option value=""></option>
                                 @foreach ($gts as $gt)
                                     <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
                                 @endforeach
@@ -614,11 +616,6 @@
                                 placeholder="Merujuk" required>
                         </div>
 
-                        <button type="submit" class="hidden" id="submit_gt"></button>
-                        <div onclick="submitGT()"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                            Input Model
-                        </div>
 
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="input_gambar_model"
@@ -749,7 +746,7 @@
         }
 
         let level_proses_ti, diperiksa_oleh, diperiksa_oleh_gt, process_entry_ti, kode_komponen_ti, nomor_laporan_ti,
-            user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt, kode_komponen_model;
+            user_defined_ti, user_defined_gt, kode_komponen_gt, kode_ti_gt, kode_komponen_model,kode_gt_model;
 
         function refreshInput() {
             diperiksa_oleh = generateTom("#diperiksa_oleh")
@@ -770,7 +767,7 @@
             // process_entry_gt = generateTom("#process_entry_gt")
             // diperiksa_oleh_gt = generateTom("#diperiksa_oleh_gt")
             kode_komponen_model = generateTom("#kode_komponen_model")
-            kode_komponen_model = generateTom("#kode_gt_model")
+            kode_gt_model = generateTom("#kode_gt_model")
         }
         refreshInput()
 
@@ -1239,7 +1236,8 @@
         }
 
         function getDetailComponentModel(item_id) {
-            $.ajax({
+            if(item_id!=""){
+                $.ajax({
                 url: `/master/input/model/getDetailComponentModel`,
                 type: "POST",
                 cache: false,
@@ -1252,10 +1250,12 @@
                     }
                 }
             });
+            }
         }
 
         function getDetailGTModel(gt_id) {
-            $.ajax({
+            if(gt_id!=""){
+                $.ajax({
                 url: `/master/input/model/getDetailGTModel`,
                 type: "POST",
                 cache: false,
@@ -1273,6 +1273,7 @@
                     }
                 }
             });
+            }
         }
 
 

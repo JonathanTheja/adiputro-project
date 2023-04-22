@@ -195,8 +195,6 @@
                 }
             });
         }
-
-
         function getDataComponent() {
             $.ajax({
                 url: `/master/data/getDataTemp`,
