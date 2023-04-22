@@ -661,27 +661,27 @@
                                               <tr class="border-b dark:border-neutral-500">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">Atas</td>
                                                 <td class="whitespace-nowrap px-6 py-4">x</td>
-                                                <td class="whitespace-nowrap px-6 py-4">Edit</td>
+                                                <td class="whitespace-nowrap px-6 py-4" onclick="toggleToShowImage(3)">Edit</td>
                                               </tr>
                                               <tr class="border-b dark:border-neutral-500">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah</td>
                                                 <td class="whitespace-nowrap px-6 py-4">v</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(3)">Edit</a>
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(4)">Edit</a>
                                                 </td>
                                               </tr>
                                               <tr class="border-b dark:border-neutral-500">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">Samping Kanan</td>
                                                 <td class="whitespace-nowrap px-6 py-4">x</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(4)">Edit</a>
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(5)">Edit</a>
                                                 </td>
                                               </tr>
                                               <tr class="border-b dark:border-neutral-500">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">Samping Kiri</td>
                                                 <td class="whitespace-nowrap px-6 py-4">v</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(5)">Edit</a>
+                                                    <a href="javascript:void(0);" onclick="toggleToShowImage(6)">Edit</a>
                                                 </td>
                                               </tr>
                                             </tbody>
@@ -752,11 +752,12 @@
         const prevImage = document.getElementById('prev-image');
         const nextImage = document.getElementById('next-image');
 
-        let texts = ["TAMPAK ISOMETRI","TAMPAK DEPAN","TAMPAK ATAS","TAMPAK BAWAH","TAMPAK SAMPING KIRI","TAMPAK SAMPING KANAN"]
+        let texts = ["TAMPAK ISOMETRI","TAMPAK DEPAN","TAMPAK BELAKANG","TAMPAK ATAS","TAMPAK BAWAH","TAMPAK SAMPING KANAN","TAMPAK SAMPING KIRI"]
         let currentIndex = 0;
         const images = [
             'https://source.unsplash.com/featured/?landscape',
             'https://source.unsplash.com/featured/?nature',
+            'https://source.unsplash.com/featured/?beach',
             'https://source.unsplash.com/featured/?architecture',
             'https://source.unsplash.com/featured/?cityscape',
             'https://source.unsplash.com/featured/?computer',
@@ -802,6 +803,8 @@
                 $("#table_model").addClass("hidden");
                 $("#prev_images_container_model").removeClass("hidden");
                 previewImage.src = images[current_index];
+                $("#text_model").text(texts[current_index]);
+                currentIndex = current_index;
             }
             else{
                 $("#table_model").removeClass("hidden");
