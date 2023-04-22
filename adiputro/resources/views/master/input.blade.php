@@ -44,10 +44,15 @@
                                 getLevelProsesTI(this.value)
                                 ">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
-                                @foreach ($form_report_ti as $form_report)
+                                @forelse ($form_report_ti as $form_report)
                                     <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
                                     </option>
-                                @endforeach
+                                @empty
+                                @endforelse
+                                {{-- @foreach ($form_report_ti as $form_report)
+                                    <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
+                                    </option>
+                                @endforeach --}}
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -155,9 +160,10 @@
                             <select id="diperiksa_oleh" name="diperiksa_oleh[]" required placeholder="Diperiksa Oleh"
                                 class="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 multiple>
-                                @foreach ($diperiksa_oleh as $user)
+                                @forelse ($diperiksa_oleh as $user)
                                     <option value="{{ $user->user_id }}">{{ $user->full_name }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                         <div class="accordion mb-4" id="accordionCBApprovedBy">
@@ -179,7 +185,7 @@
                                     <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer"
                                         onclick="allMinibusTI()">All Minibus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
-                                        @foreach ($approved_by_minibus as $department)
+                                        @forelse ($approved_by_minibus as $department)
                                             {{-- department minibus --}}
                                             <div>
                                                 <input id="default-checkbox"
@@ -190,13 +196,14 @@
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                        @endforelse
                                     </div>
                                     {{-- @else --}}
                                     <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer" onclick="allBusTI()">
                                         All Bus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
-                                        @foreach ($approved_by_bus as $department)
+                                        @forelse ($approved_by_bus as $department)
                                             {{-- department bus --}}
                                             <div>
                                                 <input id="default-checkbox"
@@ -207,7 +214,8 @@
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                        @endforelse
                                     </div>
                                     {{-- @endif --}}
                                 </div>
@@ -222,10 +230,11 @@
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="user_defined_ti" required>
                                 <option disabled selected value>Pilih User Defined</option>
-                                @foreach ($user_defined as $item)
+                                @forelse ($user_defined as $item)
                                     <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
                                         {{ $item->desc }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -298,7 +307,10 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti_gt" name="kode_ti_gt" oninput="getGTByKodeTI(this.value)"
+                            <input type="text" id="kode_ti_gt" name="kode_ti_gt" oninput=
+                            "
+                            // getGTByKodeTI(this.value)
+                            "
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode TI">
                             {{-- kode_ti_gt -> kode_ti punya gt --}}
@@ -324,13 +336,15 @@
                                 autocomplete="off" name="nomor_laporan_gt" required
                                 onchange="getProcessEntryGT(this.value)">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
-                                {{-- @foreach ($form_report_gt as $form_report)
-                                    <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
+                                @forelse ($form_report_gt as $form_report)
+                                    <option value="{{ $form_report->nomor_laporan }}">
+                                        {{ $form_report->nomor_laporan }}
                                     </option>
-                                @endforeach
+                                @empty
+                                @endforelse
                                 <option value="tambah">
                                     Tambah Baru
-                                </option> --}}
+                                </option>
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -421,9 +435,10 @@
                                 placeholder="Diperiksa Oleh"
                                 class="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 multiple>
-                                @foreach ($diperiksa_oleh as $user)
+                                @forelse ($diperiksa_oleh as $user)
                                     <option value="{{ $user->user_id }}">{{ $user->full_name }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                         <div class="accordion mb-4" id="accordionCB">
@@ -445,7 +460,7 @@
                                     <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer"
                                         onclick="allMinibusGT()">All Minibus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
-                                        @foreach ($approved_by_minibus as $department)
+                                        @forelse ($approved_by_minibus as $department)
                                             {{-- department minibus --}}
                                             <div>
                                                 <input id="default-checkbox"
@@ -456,13 +471,14 @@
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                        @endforelse
                                     </div>
                                     {{-- @else --}}
                                     <div class="text-center text-xl mb-2 bg-gray-100 cursor-pointer" onclick="allBusGT()">
                                         All Bus</div>
                                     <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-2">
-                                        @foreach ($approved_by_bus as $department)
+                                        @forelse ($approved_by_bus as $department)
                                             {{-- department bus --}}
                                             <div>
                                                 <input id="default-checkbox"
@@ -473,7 +489,8 @@
                                                 <label for="default-checkbox"
                                                     class="ml-2 text-sm font-medium text-gray-900">{{ $department->name }}</label>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                        @endforelse
                                     </div>
                                     {{-- @endif --}}
                                 </div>
@@ -490,10 +507,11 @@
                                 autocomplete="off" name="user_defined_gt" required
                                 onchange="getUserDefinedDescGT(this.value)">
                                 <option disabled selected value>Pilih User Defined</option>
-                                @foreach ($user_defined as $item)
+                                @forelse ($user_defined as $item)
                                     <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
                                         {{ $item->desc }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -554,12 +572,11 @@
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_model">
-                                @if (isset($item_components))
-                                    @foreach ($item_components as $item_component)
-                                        <option value="{{ $item_component->item_component_id }}">
-                                            {{ $item_component->item_number }}</option>
-                                    @endforeach
-                                @endif
+                                @forelse ($item_components as $item_component)
+                                    <option value="{{ $item_component->item_component_id }}">
+                                        {{ $item_component->item_number }}</option>
+                                @empty
+                                @endforelse
                             </select>
                         </div>
 
@@ -583,11 +600,10 @@
                                 onchange="getDetailGTModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_gt_model">
-                                @if (isset($gts))
-                                    @foreach ($gts as $gt)
-                                        <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
-                                    @endforeach
-                                @endif
+                                @forelse ($gts as $gt)
+                                    <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -806,18 +822,8 @@
             console.log(currentIndex);
 
             $("#text_model").text(texts[currentIndex]);
-        }); <<
-        <<
-        << < HEAD
+        });
 
-        // Navigate to next image
-        nextImage.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1 + images.length) % images.length;
-            nextImage.src = images[currentIndex];
-            console.log(nextImage.src);
-        }); ===
-        ===
-        =
         nextImage.addEventListener('click', () => {
             currentIndex = (currentIndex + 1 + images.length) % images.length;
             previewImage.src = images[currentIndex];
@@ -837,9 +843,7 @@
                 $("#table_model").removeClass("hidden");
                 $("#prev_images_container_model").addClass("hidden");
             }
-        } >>>
-        >>>
-        > ecc05645a2ae3981e478474147521733a7ea0762
+        }
     </script>
 
 
