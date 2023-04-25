@@ -109,10 +109,7 @@
                                             Nama Komponen
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
-                                            Item Kit
-                                        </th>
-                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
-                                            BOM ID
+                                            Jumlah
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
                                             Total
@@ -249,15 +246,14 @@
                     </td>
                     <td
                     class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                    ${comp.item_kit_count}
-                        </td>
-                    <td
-                    class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                    ${comp.bom_count}
+                    Item kit: ${comp.item_kit_count}<br> BOM: ${comp.bom_count}<br> Komponen: ${comp.component_count}
                     </td>
+
                     <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
-                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.total_item_used}</td>
-                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${total_available}</td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        Item kit: ${comp.total_item_used}<br> BOM: ${comp.total_item_used}<br> Komponen:${comp.total_item_used}
+                    </td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">Item kit: ${total_available}<br> BOM: ${total_available}<br> Komponen: ${total_available}</td>
                     <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
                 </tr>`);
             });
@@ -302,7 +298,7 @@
         //------------------------
         function generateTable(pe_id, pe_text, table_id) {
             $("#pe_container").append(
-                `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
+                `<div class="w-full rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
                     <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
@@ -341,7 +337,13 @@
                                             Nama Komponen
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            QTY
+                                            QTY Item Kit
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            QTY BOM
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            QTY Komponen
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Aksi
@@ -482,6 +484,14 @@
                 <td scope="col" class="px-6 py-3">
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
                 </td>
+                <td scope="col" class="px-6 py-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                </td>
+
+
                 <td scope="col" class="px-6 py-3">
                     <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}',this)>Hapus</button>
                 </td>

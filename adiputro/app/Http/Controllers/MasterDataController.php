@@ -193,6 +193,8 @@ class MasterDataController extends Controller
             $icr++;
         }
         $process_entries = Session::get("sess.table");
+        $ids = $item_level->processEntries()->pluck('item_level_process_entry_id')->toArray();
+        ItemComponentProcessEntry::whereIn('item_level_process_entry_id',$ids)->delete();
         $item_level->processEntries()->detach();
 
 
@@ -207,10 +209,6 @@ class MasterDataController extends Controller
 
             $item_level_process_entry = ItemLevelProcessEntry::where('item_level_id',$item_level->item_level_id)->where('process_entry_id',$process_entry_id)->first();
 
-            foreach($item_components as $item_component=>$ic){
-                $icomp = ItemComponent::find($item_component);
-                ItemComponentProcessEntry::where('item_component_id',$item_component)->where('item_level_process_entry_id',$item_level_process_entry->item_level_process_entry_id)->delete();
-            }
 
             //loop through every item components inside pe
             foreach($item_components as $item_component=>$ic){
@@ -335,6 +333,7 @@ class MasterDataController extends Controller
                         "item_kit_count"=>$comp->pivot->item_component_qty,
                         "total_item_used"=>0,
                         "bom_count"=>0,
+                        "component_count"=> 0,
                         "is_available"=>true
                     ];
                     $components[$comp_id] = $new_comp;
@@ -365,6 +364,7 @@ class MasterDataController extends Controller
                         "item_kit_count"=>0,
                         "total_item_used"=>0,
                         "bom_count"=>$comp->pivot->consumed_qty,
+                        "component_count"=> 0,
                         "is_available"=>true
                     ];
                     $components[$comp_id] = $new_comp;
@@ -378,6 +378,7 @@ class MasterDataController extends Controller
                 if(Arr::exists($components,$comp_id)){
                     //icr
                     $components[$comp_id]["item_component_qty"] =  $components[$comp_id]["item_component_qty"] + $code_component["qty"];
+                    $components[$comp_id]["component_count"] += $code_component["qty"];
                 }
                 else{
                     $new_comp = [
@@ -391,6 +392,7 @@ class MasterDataController extends Controller
                         "item_kit_count"=>0,
                         "total_item_used"=>0,
                         "bom_count"=>0,
+                        "component_count"=> $code_component["qty"],
                         "is_available"=>true
                     ];
                     $components[$comp_id] = $new_comp;
