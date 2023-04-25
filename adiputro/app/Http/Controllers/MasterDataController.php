@@ -226,9 +226,12 @@ class MasterDataController extends Controller
                 //put into item_component_process_entry table
                 $icomp = ItemComponent::find($item_component);
                 $icomp->ItemLevelProcessEntries()->attach($item_level_process_entry,[
-                    'item_component_qty'=>$ic["item_component_qty"],
+                    'item_kit_qty'=>$ic["item_kit_qty"],
+                    'bom_qty'=>$ic["bom_qty"],
+                    'component_qty'=>$ic["component_qty"],
                     'item_kit_count'=>$ic["item_kit_count"],
-                    'bom_count'=>$ic["bom_count"]
+                    'bom_count'=>$ic["bom_count"],
+                    'component_count'=>$ic["component_count"]
                 ]);
             }
         }
@@ -559,11 +562,11 @@ class MasterDataController extends Controller
             $keyword = "item_kit_qty";
         }
         else if($source == "bom"){
-            $total_available = $temp_comp["item_kit_count"] - $temp_comp["total_bom_used"] + $table_comp["bom_qty"];
+            $total_available = $temp_comp["bom_count"] - $temp_comp["total_bom_used"] + $table_comp["bom_qty"];
             $keyword = "bom_qty";
         }
         else if($source == "component"){
-            $total_available = $temp_comp["item_kit_count"] - $temp_comp["total_component_used"] + $table_comp["component_qty"];
+            $total_available = $temp_comp["component_count"] - $temp_comp["total_component_used"] + $table_comp["component_qty"];
             $keyword = "component_qty";
         }
         // $total_available = $temp_comp["item_component_qty"] - $temp_comp["total_item_used"] + $table_comp["item_component_qty"];
