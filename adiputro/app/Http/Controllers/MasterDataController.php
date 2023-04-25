@@ -463,7 +463,7 @@ class MasterDataController extends Controller
             foreach ($components as $component_id => $comp) {
                 if (in_array($item_kit_number,$comp["item_kit_numbers"])) {
 
-                    if($comp["total_item_used"] > 0){
+                    if($comp["total_item_kit_used"] > 0){
                         $is_allowed = false;
                     }
 
@@ -477,7 +477,7 @@ class MasterDataController extends Controller
             $ret = $components;
             foreach ($components as $component_id => $comp) {
                 if (in_array($bom_number,$comp["bom_numbers"])) {
-                    if($comp["total_item_used"] > 0){
+                    if($comp["total_bom_used"] > 0){
                         $is_allowed = false;
                     }
                 }
