@@ -75,15 +75,22 @@ class MasterDataController extends Controller
         $item_component_id = $item_component_id."";
         $total_qty = 0;
 
+        $total_item_kit_qty = 0;
+        $total_bom_qty = 0;
+        $total_component_qty = 0;
         foreach($tables as $table){
             if(array_key_exists($item_component_id,$table)){
 
-                $total_qty += $table[$item_component_id]["item_component_qty"];
+                $total_item_kit_qty += $table[$item_component_id]["item_kit_qty"];
+                $total_bom_qty += $table[$item_component_id]["bom_qty"];
+                $total_component_qty += $table[$item_component_id]["component_qty"];
             }
         }
         $comp_temp = Session::get('sess.comp_temp.'.$item_component_id);
-        $comp_temp["total_item_used"] = $total_qty;
-        if($total_qty >= $comp_temp["item_component_qty"]){
+        $comp_temp["total_item_kit_used"] = $total_item_kit_qty;
+        $comp_temp["total_bom_used"] = $total_bom_qty;
+        $comp_temp["total_component_used"] = $total_component_qty;
+        if($total_item_kit_qty >= $comp_temp["item_kit_count"] && $total_bom_qty >= $comp_temp["bom_count"] && $total_component_qty >= $comp_temp["component_count"]){
             $comp_temp["is_available"] = false;
         }
         else{
@@ -140,7 +147,11 @@ class MasterDataController extends Controller
                     "item_uofm"=>$ic->item_uofm,
                     "item_kit_count"=>$ic->pivot->item_kit_count,
                     "bom_count"=>$ic->pivot->bom_count,
-                    "total_item_used"=>0
+                    "component_count"=>$ic->pivot->component_count,
+                    "total_item_used"=>0,
+                    "item_kit_qty"=>$ic->pivot->item_kit_qty,
+                    "bom_qty"=>$ic->pivot->bom_qty,
+                    "component_qty"=>$ic->pivot->component_qty
                 ];
                 Session::put("sess.table.".$table_id.".".$ic->item_component_id,$comp);
             }
@@ -331,6 +342,9 @@ class MasterDataController extends Controller
                         "item_component_qty"=>$comp->pivot->item_component_qty,
                         "item_uofm"=>$comp->item_uofm,
                         "item_kit_count"=>$comp->pivot->item_component_qty,
+                        "total_item_kit_used"=>0,
+                        "total_bom_used"=>0,
+                        "total_component_used"=>0,
                         "total_item_used"=>0,
                         "bom_count"=>0,
                         "component_count"=> 0,
@@ -362,6 +376,9 @@ class MasterDataController extends Controller
                         "item_component_qty"=>$comp->pivot->consumed_qty,
                         "item_uofm"=>$comp->item_uofm,
                         "item_kit_count"=>0,
+                        "total_item_kit_used"=>0,
+                        "total_bom_used"=>0,
+                        "total_component_used"=>0,
                         "total_item_used"=>0,
                         "bom_count"=>$comp->pivot->consumed_qty,
                         "component_count"=> 0,
@@ -390,6 +407,9 @@ class MasterDataController extends Controller
                         "item_component_qty"=>$code_component["qty"],
                         "item_uofm"=>$comp->item_uofm,
                         "item_kit_count"=>0,
+                        "total_item_kit_used"=>0,
+                        "total_bom_used"=>0,
+                        "total_component_used"=>0,
                         "total_item_used"=>0,
                         "bom_count"=>0,
                         "component_count"=> $code_component["qty"],
@@ -487,7 +507,12 @@ class MasterDataController extends Controller
                     'message' => "Jumlah item tidak mencukupi!"
                 ]);
             }
-            $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
+            // $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
+
+            $item["item_kit_qty"] = $item["item_kit_count"] - $item["total_item_kit_used"];
+            $item["bom_qty"] = $item["bom_count"] - $item["total_bom_used"];
+            $item["component_qty"] = $item["component_count"] - $item["total_component_used"];
+
             Session::put("sess.table.".$table_id.".".$item_component_id,$item);
             $this->updateTotalUsedComponentList($item_component_id);
             //success, no data found, create a new one
@@ -519,6 +544,7 @@ class MasterDataController extends Controller
 
     function updateQty(Request $request){
         $qty = $request->qty;
+        $source = $request->source;
         $table_id = $request->table_id;
         $item_number = $request->item_number;
         $item_component_id = ItemComponent::where('item_number',$item_number)->first()->item_component_id;
@@ -526,7 +552,21 @@ class MasterDataController extends Controller
 
         //check enough or not ?
         $temp_comp = Session::get('sess.comp_temp.'.$item_component_id);
-        $total_available = $temp_comp["item_component_qty"] - $temp_comp["total_item_used"] + $table_comp["item_component_qty"];
+        $total_available = 0;
+        $keyword = "";
+        if($source == "item_kit"){
+            $total_available = $temp_comp["item_kit_count"] - $temp_comp["total_item_kit_used"] + $table_comp["item_kit_qty"];
+            $keyword = "item_kit_qty";
+        }
+        else if($source == "bom"){
+            $total_available = $temp_comp["item_kit_count"] - $temp_comp["total_bom_used"] + $table_comp["bom_qty"];
+            $keyword = "bom_qty";
+        }
+        else if($source == "component"){
+            $total_available = $temp_comp["item_kit_count"] - $temp_comp["total_component_used"] + $table_comp["component_qty"];
+            $keyword = "component_qty";
+        }
+        // $total_available = $temp_comp["item_component_qty"] - $temp_comp["total_item_used"] + $table_comp["item_component_qty"];
 
         $tables = Session::get("sess.table");
         // dd($tables);
@@ -535,7 +575,7 @@ class MasterDataController extends Controller
         foreach($tables as $id=>$table){
             if(array_key_exists($item_component_id."",$table) && $id != $table_id){
                 $ids[] = $id;
-                $total_qty += $table[$item_component_id.""]["item_component_qty"];
+                $total_qty += $table[$item_component_id.""][$keyword];
             }
         }
 
@@ -544,12 +584,12 @@ class MasterDataController extends Controller
                 'success' => false,
                 'message'=>'qty tidak cukup!',
                 'tables'=>Session::get("sess.table"),
-                'current_qty' => $table_comp["item_component_qty"],
+                'current_qty' => $table_comp[$keyword],
 
             ]);
         }
 
-        $table_comp["item_component_qty"] = $qty;
+        $table_comp[$keyword] = $qty;
         Session::put('sess.table.'.$table_id.'.'.$item_component_id,$table_comp);
         $this->updateTotalUsedComponentList($item_component_id);
 

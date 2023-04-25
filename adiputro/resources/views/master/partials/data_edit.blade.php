@@ -209,10 +209,17 @@
             let iter = 0;
 
             $.each(components, function(key, comp) {
+                console.log(comp);
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
-                let total_available = comp.item_component_qty - comp.total_item_used;
-                if(comp.total_item_used!=0){
+                // let total_available = comp.item_component_qty - comp.total_item_used;
+
+                let total_available_item_kit = comp.item_kit_count - comp.total_item_kit_used;
+                let total_available_bom = comp.bom_count - comp.total_bom_used;
+                console.log(total_available_bom);
+                let total_available_component = comp.component_count - comp.total_component_used;
+
+                if(comp.total_item_kit_used!=0 || comp.bom_used!=0 || comp.component_used!=0){
                     appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
                 }
                 if (!comp.is_available) {
@@ -251,9 +258,9 @@
 
                     <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
                     <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                        Item kit: ${comp.total_item_used}<br> BOM: ${comp.total_item_used}<br> Komponen:${comp.total_item_used}
+                        Item kit: ${comp.total_item_kit_used}<br> BOM: ${comp.total_bom_used}<br> Komponen: ${comp.total_component_used}
                     </td>
-                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">Item kit: ${total_available}<br> BOM: ${total_available}<br> Komponen: ${total_available}</td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">Item kit: ${total_available_item_kit}<br> BOM: ${total_available_bom}<br> Komponen: ${total_available_component}</td>
                     <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
                 </tr>`);
             });
@@ -443,7 +450,7 @@
             }
         }
 
-        function updateQTY(input_comp, table_id, item_number, qty) {
+        function updateQTY(input_comp, table_id, item_number, qty,source) {
             $.ajax({
                 url: `/master/data/updateQty`,
                 type: "POST",
@@ -451,7 +458,8 @@
                 data: {
                     "item_number": item_number,
                     "table_id": table_id,
-                    "qty": qty
+                    "qty": qty,
+                    "source":source
                 },
                 success: function(response) {
                     if (response.success) {
@@ -482,13 +490,13 @@
 
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_kit_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"item_kit")>
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.bom_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"bom")>
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"component")>
                 </td>
 
 
@@ -620,7 +628,10 @@
                                 let it = {
                                     item_number: item.item_number,
                                     item_description: item.item_description,
-                                    item_component_qty: item.item_component_qty
+                                    item_component_qty: item.item_component_qty,
+                                    item_kit_qty:item.item_kit_qty,
+                                    bom_qty:item.bom_qty,
+                                    component_qty:item.component_qty
                                 };
                                 placeComponentToTable(table_id, it);
                             });
