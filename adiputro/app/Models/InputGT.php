@@ -28,7 +28,7 @@ class InputGT extends Model
 
     function process_entry()
     {
-        return $this->hasOne(ProcessEntry::class, "process_entry_id", "process_entry_id");
+        return $this->belongsTo(ProcessEntry::class, "process_entry_id", "process_entry_id");
     }
 
     function form_report()
@@ -39,6 +39,11 @@ class InputGT extends Model
     function user_defined()
     {
         return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
+    }
+
+    function item_component()
+    {
+        return $this->belongsTo(ItemComponent::class,"item_component_id","item_component_id");
     }
 
 }

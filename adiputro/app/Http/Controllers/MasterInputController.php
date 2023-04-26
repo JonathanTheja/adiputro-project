@@ -24,6 +24,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Spatie\PdfToImage\Pdf;
 use Intervention\Image\Facades\Image as ImageInter;
+use Mockery\Undefined;
 
 class MasterInputController extends Controller
 {
@@ -364,19 +365,40 @@ class MasterInputController extends Controller
     {
         $form_report_gt = FormReport::where("nomor_laporan", $request->nomor_laporan)->first();
 
+        //alur pertama gambar teknik setelah memilih nomor laporan cek apakah sudah ada input kalau ada maka jadi edit
+        $input_gt_detail = InputGT::where('kode_gt',$form_report_gt->kode)->where("status",1)->with('process_entry')->with('item_component')->with('checked_by_gt')->with('approved_by_gt')->with('user_defined')->first();
 
-        return response()->json([
-            'success' => true,
-            'item_level_process_entry' => $form_report_gt->item_level_process_entry()->with("process_entry")->get(),
-            'item_level_id' => $form_report_gt->item_level_id,
-            'level' => $form_report_gt->item_level->level,
-            'kode_gt' => $form_report_gt->kode
-        ]);
+        if(isset($input_gt_detail)){
+            return response()->json([
+                'success' => true,
+                'item_level_process_entry' => $form_report_gt->item_level_process_entry()->with("process_entry")->get(),
+                'item_level_id' => $form_report_gt->item_level_id,
+                'level' => $form_report_gt->item_level->level,
+                'kode_gt' => $form_report_gt->kode,
+                'input_gt_detail' =>$input_gt_detail
+            ]);
+        }
+        else{
+            return response()->json([
+                'success' => true,
+                'item_level_process_entry' => $form_report_gt->item_level_process_entry()->with("process_entry")->get(),
+                'item_level_id' => $form_report_gt->item_level_id,
+                'level' => $form_report_gt->item_level->level,
+                'kode_gt' => $form_report_gt->kode,
+            ]);
+        }
+
+
     }
 
     function getComponentGT(Request $request)
     {
         $item_level_process_entry = ItemLevelProcessEntry::where("item_level_id",$request->item_level_id)->where("process_entry_id",$request->process_entry_id)->with(['item_component_process_entry'])->first();
+        if(!isset($item_level_process_entry)){
+            return response()->json([
+                'success' => false
+            ]);
+        }
 
         $item_components = [];
         foreach ($item_level_process_entry->item_component_process_entry as $key => $entry) {
@@ -457,6 +479,15 @@ class MasterInputController extends Controller
         $revisi = 0;
         $item_component = ItemComponent::where("item_number", $kode_komponen_gt)->first();
 
+        $input_gt_lama = InputGT::where("kode_gt", $kode_gt)->where('status',1)->first();
+        $revisi = 0;
+        if(isset($input_gt_lama)){
+            $form_report = FormReport::where("nomor_laporan",$input_gt_lama->nomor_laporan)->first();
+            $revisi = $input_gt_lama->revisi + 1;
+            $input_gt_lama->status = 0;
+            $input_gt_lama->save();
+        }
+
         $input_gt = InputGT::create([
             "revisi" => $revisi,
             "kode_ti" => $kode_ti,
@@ -524,5 +555,41 @@ class MasterInputController extends Controller
 
         Alert::success('Sukses!', 'Berhasil Tambah Gambar Teknik!');
         return redirect("/master/input");
+    }
+
+    function getDetailGT(Request $request)
+    {
+        $form_report_ti = FormReport::where("jenis","TI")->get();
+        $form_report_gt = FormReport::where("jenis","Gambar Teknik")->get();
+        $pembuat = Auth::user();
+        $diperiksa_oleh = Role::where("name","Manager Engineering")->first()->users;
+        $approved_by_bus = Department::where("access_database","SPK Mini Bus")->get();
+        $approved_by_minibus = Department::where("access_database","SPK Bus")->get();
+        $user_defined = UserDefined::all();
+
+        // $input_gt_detail = InputGT::with('process_entry')->find($request->input_gt_id);
+        $input_gt_detail = InputGT::where('input_gt_id',$request->input_gt_id)->with('process_entry')->with('item_component')->with('checked_by_gt')->with('approved_by_gt')->with('user_defined')->first();
+        $form_report_gt_detail = FormReport::where("nomor_laporan",$input_gt_detail->nomor_laporan)->first();
+        $kode_gt = $input_gt_detail->kode_gt;
+
+        $all_photos_gt = Storage::disk('public')->files("images/input/gt/".strval(date("Y-m-d H-i-s", $input_gt_detail->created_at->timestamp)));
+        // $input_gt_detail = html_entity_decode($input_gt_detail);
+        // $input_gt_detail_json = json_encode($input_gt_detail);
+
+        $input_gt = InputGT::where("status",1)->with("form_report")->orderBy('kode_gt','asc')->get();
+        return view('master.input.gt.detail', [
+            "form_report_ti" => $form_report_ti,
+            "form_report_gt" => $form_report_gt,
+            "pembuat" => $pembuat,
+            "diperiksa_oleh" => $diperiksa_oleh,
+            "approved_by_bus" => $approved_by_bus,
+            "approved_by_minibus" => $approved_by_minibus,
+            "user_defined" => $user_defined,
+            "kode_gt" => $kode_gt,
+            "all_photos_gt" => $all_photos_gt,
+            "input_gt" => $input_gt,
+            "input_gt_detail" => $input_gt_detail,
+            "item_level_process_entry" => $form_report_gt_detail->item_level_process_entry()->with("process_entry")->get()
+        ]);
     }
 }
