@@ -300,17 +300,17 @@
                             <div class="w-4"></div>
                             <input type="text" id="kode_gt" name="kode_gt"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode Gambar" required>
+                                placeholder="Kode Gambar" required readonly>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="kode_ti"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
                                 TI</label>
                             <div class="w-4"></div>
-                            <input type="text" id="kode_ti_gt" name="kode_ti_gt" oninput=
-                            "
-                            // getGTByKodeTI(this.value)
-                            "
+                            <input type="text" id="kode_ti_gt" name="kode_ti_gt"
+                                oninput="
+                                // getGTByKodeTI(this.value)
+                                "
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Kode TI">
                             {{-- kode_ti_gt -> kode_ti punya gt --}}
@@ -336,12 +336,14 @@
                                 autocomplete="off" name="nomor_laporan_gt" required
                                 onchange="getProcessEntryGT(this.value)">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
-                                @forelse ($form_report_gt as $form_report)
-                                    <option value="{{ $form_report->nomor_laporan }}">
-                                        {{ $form_report->nomor_laporan }}
-                                    </option>
-                                @empty
-                                @endforelse
+                                @if (isset($form_report_gt))
+                                    @forelse ($form_report_gt as $form_report)
+                                        <option value="{{ $form_report->nomor_laporan }}">
+                                            {{ $form_report->nomor_laporan }}
+                                        </option>
+                                    @empty
+                                    @endforelse
+                                @endif
                                 <option value="tambah">
                                     Tambah Baru
                                 </option>
@@ -572,11 +574,13 @@
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_model">
-                                @forelse ($item_components as $item_component)
-                                    <option value="{{ $item_component->item_component_id }}">
-                                        {{ $item_component->item_number }}</option>
-                                @empty
-                                @endforelse
+                                @if (isset($item_components))
+                                    @forelse ($item_components as $item_component)
+                                        <option value="{{ $item_component->item_component_id }}">
+                                            {{ $item_component->item_number }}</option>
+                                    @empty
+                                    @endforelse
+                                @endif
                             </select>
                         </div>
 
@@ -600,10 +604,12 @@
                                 onchange="getDetailGTModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_gt_model">
-                                @forelse ($gts as $gt)
-                                    <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
-                                @empty
-                                @endforelse
+                                @if (isset($gts))
+                                    @forelse ($gts as $gt)
+                                        <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
+                                    @empty
+                                    @endforelse
+                                @endif
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -1296,6 +1302,8 @@
                     },
                     success: function(response) {
                         if (response.success) {
+                            console.log(response);
+                            $("#kode_gt").val(response.kode_gt);
                             item_level_id_gt = response.item_level_id;
                             level_gt = response.level;
                             process_entry_gt.clear();

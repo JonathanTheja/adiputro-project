@@ -364,11 +364,13 @@ class MasterInputController extends Controller
     {
         $form_report_gt = FormReport::where("nomor_laporan", $request->nomor_laporan)->first();
 
+
         return response()->json([
             'success' => true,
             'item_level_process_entry' => $form_report_gt->item_level_process_entry()->with("process_entry")->get(),
             'item_level_id' => $form_report_gt->item_level_id,
             'level' => $form_report_gt->item_level->level,
+            'kode_gt' => $form_report_gt->kode
         ]);
     }
 
@@ -481,6 +483,43 @@ class MasterInputController extends Controller
             $department = Department::find($department_id);
             // $input_ti->approved_by_ti()->attach($department, ["kode_ti" => $kode_ti]);
             $input_gt->approved_by_gt()->attach($department);
+        }
+
+        $file = $request->file("photos")[0];
+        $file->storeAs("pdf/".strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)), $file->getClientOriginalName(), 'public');
+        $path = Storage::disk('public')->path('pdf/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)).'/'.$file->getClientOriginalName());
+        // dd(Storage::url($pdf));
+        if($request->file('photos')[0]->getClientOriginalExtension() == 'pdf'){
+            $pdf = new Pdf($path);
+            if (!Storage::exists('public/images/input/gt/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)))) {
+                Storage::makeDirectory('public/images/input/gt/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)));
+            }
+            foreach(range(1, $pdf->getNumberOfPages()) as $pageNumber) {
+                $pdf->setPage($pageNumber)
+                    ->setOutputFormat('png')
+                    ->saveImage(Storage::disk('public')->path('images/input/gt/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)).'/'));
+            };
+        }
+        else{
+            if($request->file("photos") != null){
+                foreach($request->file("photos") as $key => $photo){
+                    #code ..
+                    $namafile = ($key+1).".".$photo->getClientOriginalExtension();
+                    $namafolder = "images/input/gt/".strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp));
+                    $photo->storeAs($namafolder,$namafile,'public');
+                }
+            }
+        }
+        //tambah watermark, ambil fotonya yang baru disimpan
+        // $watermark = ImageInter::make(public_path(('img/controlled_copy.png')));
+        // $watermark = ImageInter::make('public\controlled_copy.png');
+        $photos = Storage::disk('public')->files("images/input/gt/".strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)));
+        foreach ($photos as $key => $photo) {
+            $path = Storage::disk('public')->path($photo);
+            $img = ImageInter::make($path);
+            $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
+            // dump(public_path("$photo"));
+            $img->save(Storage::disk('public')->path($photo));
         }
 
         Alert::success('Sukses!', 'Berhasil Tambah Gambar Teknik!');
