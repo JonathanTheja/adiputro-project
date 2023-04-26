@@ -109,10 +109,7 @@
                                             Nama Komponen
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
-                                            Item Kit
-                                        </th>
-                                        <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
-                                            BOM ID
+                                            Jumlah
                                         </th>
                                         <th scope="col" class="border-r px-6 py-4 dark:border-neutral-500">
                                             Total
@@ -212,10 +209,17 @@
             let iter = 0;
 
             $.each(components, function(key, comp) {
+                console.log(comp);
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
-                let total_available = comp.item_component_qty - comp.total_item_used;
-                if(comp.total_item_used!=0){
+                // let total_available = comp.item_component_qty - comp.total_item_used;
+
+                let total_available_item_kit = comp.item_kit_count - comp.total_item_kit_used;
+                let total_available_bom = comp.bom_count - comp.total_bom_used;
+                console.log(total_available_bom);
+                let total_available_component = comp.component_count - comp.total_component_used;
+
+                if(comp.total_item_kit_used!=0 || comp.bom_used!=0 || comp.component_used!=0){
                     appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
                 }
                 if (!comp.is_available) {
@@ -249,15 +253,14 @@
                     </td>
                     <td
                     class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                    ${comp.item_kit_count}
-                        </td>
-                    <td
-                    class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
-                    ${comp.bom_count}
+                    Item kit: ${comp.item_kit_count}<br> BOM: ${comp.bom_count}<br> Komponen: ${comp.component_count}
                     </td>
+
                     <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.item_component_qty}</td>
-                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${comp.total_item_used}</td>
-                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">${total_available}</td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">
+                        Item kit: ${comp.total_item_kit_used}<br> BOM: ${comp.total_bom_used}<br> Komponen: ${comp.total_component_used}
+                    </td>
+                    <td class="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500">Item kit: ${total_available_item_kit}<br> BOM: ${total_available_bom}<br> Komponen: ${total_available_component}</td>
                     <td class="whitespace-nowrap px-6 py-4 dark:border-neutral-500">${comp.item_uofm}</td>
                 </tr>`);
             });
@@ -302,7 +305,7 @@
         //------------------------
         function generateTable(pe_id, pe_text, table_id) {
             $("#pe_container").append(
-                `<div class="w-9/12 rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
+                `<div class="w-full rounded-lg py-5 pe_table_list" id="pe_${pe_id}">
                     <h1 class="text-lg my-3">Tabel Process Entry ${pe_text}</h1>
                     <div>
                         <div class="flex flex-wrap -mx-3 mb-2">
@@ -341,7 +344,13 @@
                                             Nama Komponen
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            QTY
+                                            QTY Item Kit
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            QTY BOM
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            QTY Komponen
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Aksi
@@ -441,7 +450,7 @@
             }
         }
 
-        function updateQTY(input_comp, table_id, item_number, qty) {
+        function updateQTY(input_comp, table_id, item_number, qty,source) {
             $.ajax({
                 url: `/master/data/updateQty`,
                 type: "POST",
@@ -449,7 +458,8 @@
                 data: {
                     "item_number": item_number,
                     "table_id": table_id,
-                    "qty": qty
+                    "qty": qty,
+                    "source":source
                 },
                 success: function(response) {
                     if (response.success) {
@@ -480,8 +490,16 @@
 
                 </td>
                 <td scope="col" class="px-6 py-3">
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value)>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.item_kit_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"item_kit")>
                 </td>
+                <td scope="col" class="px-6 py-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.bom_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"bom")>
+                </td>
+                <td scope="col" class="px-6 py-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="QTY" value=${item.component_qty} onchange=updateQTY(this,'${table_id}','${item.item_number}',this.value,"component")>
+                </td>
+
+
                 <td scope="col" class="px-6 py-3">
                     <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onclick=deleteComponentTable('${table_id}','${item.item_number}',this)>Hapus</button>
                 </td>
@@ -610,7 +628,10 @@
                                 let it = {
                                     item_number: item.item_number,
                                     item_description: item.item_description,
-                                    item_component_qty: item.item_component_qty
+                                    item_component_qty: item.item_component_qty,
+                                    item_kit_qty:item.item_kit_qty,
+                                    bom_qty:item.bom_qty,
+                                    component_qty:item.component_qty
                                 };
                                 placeComponentToTable(table_id, it);
                             });
