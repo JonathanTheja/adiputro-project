@@ -510,8 +510,6 @@ class MasterDataController extends Controller
                     'message' => "Jumlah item tidak mencukupi!"
                 ]);
             }
-            // $item["item_component_qty"] = $item["item_component_qty"] - $item["total_item_used"];
-
             $item["item_kit_qty"] = $item["item_kit_count"] - $item["total_item_kit_used"];
             $item["bom_qty"] = $item["bom_count"] - $item["total_bom_used"];
             $item["component_qty"] = $item["component_count"] - $item["total_component_used"];
