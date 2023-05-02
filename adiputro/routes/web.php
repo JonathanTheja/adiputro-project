@@ -132,6 +132,10 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/{item_level_id?}', [DashboardController::class,'dashboard']);
 
     Route::prefix('report')->group(function () {
+        Route::post('/getCategories', [DashboardController::class,'getCategories']);
+        Route::post('/addCategory', [DashboardController::class,'addCategory']);
+        Route::post('/updateCategory', [DashboardController::class,'updateCategory']);
+        Route::post('/deleteCategory', [DashboardController::class,'deleteCategory']);
         Route::post('/add', [DashboardController::class,'addReport']);
         Route::post('/konfirmasi', [DashboardController::class,'konfirmasi']);
     });

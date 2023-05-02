@@ -21,16 +21,6 @@
                     <form action="{{ url('/master/input/ti/addTI') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
-                                TI</label>
-                            <div class="w-4"></div>
-                            <input readonly type="text" id="kode_ti" name="kode_ti" {{-- oninput="loadInputTI(this.value,undefined,{{ $form_report_ti }}, true);alert(this.value)" --}}
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode TI" required>
-                        </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nomor_laporan_ti"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
@@ -54,6 +44,15 @@
                                     </option>
                                 @endforeach --}}
                             </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                TI</label>
+                            <div class="w-4"></div>
+                            <input readonly type="text" id="kode_ti" name="kode_ti" {{-- oninput="loadInputTI(this.value,undefined,{{ $form_report_ti }}, true);alert(this.value)" --}}
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode TI" required>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
@@ -294,7 +293,32 @@
                     <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="nomor_laporan"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
+                                Laporan</label>
+                            <div class="w-4"></div>
+                            {{-- <input type="text" id="nomor_laporan_gt" name="nomor_laporan_gt" readonly
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Nomor Laporan" required> --}}
+                            <select id="nomor_laporan_gt" placeholder="Nomor Laporan"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="nomor_laporan_gt" required
+                                onchange="getProcessEntryGT(this.value);">
+                                <option disabled selected value>Pilih Nomor Laporan</option>
+                                @if (isset($form_report_gt))
+                                    @forelse ($form_report_gt as $form_report)
+                                        <option value="{{ $form_report->nomor_laporan }}">
+                                            {{ $form_report->nomor_laporan }}
+                                        </option>
+                                    @empty
+                                    @endforelse
+                                @endif
+                                <option value="tambah">
+                                    Tambah Baru
+                                </option>
+                            </select>
+                        </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="kode_gt"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
@@ -324,32 +348,6 @@
                                     <option value="{{ $input->kode_ti }}">{{ $input->kode_ti }}</option>
                                 @endforeach
                             </select> --}}
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="nomor_laporan"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
-                                Laporan</label>
-                            <div class="w-4"></div>
-                            {{-- <input type="text" id="nomor_laporan_gt" name="nomor_laporan_gt" readonly
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Nomor Laporan" required> --}}
-                            <select id="nomor_laporan_gt" placeholder="Nomor Laporan"
-                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="nomor_laporan_gt" required
-                                onchange="getProcessEntryGT(this.value);">
-                                <option disabled selected value>Pilih Nomor Laporan</option>
-                                @if (isset($form_report_gt))
-                                    @forelse ($form_report_gt as $form_report)
-                                        <option value="{{ $form_report->nomor_laporan }}">
-                                            {{ $form_report->nomor_laporan }}
-                                        </option>
-                                    @empty
-                                    @endforelse
-                                @endif
-                                <option value="tambah">
-                                    Tambah Baru
-                                </option>
-                            </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_gt"

@@ -41,7 +41,7 @@
                 <h2 class="accordion-header mb-0" id="headingTwo">
                     <button
                         class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
-            bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
+                bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                         type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                         aria-controls="collapseTwo">
                         <h1 class="text-xl text-gray-800">
@@ -115,13 +115,15 @@
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
                                 <div class="w-4"></div>
                                 <select id="kategori_report" name="kategori_report_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+                                    onchange="tambahUpdate(this.value)" required>
+                                    <option disabled selected value="belumDipilih">Belum Dipilih</option>
                                     @foreach ($kategori_report as $kategori)
-                                        <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}</option>
+                                        <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}
+                                        </option>
                                     @endforeach
-                                    {{-- @foreach ($roles as $role)
-                                    <option value="{{ $role->access }}">{{ $role->name }}</option>
-                                @endforeach --}}
+                                    <option value="tambahUpdate" id="tambahUpdate">Tambah /
+                                        Update Kategori</option>
                                 </select>
                             </div>
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -250,6 +252,64 @@
         </label>
     </div>
 
+    <div class="hidden" id="modalKategori">
+        <input type="checkbox" id="my-modal-kategori" class="modal-toggle" />
+        <label for="my-modal-kategori" class="modal cursor-pointer">
+            <label class="bg-white p-6 rounded-xl max-w-[80vw] max-h-[80vh] relative overflow-y-auto" for="">
+                <label for="my-modal-kategori" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold mb-2" id="titleModal">Master Kategori Report</h3>
+                {{-- accordion --}}
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item bg-white border border-gray-200 rounded-lg">
+                        <h2 class="accordion-header mb-0" id="headingTwo">
+                            <button
+                                class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                            bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseKategori"
+                                aria-expanded="false" aria-controls="collapseKategori">
+                                <h1 class="text-xl text-gray-800">
+                                    Tambah Kategori
+                                </h1>
+                            </button>
+                        </h2>
+                        <div id="collapseKategori" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body py-4 px-5">
+                                <div class="flex lg:flex-row flex-col">
+                                    <div class="mb-4 w-full">
+                                        <label for="full_name"
+                                            class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                                        <input type="text" id="name" name="name"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                            placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="text-left pt-1 mb-6 pb-1">
+                                    <button type="submit" onclick="tambahKategori($('#name').val())"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah
+                                        Kategori baru</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- accordion --}}
+                <table class="w-full text-md bg-white shadow-md rounded mb-4 overflow-x-auto">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="text-left p-3 px-5">ID</th>
+                            <th class="text-left p-3 px-5">Name</th>
+                            <th class="text-center p-3 px-5" colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableKategori">
+
+                    </tbody>
+                </table>
+            </label>
+        </label>
+    </div>
+    <label for="my-modal-kategori" class="" id="labelKategori"></label>
     <script>
         function updateLevelData(item_level_id) {
             //ajax call
@@ -328,9 +388,13 @@
         function konfirmasi() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
+            var kategori = document.getElementById("kategori_report").value;
             if (username == "" || password == "") {
                 alert("Username dan password harus terisi!");
-            } else {
+            }
+            else if (kategori == "belumDipilih"){
+                alert("Kategori belum dipilih!");
+            }else {
                 $.ajax({
                     url: `/dashboard/report/konfirmasi`,
                     type: "POST",
@@ -370,6 +434,7 @@
 
         setTimeout(() => {
             document.getElementById("modalKonfirmasi").classList.remove("hidden");
+            document.getElementById("modalKategori").classList.remove("hidden");
         }, 1000);
         // document.getElementById("modalKonfirmasi").click();
 
@@ -510,6 +575,171 @@
         }
 
         selectedDashboard();
+
+        function tambahUpdate(kategori) {
+            if (kategori == "tambahUpdate") {
+                $('#labelKategori').click();
+                $('#kategori_report').val("belumDipilih");
+                refreshKategori();
+            }
+        }
+
+        function tambahKategori(name) {
+            $.ajax({
+                url: `/dashboard/report/addCategory`,
+                type: "POST",
+                cache: false,
+                data: {
+                    name: name
+                },
+                success: function(response) {
+                    if (response.success) {
+                        refreshKategori();
+                        Swal.fire({
+                            // text: "You won't be able to revert this!",
+                            icon: 'success',
+                            title: 'Berhasil Tambah Kategori!',
+                            // showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                            // confirmButtonText: 'Yes, Update it!'
+                            allowOutsideClick: false
+                        })
+                    }
+                }
+            });
+        }
+
+        function refreshKategori() {
+            $.ajax({
+                url: `/dashboard/report/getCategories`,
+                type: "POST",
+                cache: false,
+                data: {},
+                success: function(response) {
+                    if (response.success) {
+                        $('#kategori_report').html("");
+                        $('#tableKategori').html("");
+                        $('#kategori_report').append(`
+                        <option disabled selected value="belumDipilih">Belum Dipilih</option>
+                        `);
+                        $.each(response.categories, function(key, value) {
+                            console.log(value)
+                            $('#kategori_report').append(`
+                                <option value="${value.kategori_report_id}">${value.name}</option>
+                            `);
+                            $('#tableKategori').append(`
+                                <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                                    <td class="p-3 px-5">
+                                        <input type="text" value="${value.kategori_report_id}" class="bg-transparent">
+                                    </td>
+                                    <td class="p-3 px-5">
+                                        <input type="text" id='name${value.kategori_report_id}' value="${value.name}" class="bg-transparent">
+                                    </td>
+                                    <td class="p-3 px-5"><button type="button"
+                                            class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                                            onclick="confirmUpdate(${value.kategori_report_id});">Update</button>
+                                    </td>
+                                    <td class="p-3 px-5"><button type="button"
+                                            class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                                            onclick="confirmDelete(${value.kategori_report_id});">Delete</button>
+                                    </td>
+                                </tr>
+                            `);
+                        })
+                        $('#kategori_report').append(`
+                            <option value="tambahUpdate" id="tambahUpdate">Tambah / Update Kategori</option>
+                        `);
+                    }
+                }
+            });
+        }
+
+        function confirmUpdate(kategori_report_id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateKategori(kategori_report_id);
+                }
+            })
+        }
+
+        function confirmDelete(kategori_report_id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteKategori(kategori_report_id)
+                }
+            })
+        }
+
+        function updateKategori(kategori_report_id) {
+            let name = $(`#name${kategori_report_id}`).val();
+            $.ajax({
+                url: `/dashboard/report/updateCategory`,
+                type: 'POST',
+                cache: false,
+                data: {
+                    name: name,
+                    kategori_report_id: kategori_report_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        refreshKategori();
+                        Swal.fire({
+                            // text: "You won't be able to revert this!",
+                            icon: 'success',
+                            title: 'Berhasil Update Kategori!',
+                            // showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                            // confirmButtonText: 'Yes, Update it!'
+                            allowOutsideClick: false
+                        })
+                    }
+                }
+            })
+        }
+
+        function deleteKategori(kategori_report_id) {
+            $.ajax({
+                url: `/dashboard/report/deleteCategory`,
+                type: 'POST',
+                cache: false,
+                data: {
+                    kategori_report_id: kategori_report_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        refreshKategori();
+                        Swal.fire({
+                            // text: "You won't be able to revert this!",
+                            icon: 'success',
+                            title: 'Berhasil Delete Kategori!',
+                            // showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                            // confirmButtonText: 'Yes, Update it!'
+                            allowOutsideClick: false
+                        })
+                    }
+                }
+            })
+        }
     </script>
     <script type="text/javascript">
         var nav = document.getElementById("searchNavbar");

@@ -144,7 +144,7 @@
                                             <td class="p-2 py-4 text-center">Revisi</td>
                                         @else
                                             <td class="border-collapse">
-                                                <a href="/master/input/ti/detail/{{ $input->input_ti_id }}">
+                                                <a href="/master/input/gt/detail/{{ $input->input_gt_id }}">
                                                     <button
                                                         class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium w-full py-7 text-center">Approve
                                                     </button></a>
