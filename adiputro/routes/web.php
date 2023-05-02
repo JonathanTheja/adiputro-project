@@ -63,6 +63,10 @@ Route::prefix('master')->group(function () {
             Route::post('/getComponentGT', [MasterInputController::class,'getComponentGT']);
             Route::post('/getDetailComponentGT', [MasterInputController::class,'getDetailComponentGT']);
             Route::post('/getUserDefinedDescGT', [MasterInputController::class,'getUserDefinedDescGT']);
+
+            Route::prefix('detail')->group(function () {
+                Route::get('/{input_gt_id}', [MasterInputController::class,'getDetailGT']);
+            });
         });
 
         Route::prefix('model')->group(function () {
@@ -128,6 +132,10 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/{item_level_id?}', [DashboardController::class,'dashboard']);
 
     Route::prefix('report')->group(function () {
+        Route::post('/getCategories', [DashboardController::class,'getCategories']);
+        Route::post('/addCategory', [DashboardController::class,'addCategory']);
+        Route::post('/updateCategory', [DashboardController::class,'updateCategory']);
+        Route::post('/deleteCategory', [DashboardController::class,'deleteCategory']);
         Route::post('/add', [DashboardController::class,'addReport']);
         Route::post('/konfirmasi', [DashboardController::class,'konfirmasi']);
     });

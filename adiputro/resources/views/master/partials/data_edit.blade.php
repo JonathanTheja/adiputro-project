@@ -48,23 +48,30 @@
 
 
             <label for="input-kode-process" class="block my-2 text-gray-900">Kode Komponen</label>
-            <button type="button" class="add_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2">Tambah kode komponen</button>
+            <button type="button"
+                class="add_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2">Tambah kode
+                komponen</button>
             <div id="item_components" class="h-500 overflow-y-auto">
                 @foreach ($partial_components as $partial_component)
                     <div class="flex items-center mb-4">
-                        <select name="item_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300" required>
+                        <select name="item_components[]" class="rounded-l-lg w-1/2 px-4 py-2 border-r-0 border-gray-300"
+                            required>
                             <option value="">Pilih Komponen</option>
                             @foreach ($item_components as $item_component)
-                                <option value="{{ $item_component->item_component_id }}" @if ($item_component->item_component_id == $partial_component->item_component_id)
-                                    selected
-                                @endif>
+                                <option value="{{ $item_component->item_component_id }}"
+                                    @if ($item_component->item_component_id == $partial_component->item_component_id) selected @endif>
                                     {{ $item_component->item_number }} -
                                     {{ $item_component->item_description }}</option>
                             @endforeach
                         </select>
-                        <input type="number" name="item_components_qty[]" class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty" value={{ $partial_component->pivot->item_component_qty }} required>
-                        <button type="button" class="remove_item bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 mx-2">-</button>
-                        <button type="button" class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2" onclick="updateProcess('0')">Konfirmasi</button>
+                        <input type="number" name="item_components_qty[]"
+                            class="rounded-r-lg w-1/2 px-4 py-2 border-gray-300" placeholder="Qty"
+                            value={{ $partial_component->pivot->item_component_qty }} required>
+                        <button type="button"
+                            class="remove_item bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 mx-2">-</button>
+                        <button type="button"
+                            class="confirm_item bg-green-500 hover:bg-green-600 text-white font-bold rounded-r-lg px-4 py-2"
+                            onclick="updateProcess('0')">Konfirmasi</button>
                     </div>
                 @endforeach
             </div>
@@ -142,7 +149,8 @@
 
 
             <button type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5" onclick="checkSafeSubmit()">Update
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5"
+                onclick="checkSafeSubmit()">Update
                 Komponen</button>
             <button onclick="getDataComponent()"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5"
@@ -167,22 +175,21 @@
                 persist: false,
                 // create: true,
                 onDelete: function(values) {
-                    if(id == "#input-item-kit"){
-                        if(checkToBeDeleted("item_kit",values)){
-                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
-                            ' items?' : 'Apakah anda yakin ingin menghapus?');
-                        }
-                        else{
+                    if (id == "#input-item-kit") {
+                        if (checkToBeDeleted("item_kit", values)) {
+                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values
+                                .length +
+                                ' items?' : 'Apakah anda yakin ingin menghapus?');
+                        } else {
                             alert("Item kit terdapat dalam process entry!");
                             return false;
                         }
-                    }
-                    else if(id == "#input-bom"){
-                        if(checkToBeDeleted("bom",values)){
-                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values.length +
-                            ' items?' : 'Apakah anda yakin ingin menghapus?');
-                        }
-                        else{
+                    } else if (id == "#input-bom") {
+                        if (checkToBeDeleted("bom", values)) {
+                            return confirm(values.length > 1 ? 'Apakah anda yakin ingin menghapus ' + values
+                                .length +
+                                ' items?' : 'Apakah anda yakin ingin menghapus?');
+                        } else {
                             alert("BOM terdapat dalam process entry!");
                             return false;
                         }
@@ -192,6 +199,7 @@
                 }
             });
         }
+
         function getDataComponent() {
             $.ajax({
                 url: `/master/data/getDataTemp`,
@@ -204,7 +212,7 @@
         }
         //------------------
 
-        function reloadComponentListTable(components){
+        function reloadComponentListTable(components) {
             $("#table_components tbody").html("");
             let iter = 0;
 
@@ -219,7 +227,7 @@
                 console.log(total_available_bom);
                 let total_available_component = comp.component_count - comp.total_component_used;
 
-                if(comp.total_item_kit_used!=0 || comp.bom_used!=0 || comp.component_used!=0){
+                if (comp.total_item_kit_used != 0 || comp.bom_used != 0 || comp.component_used != 0) {
                     appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
                 }
                 if (!comp.is_available) {
@@ -228,8 +236,12 @@
                 let item_kit_numbers = comp.item_kit_numbers.join(", ");
                 let bom_numbers = comp.bom_numbers.join(", ");
 
-                if(item_kit_numbers == ""){item_kit_numbers = "-"};
-                if(bom_numbers == ""){bom_numbers = "-"};
+                if (item_kit_numbers == "") {
+                    item_kit_numbers = "-"
+                };
+                if (bom_numbers == "") {
+                    bom_numbers = "-"
+                };
                 $("#table_components tbody").append(`<tr class="${appendedClass}">
                     <td
                         class="whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500">
@@ -271,18 +283,18 @@
             let item_kits = $("#input-item-kit").val();
             let boms = $("#input-bom").val();
 
-            let code_components= $("select[name=\'item_components[]\']").map(function() {
+            let code_components = $("select[name=\'item_components[]\']").map(function() {
                 return $(this).val();
             }).toArray();
-            let qty_components= $("input[name=\'item_components_qty[]\']").map(function() {
+            let qty_components = $("input[name=\'item_components_qty[]\']").map(function() {
                 return $(this).val();
             }).toArray();
 
             let arrComps = [];
             for (let i = 0; i < code_components.length; i++) {
                 arrComps.push({
-                    id:code_components[i],
-                    qty:qty_components[i]
+                    id: code_components[i],
+                    qty: qty_components[i]
                 });
             }
 
@@ -293,7 +305,7 @@
                 data: {
                     "item_kits": item_kits,
                     "boms": boms,
-                    "code_components":arrComps,
+                    "code_components": arrComps,
                     "session_status": session_status
                 },
                 success: function(response) {
@@ -366,17 +378,17 @@
             );
         }
 
-        function placeComponentToProcess(select_val, input_val, table_id){
-            const selectedComp = $("#"+select_val).val();
-            const desc = $("#"+input_val).val();
+        function placeComponentToProcess(select_val, input_val, table_id) {
+            const selectedComp = $("#" + select_val).val();
+            const desc = $("#" + input_val).val();
             $.ajax({
                 url: `/master/data/placeComponentToProcess`,
                 type: "POST",
                 cache: false,
                 data: {
-                    "item_component_id":selectedComp,
-                    "desc":desc,
-                    "table_id":table_id
+                    "item_component_id": selectedComp,
+                    "desc": desc,
+                    "table_id": table_id
                 },
                 success: function(response) {
                     alert(response.message);
@@ -384,47 +396,45 @@
             });
         }
 
-        function checkSafeSubmit(){
+        function checkSafeSubmit() {
 
-            let item_components= $("select[name=\'tier_components[]\']").map(function() {
+            let item_components = $("select[name=\'tier_components[]\']").map(function() {
                 return $(this).val();
             }).toArray();
-            let desc_components= $("input[name=\'inputan_desc[]\']").map(function() {
+            let desc_components = $("input[name=\'inputan_desc[]\']").map(function() {
                 return $(this).val();
             }).toArray();
 
             let emptySelect = item_components.indexOf("");
             let emptyDesc = desc_components.indexOf("");
 
-            if(emptySelect!=-1 || emptyDesc != -1){
+            if (emptySelect != -1 || emptyDesc != -1) {
                 alert("Harap isi semua komponen dan desc nya pada process entry!");
-            }
-            else{
+            } else {
                 $.ajax({
-                url: `/master/data/getProcessEntryItem`,
-                type: "POST",
-                cache: false,
-                data: {
-                    "session_status": 1
-                },
-                success: function(response) {
-                    let components = response.data.components;
-                    let isFound = false;
+                    url: `/master/data/getProcessEntryItem`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        "session_status": 1
+                    },
+                    success: function(response) {
+                        let components = response.data.components;
+                        let isFound = false;
                         for (const [key, value] of Object.entries(components)) {
-                        if (value.is_available) {
-                            isFound = true;
-                            break;
+                            if (value.is_available) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            //submit
+                            document.getElementById("editForm").submit();
+                        } else {
+                            alert("Masih terdapat komponen yang belum digunakan!");
                         }
                     }
-                    if(!isFound){
-                        //submit
-                        document.getElementById("editForm").submit();
-                    }
-                    else{
-                        alert("Masih terdapat komponen yang belum digunakan!");
-                    }
-                }
-            });
+                });
             }
         }
 
@@ -450,7 +460,7 @@
             }
         }
 
-        function updateQTY(input_comp, table_id, item_number, qty,source) {
+        function updateQTY(input_comp, table_id, item_number, qty, source) {
             $.ajax({
                 url: `/master/data/updateQty`,
                 type: "POST",
@@ -459,7 +469,7 @@
                     "item_number": item_number,
                     "table_id": table_id,
                     "qty": qty,
-                    "source":source
+                    "source": source
                 },
                 success: function(response) {
                     if (response.success) {
@@ -530,7 +540,7 @@
 
         }
 
-        function checkToBeDeleted(resource,id) {
+        function checkToBeDeleted(resource, id) {
             let resp = false;
             $.ajax({
                 url: `/master/data/checkToBeDeleted`,
@@ -538,18 +548,17 @@
                 cache: false,
                 async: false,
                 data: {
-                    'resource':resource,
-                    'id':id[0]
+                    'resource': resource,
+                    'id': id[0]
                 },
                 success: function(response) {
                     console.log(response);
-                   console.log(response);
-                   if(response.is_allowed){
-                     resp = true;
-                   }
-                   else{
-                     resp = false;
-                   }
+                    console.log(response);
+                    if (response.is_allowed) {
+                        resp = true;
+                    } else {
+                        resp = false;
+                    }
                 }
             });
             return resp;
@@ -601,8 +610,8 @@
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
                         let tier = response.table_tier;
-                        $("#input_tier_"+table_id).val(tier.desc);
-                        $("#tier_"+table_id).val(tier.item_component_id);
+                        $("#input_tier_" + table_id).val(tier.desc);
+                        $("#tier_" + table_id).val(tier.item_component_id);
 
                         if (items != null) {
                             //foreach
@@ -620,8 +629,8 @@
                             generateTable(pe.process_entry_id, pe.work_description, table_id);
 
                             let tier = (response.table_tier)[table_id];
-                            $("#input_tier_"+table_id).val(tier.desc);
-                            $("#tier_"+table_id).val(tier.item_component_id);
+                            $("#input_tier_" + table_id).val(tier.desc);
+                            $("#tier_" + table_id).val(tier.item_component_id);
 
 
                             $.each(tables[table_id], function(key, item) {
@@ -629,9 +638,9 @@
                                     item_number: item.item_number,
                                     item_description: item.item_description,
                                     item_component_qty: item.item_component_qty,
-                                    item_kit_qty:item.item_kit_qty,
-                                    bom_qty:item.bom_qty,
-                                    component_qty:item.component_qty
+                                    item_kit_qty: item.item_kit_qty,
+                                    bom_qty: item.bom_qty,
+                                    component_qty: item.component_qty
                                 };
                                 placeComponentToTable(table_id, it);
                             });
@@ -665,7 +674,7 @@
             });
         }
 
-        function callConfirmed(button){
+        function callConfirmed(button) {
             updateProcess('0');
             button.parentNode.removeChild(button);
 

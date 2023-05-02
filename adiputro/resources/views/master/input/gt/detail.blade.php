@@ -1,9 +1,9 @@
 @extends('master.input')
 
-@section('photos_ti')
-    <div class="w-full text-center text-xl font-medium">Gambar TI</div>
+@section('photos_gt')
+    <div class="w-full text-center text-xl font-medium">Gambar Teknik</div>
 
-    @foreach ($all_photos_ti as $key => $photo)
+    @foreach ($all_photos_gt as $key => $photo)
         <div class="w-full flex lg:flex-row flex-col text-gray-900 font-medium">
             @php
                 $id_target_left = $key - 1;
@@ -11,9 +11,9 @@
                 $boleh = false;
                 if ($key == 0) {
                     $boleh = true;
-                    $id_target_left = count($all_photos_ti) - 1;
+                    $id_target_left = count($all_photos_gt) - 1;
                 }
-                if ($key == count($all_photos_ti) - 1) {
+                if ($key == count($all_photos_gt) - 1) {
                     $id_target_right = 0;
                 }
             @endphp
@@ -30,14 +30,14 @@
                 </div>
             </div>
         </div>
-        @push('photosPaginationTI')
+        @push('photosPaginationGT')
             <div id='imgPagination{{ $key }}'
                 class='img{{ $key }} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg @if ($boleh) {{ 'bg-blue-500' }}
                 @else
                 {{ 'bg-gray-200' }} @endif'
                 onclick="slideImg({{ $key }})">{{ $key + 1 }}</div>
         @endpush
-        @push('photosFullTI')
+        @push('photosFullGT')
             <div class="w-full flex items-center justify-center">
                 <img src="{{ asset("storage/$photo") }}" alt="" class='h-[500px]'
                     style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;'>
@@ -50,24 +50,43 @@
         @endpush
     @endforeach
     <script>
-        document.getElementById("photos_ti").classList.add("hidden");
-        document.getElementById("nomor_laporan_ti").value = "{{ $input_ti_detail->nomor_laporan }}";
+        document.getElementById("photos_gt").classList.add("hidden");
+        document.getElementById("nomor_laporan_gt").value = "{{ $input_gt_detail->nomor_laporan }}";
         setTimeout(() => {
-            document.getElementById("accordion_input_ti").click();
+            document.getElementById("accordion_input_gt").click();
         }, 500);
+
         setTimeout(() => {
-            loadKodeTI($("#nomor_laporan_ti").val());
-            // loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}", undefined, false);
-            setTimeout(() => {
-                // nomor_laporan_ti.clear();
-                // nomor_laporan_ti.clearOptions();
-                // nomor_laporan_ti.addOption({
-                //     value: "{{ $input_ti_detail->form_report->nomor_laporan }}",
-                //     text: "{{ $input_ti_detail->form_report->nomor_laporan }}",
-                // });
-                // nomor_laporan_ti.addItem("{{ $input_ti_detail->form_report->nomor_laporan }}");
-            }, 1000);
+            let item_level_process_entry = "{{ $item_level_process_entry }}"
+            item_level_process_entry = item_level_process_entry.replace(/&quot;/g, '"');
+            item_level_process_entry = JSON.parse(item_level_process_entry);
+            // console.log(item_level_process_entry)
+
+            let input_gt_detail = "{{ $input_gt_detail }}"
+            input_gt_detail = input_gt_detail.replace(/&quot;/g, '"');
+            input_gt_detail = JSON.parse(input_gt_detail);
+            // console.log(input_gt_detail);
+            // console.log(input_gt_detail.process_entry.process_entry_id);
+            console.log(input_gt_detail)
+            const $nomor_laporan_gt = $('#nomor_laporan_gt');
+            $nomor_laporan_gt.trigger({
+                type: 'change',
+                nomor_laporan: $("#nomor_laporan_gt").val()
+            })
         }, 1000);
+        // setTimeout(() => {
+        //     getProcessEntryGT($("#nomor_laporan_gt").val());
+        //     // loadKodeTI("{{ $kode_gt }}", "{{ $input_gt_detail->input_gt_id }}", undefined, false);
+        //     setTimeout(() => {
+        //         // nomor_laporan_ti.clear();
+        //         // nomor_laporan_ti.clearOptions();
+        //         // nomor_laporan_ti.addOption({
+        //         //     value: "{{ $input_gt_detail->form_report->nomor_laporan }}",
+        //         //     text: "{{ $input_gt_detail->form_report->nomor_laporan }}",
+        //         // });
+        //         // nomor_laporan_ti.addItem("{{ $input_gt_detail->form_report->nomor_laporan }}");
+        //     }, 1000);
+        // }, 1000);
 
         function slideImg(id_target) {
             let selectedClass = "bg-blue-500";

@@ -21,16 +21,6 @@
                     <form action="{{ url('/master/input/ti/addTI') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
-                                TI</label>
-                            <div class="w-4"></div>
-                            <input readonly type="text" id="kode_ti" name="kode_ti" {{-- oninput="loadInputTI(this.value,undefined,{{ $form_report_ti }}, true);alert(this.value)" --}}
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode TI" required>
-                        </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nomor_laporan_ti"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
@@ -54,6 +44,15 @@
                                     </option>
                                 @endforeach --}}
                             </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                TI</label>
+                            <div class="w-4"></div>
+                            <input readonly type="text" id="kode_ti" name="kode_ti" {{-- oninput="loadInputTI(this.value,undefined,{{ $form_report_ti }}, true);alert(this.value)" --}}
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode TI" required>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_ti"
@@ -245,8 +244,7 @@
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Description" required>
                         </div>
-                        {{-- saat lihat detail upload photo dimatikan --}}
-                        {{-- saat lihat detail button submit dimatikan --}}
+                        {{-- saat lihat detail upload photo, button submit dimatikan --}}
                         <div id="photos_ti">
                             <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                 <label for="description"
@@ -265,8 +263,11 @@
                         </div>
                         <div class="lg:mb-4 mb-2 ">
                             @yield('photos_ti')</div>
-                        <div id="photosPagination" class="mb-4 flex justify-center">
+                        <div id="photosPaginationTI" class="mb-4 flex justify-center">
                             @stack('photosPaginationTI')
+                        </div>
+                        <div class="lg:mb-4 mb-2">
+                            @stack('photosFullTI')
                         </div>
                     </form>
                 </div>
@@ -276,7 +277,7 @@
     <div class="accordion mt-4 accordion_input_gt" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
             <h2 class="accordion-header mb-0" id="headingTwo">
-                <button
+                <button id="accordion_input_gt"
                     class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                     type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
@@ -292,37 +293,6 @@
                     <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_gt"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
-                                Gambar</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="kode_gt" name="kode_gt"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode Gambar" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_ti"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
-                                TI</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="kode_ti_gt" name="kode_ti_gt" oninput=
-                            "
-                            // getGTByKodeTI(this.value)
-                            "
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Kode TI">
-                            {{-- kode_ti_gt -> kode_ti punya gt --}}
-                            {{-- <select id="kode_ti_gt" placeholder="Kode TI" required onchange="getGTByKodeTI(this.value)"
-                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="kode_ti_gt">
-                                <option disabled selected value>Pilih Kode TI</option>
-                                @foreach ($input_ti as $input)
-                                    <option value="{{ $input->kode_ti }}">{{ $input->kode_ti }}</option>
-                                @endforeach
-                            </select> --}}
-                        </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nomor_laporan"
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Nomor
@@ -334,18 +304,50 @@
                             <select id="nomor_laporan_gt" placeholder="Nomor Laporan"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="nomor_laporan_gt" required
-                                onchange="getProcessEntryGT(this.value)">
+                                onchange="getProcessEntryGT(this.value);">
                                 <option disabled selected value>Pilih Nomor Laporan</option>
-                                @forelse ($form_report_gt as $form_report)
-                                    <option value="{{ $form_report->nomor_laporan }}">
-                                        {{ $form_report->nomor_laporan }}
-                                    </option>
-                                @empty
-                                @endforelse
+                                @if (isset($form_report_gt))
+                                    @forelse ($form_report_gt as $form_report)
+                                        <option value="{{ $form_report->nomor_laporan }}">
+                                            {{ $form_report->nomor_laporan }}
+                                        </option>
+                                    @empty
+                                    @endforelse
+                                @endif
                                 <option value="tambah">
                                     Tambah Baru
                                 </option>
                             </select>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_gt"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                Gambar</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="kode_gt" name="kode_gt"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode Gambar" required readonly>
+                        </div>
+                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                            <label for="kode_ti"
+                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
+                                TI</label>
+                            <div class="w-4"></div>
+                            <input type="text" id="kode_ti_gt" name="kode_ti_gt"
+                                oninput="
+                                // getGTByKodeTI(this.value)
+                                "
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                placeholder="Kode TI">
+                            {{-- kode_ti_gt -> kode_ti punya gt --}}
+                            {{-- <select id="kode_ti_gt" placeholder="Kode TI" required onchange="getGTByKodeTI(this.value)"
+                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
+                                autocomplete="off" name="kode_ti_gt">
+                                <option disabled selected value>Pilih Kode TI</option>
+                                @foreach ($input_ti as $input)
+                                    <option value="{{ $input->kode_ti }}">{{ $input->kode_ti }}</option>
+                                @endforeach
+                            </select> --}}
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                             <label for="nama_gt"
@@ -362,7 +364,7 @@
                                 Entry</label>
                             <div class="w-4"></div>
                             <select id="process_entry_gt" placeholder="Process Entry"
-                                onchange="getComponentGT(this.value)"
+                                onchange="getComponentGT(this.value);"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="process_entry_gt" required>
                                 <option disabled selected value>Pilih Process Entry</option>
@@ -522,19 +524,33 @@
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Description" required>
                         </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="description"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
-                                Teknik</label>
-                            <div class="w-4"></div>
-                            <input
-                                class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
-                                id="multiple_files" type="file" multiple name="photos[]">
+
+
+                        {{-- saat lihat detail upload photo, button submit dimatikan --}}
+                        <div id="photos_gt">
+                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                <label for="description"
+                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Gambar
+                                    Teknik</label>
+                                <div class="w-4"></div>
+                                <input
+                                    class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
+                                    id="multiple_files" type="file" multiple name="photos[]" required>
+                            </div>
+                            <button type="submit" class="hidden" id="submit_gt"></button>
+                            <div onclick="submitGT()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
+                                Input Gambar Teknik
+                            </div>
                         </div>
-                        <button type="submit" class="hidden" id="submit_gt"></button>
-                        <div onclick="submitGT()"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
-                            Input Gambar Teknik
+                        <div class="lg:mb-4 mb-2">
+                            @yield('photos_gt')
+                        </div>
+                        <div id="photosPaginationGT" class="mb-4 flex justify-center">
+                            @stack('photosPaginationGT')
+                        </div>
+                        <div class="lg:mb-4 mb-2">
+                            @stack('photosFullGT')
                         </div>
                     </form>
                 </div>
@@ -572,11 +588,13 @@
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_komponen_model">
-                                @forelse ($item_components as $item_component)
-                                    <option value="{{ $item_component->item_component_id }}">
-                                        {{ $item_component->item_number }}</option>
-                                @empty
-                                @endforelse
+                                @if (isset($item_components))
+                                    @forelse ($item_components as $item_component)
+                                        <option value="{{ $item_component->item_component_id }}">
+                                            {{ $item_component->item_number }}</option>
+                                    @empty
+                                    @endforelse
+                                @endif
                             </select>
                         </div>
 
@@ -600,10 +618,12 @@
                                 onchange="getDetailGTModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
                                 autocomplete="off" name="kode_gt_model">
-                                @forelse ($gts as $gt)
-                                    <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
-                                @empty
-                                @endforelse
+                                @if (isset($gts))
+                                    @forelse ($gts as $gt)
+                                        <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
+                                    @empty
+                                    @endforelse
+                                @endif
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -1282,67 +1302,95 @@
         let item_level_id_gt;
         let level_gt;
 
+        //alur paling pertama setelah nomor_laporan langsung ambil process entry
+        //apabila edit cek apakah ada input_gt kalau ada langsung tampilkan semua datanya
         function getProcessEntryGT(nomor_laporan) {
-            // alert(nomor_laporan)
-            if (nomor_laporan == "tambah") {
-                window.location.href = "/dashboard";
-            } else if (nomor_laporan != "") {
-                $.ajax({
-                    url: `/master/input/gt/getProcessEntryGT`,
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        nomor_laporan: nomor_laporan
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            item_level_id_gt = response.item_level_id;
-                            level_gt = response.level;
-                            process_entry_gt.clear();
-                            process_entry_gt.clearOptions();
-                            response.item_level_process_entry.forEach((item_level, key) => {
-                                process_entry_gt.addOption({
-                                    value: item_level.process_entry_id,
-                                    text: item_level.process_entry.work_description,
+            return new Promise((resolve, reject) => {
+                // alert(nomor_laporan)
+                if (nomor_laporan == "tambah") {
+                    window.location.href = "/dashboard";
+                } else if (nomor_laporan != "") {
+                    $.ajax({
+                        url: `/master/input/gt/getProcessEntryGT`,
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            nomor_laporan: nomor_laporan
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                console.log(response);
+                                $("#kode_gt").val(response.kode_gt);
+                                item_level_id_gt = response.item_level_id;
+                                level_gt = response.level;
+                                process_entry_gt.clear();
+                                process_entry_gt.clearOptions();
+                                response.item_level_process_entry.forEach((item_level, key) => {
+                                    process_entry_gt.addOption({
+                                        value: item_level.process_entry_id,
+                                        text: item_level.process_entry.work_description,
+                                    });
                                 });
-                            });
-                            console.log(process_entry_gt.options);
+                                // console.log(process_entry_gt.options);
+                                if (response.input_gt_detail != undefined) {
+                                    loadInputGT(
+                                        response.input_gt_detail.kode_ti,
+                                        response.input_gt_detail.nama_gt,
+                                        response.input_gt_detail.process_entry.process_entry_id,
+                                        response.input_gt_detail.item_component.item_number,
+                                        response.input_gt_detail.checked_by_gt,
+                                        response.input_gt_detail.approved_by_gt,
+                                        response.input_gt_detail.user_defined_id
+                                    );
+                                }
+                                // When the operation is completed successfully, call the resolve function with the result
+                                resolve('Operation completed successfully!');
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+                // When there's an error, call the reject function with the error
+                // reject('An error occurred!');
+            });
         }
 
         function getComponentGT(process_entry_id) {
-            if (process_entry_gt.items.length == 0) {
-                $("#level_proses_gt").val("");
-                $("#nama_komponen_gt").val("");
-            } else {
-                $.ajax({
-                    url: `/master/input/gt/getComponentGT`,
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        process_entry_id: process_entry_gt.items[0],
-                        item_level_id: item_level_id_gt
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            console.log(response.item_components);
-                            // alert(response.item_components.length)
-                            kode_komponen_gt.clear();
-                            kode_komponen_gt.clearOptions();
-                            response.item_components.forEach(item_component => {
-                                kode_komponen_gt.addOption({
-                                    value: item_component.item_number,
-                                    // item_description: item_component.item_description,
-                                    text: `Level ${level_gt} ${item_component.item_number}`
-                                });
-                            })
+            return new Promise((resolve, reject) => {
+                if (process_entry_gt.items.length == 0) {
+                    $("#level_proses_gt").val("");
+                    $("#nama_komponen_gt").val("");
+                } else {
+                    $.ajax({
+                        url: `/master/input/gt/getComponentGT`,
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            process_entry_id: process_entry_gt.items[0],
+                            item_level_id: item_level_id_gt
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                console.log(response.item_components);
+                                // alert(response.item_components.length)
+                                kode_komponen_gt.clear();
+                                kode_komponen_gt.clearOptions();
+                                response.item_components.forEach(item_component => {
+                                    kode_komponen_gt.addOption({
+                                        value: item_component.item_number,
+                                        // item_description: item_component.item_description,
+                                        text: `Level ${level_gt} ${item_component.item_number}`
+                                    });
+                                })
+                                // When the operation is completed successfully, call the resolve function with the result
+                                resolve('Operation completed successfully!');
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+
+                // When there's an error, call the reject function with the error
+                // reject('An error occurred!');
+            });
         }
 
         function getDetailComponentGT(item_number) {
@@ -1357,7 +1405,11 @@
                     if (response.success) {
                         console.log(response.item_component);
                         $('#level_proses_gt').val(level_gt);
-                        $('#nama_komponen_gt').val(response.item_component.item_description);
+                        try {
+                            $('#nama_komponen_gt').val(response.item_component.item_description);
+                        } catch (error) {
+
+                        }
                     }
                 }
             });
@@ -1379,6 +1431,63 @@
                     }
                 });
             }
+        }
+
+        //menampilkan detail gambar teknik
+        function loadInputGT(kode_ti, nama_gt, process_entry_id, item_number, checked_by_gt, approved_by_gt,
+            user_defined_id, item_level_process_entry) {
+            console.log(process_entry_id)
+            console.log(item_number)
+            console.log(kode_ti)
+            console.log(nama_gt)
+            $('#kode_ti_gt').val(kode_ti);
+            $('#nama_gt').val(nama_gt);
+
+            // console.log(item_level_process_entry)
+            // $('#process_entry_gt').val(input_gt_detail.process_entry.process_entry_id);
+
+            //untuk lihat approve saja cek apakah daftar process entrynya ada
+            //karena kalau edit bisa didapat dari onchange nomor_laporan_gt sedangkan approve langsung lihat tidak berubah dari onchange
+            if (item_level_process_entry != undefined) {
+                process_entry_gt.clear();
+                process_entry_gt.clearOptions();
+                item_level_process_entry.forEach((item_level, key) => {
+                    process_entry_gt.addOption({
+                        value: item_level.process_entry_id,
+                        text: item_level.process_entry.work_description,
+                    });
+                });
+            }
+            process_entry_gt.addItem(process_entry_id);
+            // console.log($('#process_entry_gt').val())
+            // console.log(process_entry_gt.items[0])
+            setTimeout(() => {
+                getComponentGT(process_entry_gt.items[0]).then(result => {
+                    kode_komponen_gt.addItem(item_number)
+                }).catch(error => {});
+            }, 1000);
+
+            //diperiksa_oleh_gt
+            checked_by_gt.forEach(user => {
+                // console.log(diperiksa_oleh);
+                diperiksa_oleh_gt.addItem(user.user_id);
+            });
+
+            //show all of approvedby
+            //refresh cb_ti
+            $('input[type=checkbox].cb_gt').each(function() {
+                $(this).prop('checked', false);
+            });
+            $('input[type=checkbox].cb_gt').each(function() {
+                var cb_ti = $(this);
+                approved_by_gt.forEach(department => {
+                    if (cb_ti.val() == department.department_id) {
+                        cb_ti.prop('checked', true);
+                    }
+                })
+            });
+
+            user_defined_gt.addItem(user_defined_id);
         }
 
         function getDetailGTModel(gt_id) {
@@ -1404,8 +1513,6 @@
             }
         }
 
-
-
         function getUserDefinedDescGT(user_defined_id) {
             $.ajax({
                 url: `/master/input/gt/getUserDefinedDescGT`,
@@ -1422,9 +1529,9 @@
             });
         }
 
-        function addGT() {
-
-        }
+        // function loadInputGT(input_gt, ) {
+        //     console.log(input_gt);
+        // }
 
         //accordion agak bug
         setTimeout(() => {

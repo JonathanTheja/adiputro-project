@@ -105,4 +105,41 @@ class DashboardController extends Controller
             'success' => false,
         ]);
     }
+
+    function getCategories(Request $request)
+    {
+        $categories = KategoriReport::all();
+        return response()->json([
+            'success' => true,
+            'categories' => $categories,
+        ]);
+    }
+
+    function addCategory(Request $request)
+    {
+        KategoriReport::create([
+            'name' => $request->name
+        ]);
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    function updateCategory(Request $request)
+    {
+        $category = KategoriReport::find($request->kategori_report_id);
+        $category->name = $request->name;
+        $category->save();
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    function deleteCategory(Request $request)
+    {
+        $category = KategoriReport::find($request->kategori_report_id)->delete();
+        return response()->json([
+            'success' => true
+        ]);
+    }
 }
