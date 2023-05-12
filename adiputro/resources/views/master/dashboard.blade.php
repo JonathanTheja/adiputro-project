@@ -492,6 +492,7 @@
 
         //DONE
         function placeComponentToTable(table_id, item) {
+            console.log(item);
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`<tr class="bg-white border-b">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -504,7 +505,7 @@
                     ` + item.item_description + `
                 </td>
                 <td class="px-6 py-4">
-                    ` + item.item_component_qty + `
+                    ` + (item.item_component_qty) + `
                 </td>
                 <td class="px-6 py-4">
                     ` + item.item_uofm + `
@@ -528,10 +529,11 @@
                 $("#tier_desc_" + table_id).text(table_tier[table_id].desc);
 
                 $.each(tables[table_id], function(key, item) {
+                    console.log(item);
                     let it = {
                         item_number: item.item_number,
                         item_description: item.item_description,
-                        item_component_qty: item.pivot.item_component_qty,
+                        item_component_qty: parseInt(item.pivot.item_kit_qty) + parseInt(item.pivot.bom_qty) + parseInt(item.pivot.component_qty),
                         item_uofm: item.item_uofm
                     };
                     placeComponentToTable(table_id, it);
