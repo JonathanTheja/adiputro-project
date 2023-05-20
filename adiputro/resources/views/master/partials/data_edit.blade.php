@@ -227,12 +227,13 @@
                 console.log(total_available_bom);
                 let total_available_component = comp.component_count - comp.total_component_used;
 
-                if (comp.total_item_kit_used != 0 || comp.bom_used != 0 || comp.component_used != 0) {
-                    appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
-                }
-                if (!comp.is_available) {
-                    appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
-                }
+                appendedClass = "border-b dark:border-neutral-500 text-black";
+                // if (comp.total_item_kit_used != 0 || comp.bom_used != 0 || comp.component_used != 0) {
+                //     appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
+                // }
+                // if (!comp.is_available) {
+                //     appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
+                // }
                 let item_kit_numbers = comp.item_kit_numbers.join(", ");
                 let bom_numbers = comp.bom_numbers.join(", ");
 
@@ -485,7 +486,6 @@
 
         //DONE
         function placeComponentToTable(table_id, item) {
-
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`
             <tr>
