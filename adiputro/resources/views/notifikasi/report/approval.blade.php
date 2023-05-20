@@ -119,13 +119,10 @@
                                     </form>
                                     <tr class="border-b hover:bg-orange-100 bg-gray-100 text-md">
                                         <td class="p-2 py-4"><a class="hover:bg-blue-200"
-                                                href="/master/input/gt/detail/{{ $input->input_gt_id }}">{{ $input->kode_gt }}</a>
+                                                href="/master/input/gt/detail/{{ $input->input_gt_id }}">{{ $input->kode_ti }}</a>
                                         </td>
-                                        @if ($input->revisi == 0)
-                                            <td class="p-2 py-4 text-center">Pertama dibuat</td>
-                                        @else
-                                            <td class="p-2 py-4 text-center">Revisi {{ $input->revisi }}</td>
-                                        @endif
+                                        <td class="p-2 py-4">{{ $input->kode_gt }}
+                                        </td>
 
                                         <td class="p-2 py-4 text-center">{{ $input->process_entry->work_description }}
                                         </td>

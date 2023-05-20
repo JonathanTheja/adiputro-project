@@ -43,6 +43,9 @@
                                     <option value="{{ $form_report->nomor_laporan }}">{{ $form_report->nomor_laporan }}
                                     </option>
                                 @endforeach --}}
+                                <option value="tambah">
+                                    Tambah Baru
+                                </option>
                             </select>
                         </div>
                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
@@ -260,19 +263,90 @@
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
                                 Input Technical Instruction
                             </div>
-                        </div>
-                        <div class="lg:mb-4 mb-2 ">
-                            @yield('photos_ti')</div>
-                        <div id="photosPaginationTI" class="mb-4 flex justify-center">
-                            @stack('photosPaginationTI')
-                        </div>
-                        <div class="lg:mb-4 mb-2">
-                            @stack('photosFullTI')
-                        </div>
                     </form>
                 </div>
+                <div class="lg:mb-4 mb-2 ">
+                    @yield('photos_ti')</div>
+                <div id="photosPaginationTI" class="mb-4 flex justify-center">
+                    @stack('photosPaginationTI')
+                </div>
+                <div class="lg:mb-4 mb-2">
+                    @stack('photosFullTI')
+                </div>
+                @isset($hasUserNowApproved)
+                    <div
+                        class="focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-2.5 text-center w-full">
+                        User yang sudah Approve
+                    </div>
+                    <div id="dashboard_container">
+                        <div id="">
+                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+                                <table class="w-full text-md text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">
+                                                Username
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Full Name
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Department
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">
+                                                Role
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($input_ti_approved as $ti_approved)
+                                            <tr class="bg-white border-b">
+                                                <th scope="row"
+                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                    {{ $ti_approved->user->username }}
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    {{ $ti_approved->user->full_name }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $ti_approved->user->department->name }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $ti_approved->user->role->name }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @if (!$hasUserNowApproved)
+                        @isset($input_ti_detail)
+                            @if ($input_ti_detail->status == 1)
+                                <form action="{{ url('/master/input/ti/approveTI') }}" method="POST">
+                                    @csrf
+                                    <input class="hidden" name="input_ti_id" type="text"
+                                        value="{{ $input_ti_detail->input_ti_id }}">
+                                    <button class="hidden" id="btn_approve_ti" type="submit"></button>
+                                    {{-- <div onclick="approveTI()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full cursor-pointer">
+                                Approve
+                            </div> --}}
+                                    <label for="my-modal-konfirmasi-ti">
+                                        <div
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full cursor-pointer">
+                                            Approve
+                                        </div>
+                                    </label>
+                                </form>
+                            @endif
+                        @endisset
+                    @endif
+                @endisset
             </div>
         </div>
+    </div>
     </div>
     <div class="accordion mt-4 accordion_input_gt" id="accordionExample">
         <div class="accordion-item bg-white border border-gray-200 rounded-lg">
@@ -676,7 +750,8 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr class="border-b dark:border-neutral-500">
-                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Isometri
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                Isometri
                                                             </td>
                                                             <td class="whitespace-nowrap px-6 py-4">v</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
@@ -685,7 +760,8 @@
                                                             </td>
                                                         </tr>
                                                         <tr class="border-b dark:border-neutral-500">
-                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Depan</td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Depan
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">v</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
@@ -693,7 +769,8 @@
                                                             </td>
                                                         </tr>
                                                         <tr class="border-b dark:border-neutral-500">
-                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Belakang
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                Belakang
                                                             </td>
                                                             <td class="whitespace-nowrap px-6 py-4">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
@@ -702,13 +779,15 @@
                                                             </td>
                                                         </tr>
                                                         <tr class="border-b dark:border-neutral-500">
-                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Atas</td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Atas
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4"
                                                                 onclick="toggleToShowImage(3)">Edit</td>
                                                         </tr>
                                                         <tr class="border-b dark:border-neutral-500">
-                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah</td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">v</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
@@ -794,6 +873,25 @@
         </div>
     </div>
 
+    <div class="hidden" id="modalKonfirmasiTI">
+        <input type="checkbox" id="my-modal-konfirmasi-ti" class="modal-toggle" />
+        <label for="my-modal-konfirmasi-ti" class="modal cursor-pointer">
+            <label class="modal-box relative" for="">
+                <label for="my-modal-konfirmasi-ti" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold" id="titleModal">Konfirmasi Approve TI</h3>
+                <div class="py-4" id="bodyModal">Username</div>
+                <input type="text" name="username" id="username"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Username" required>
+                <div class="py-4" id="bodyModal">Password</div>
+                <input type="password" name="password" id="password"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Password" required>
+                <button type="submit" onclick="approveTI()"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Konfirmasi</button>
+            </label>
+        </label>
+    </div>
 
     <script>
         const previewImage = document.getElementById('preview-image');
@@ -947,41 +1045,45 @@
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
             //setiap kali nomor laporan diganti, reset
             // resetDataTI();
-            $.ajax({
-                url: `/master/input/ti/getLevelTI`,
-                type: "POST",
-                cache: false,
-                data: {
-                    nomor_laporan_ti: nomor_laporan_ti
-                },
-                success: function(response) {
-                    if (response.success) {
-                        console.log(response.item_level_ti);
-                        console.log(level_proses_ti);
-                        if (level_process_input_ti == undefined) {
-                            level_proses_ti.clear();
-                            level_proses_ti.clearOptions();
-                        }
-                        response.item_level_ti.forEach((level, key) => {
-                            level_proses_ti.addOption({
-                                value: level.item_level_id,
-                                text: `Level ${key} ${level.name}`
+            if (nomor_laporan_ti == "tambah") {
+                window.location.href = "/dashboard";
+            } else {
+                $.ajax({
+                    url: `/master/input/ti/getLevelTI`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        nomor_laporan_ti: nomor_laporan_ti
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response.item_level_ti);
+                            console.log(level_proses_ti);
+                            if (level_process_input_ti == undefined) {
+                                level_proses_ti.clear();
+                                level_proses_ti.clearOptions();
+                            }
+                            response.item_level_ti.forEach((level, key) => {
+                                level_proses_ti.addOption({
+                                    value: level.item_level_id,
+                                    text: `Level ${key} ${level.name}`
+                                });
                             });
-                        });
-                        //cek apakah edit
-                        if (level_process_input_ti != undefined) {
-                            level_process_input_ti.forEach(level => {
-                                level_proses_ti.addItem(level.item_level_id);
-                            });
-                            //show kode komponen dengan param item_component_ti
-                            getProcessEntryTI(process_entry_id);
-                            setTimeout(() => {
-                                getCodeComponentTI(item_component_ti);
-                            }, 2000);
+                            //cek apakah edit
+                            if (level_process_input_ti != undefined) {
+                                level_process_input_ti.forEach(level => {
+                                    level_proses_ti.addItem(level.item_level_id);
+                                });
+                                //show kode komponen dengan param item_component_ti
+                                getProcessEntryTI(process_entry_id);
+                                setTimeout(() => {
+                                    getCodeComponentTI(item_component_ti);
+                                }, 2000);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         function getProcessEntryTI(process_entry_id) {
@@ -1123,7 +1225,7 @@
             });
         }
 
-        function loadKodeTI(nomor_laporan) {
+        function loadKodeTI(nomor_laporan, input_ti_id) {
             $("#nama_ti").val("");
             $("#kode_ti").val("");
             if (!nomor_laporan) {
@@ -1140,9 +1242,14 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        // console.log(response.kode_ti);
+                        console.log('response loadkodeti');
+                        console.log(response);
                         $('#kode_ti').val(response.kode_ti);
-                        loadInputTI(response.kode_ti, response.input_ti_id);
+                        if (input_ti_id != undefined) {
+                            loadInputTI(response.kode_ti, input_ti_id);
+                        } else {
+                            loadInputTI(response.kode_ti, response.input_ti_id);
+                        }
                     }
                 }
             });
@@ -1529,6 +1636,32 @@
             });
         }
 
+
+        function approveTI() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            if (username == "" || password == "") {
+                alert("Username dan password harus terisi!");
+            } else {
+                $.ajax({
+                    url: `/dashboard/report/konfirmasi`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        "username": username,
+                        "password": password,
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert("Data kredensial salah!");
+                        } else {
+                            $('#btn_approve_ti').click();
+                        }
+                    }
+                });
+            }
+        }
+
         // function loadInputGT(input_gt, ) {
         //     console.log(input_gt);
         // }
@@ -1538,5 +1671,9 @@
             document.getElementById("btnApprovedBy1").click();
             document.getElementById("btnApprovedBy2").click();
         }, 500);
+
+        setTimeout(() => {
+            document.getElementById("modalKonfirmasiTI").classList.remove("hidden");
+        }, 1000);
     </script>
 @endsection

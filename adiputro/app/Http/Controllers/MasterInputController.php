@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\FormReport;
 use App\Models\InputGT;
 use App\Models\InputTI;
+use App\Models\InputTIApproved;
 use App\Models\ItemComponent;
 use App\Models\ItemComponentProcessTI;
 use App\Models\ItemComponentProcessEntry;
@@ -17,6 +18,7 @@ use App\Models\LevelProcessInputTI;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserDefined;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +30,28 @@ use Mockery\Undefined;
 
 class MasterInputController extends Controller
 {
+    function getDay(){
+        date_default_timezone_set('Asia/Jakarta');
+        $day = date('l');
+        $hari = [
+            "Sunday" => "Minggu",
+            "Monday" => "Senin",
+            "Tuesday" => "Selasa",
+            "Wednesday" => "Rabu",
+            "Thursday" => "Kamis",
+            "Friday" => "Jumat",
+            "Saturday" => "Sabtu",
+        ];
+        return $hari[$day];
+    }
+
+    function getFormattedDate(){
+        date_default_timezone_set('Asia/Jakarta');
+        $date = new DateTime();
+        $formatted_date = $date->format('j F Y; h:i A');
+        return $formatted_date;
+    }
+
     function generateNomorLaporan()
     {
         $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
@@ -261,10 +285,21 @@ class MasterInputController extends Controller
         // $watermark = ImageInter::make(public_path(('img/controlled_copy.png')));
         // $watermark = ImageInter::make('public\controlled_copy.png');
         $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+
+        date_default_timezone_set('Asia/Jakarta');
+
         foreach ($photos as $key => $photo) {
             $path = Storage::disk('public')->path($photo);
             $img = ImageInter::make($path);
             $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
+
+            $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
+                $font->size(35);
+                $font->color('#000000');
+                $font->align('left');
+                $font->valign('top');
+                $font->angle(90);
+            });
             // dump(public_path("$photo"));
             $img->save(Storage::disk('public')->path($photo));
         }
@@ -335,7 +370,15 @@ class MasterInputController extends Controller
         $all_photos_ti = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)));
 
         $input_ti = InputTI::where("status",1)->with("form_report")->orderBy('kode_ti','asc')->get();
-        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail"));
+
+        $input_ti_approved = InputTIApproved::where('input_ti_id', $input_ti_detail->input_ti_id)->get();
+        $hasUserNowApproved = false;
+        foreach ($input_ti_approved as $key => $ti_approved) {
+            if($ti_approved->user_id == Auth::user()->user_id){
+                $hasUserNowApproved = true;
+            }
+        }
+        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail", "input_ti_approved", "hasUserNowApproved"));
     }
 
     function getGTByKodeTI(Request $request)
@@ -549,7 +592,13 @@ class MasterInputController extends Controller
             $path = Storage::disk('public')->path($photo);
             $img = ImageInter::make($path);
             $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
-            // dump(public_path("$photo"));
+            $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
+                $font->size(35);
+                $font->color('#000000');
+                $font->align('left');
+                $font->valign('top');
+                $font->angle(90);
+            });
             $img->save(Storage::disk('public')->path($photo));
         }
 
@@ -591,5 +640,15 @@ class MasterInputController extends Controller
             "input_gt_detail" => $input_gt_detail,
             "item_level_process_entry" => $form_report_gt_detail->item_level_process_entry()->with("process_entry")->get()
         ]);
+    }
+
+    function approveTI(Request $request)
+    {
+        $input_ti_approved = InputTIApproved::create([
+            "input_ti_id" => $request->input_ti_id,
+            "user_id" => Auth::user()->user_id
+        ]);
+        Alert::success('Sukses!', 'Berhasil Approve TI!');
+        return back();
     }
 }
