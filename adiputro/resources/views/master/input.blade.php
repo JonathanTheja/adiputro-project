@@ -808,13 +808,13 @@
         ]
         let currentIndex = 0;
         const images = [
-            'https://source.unsplash.com/featured/?landscape',
-            'https://source.unsplash.com/featured/?nature',
-            'https://source.unsplash.com/featured/?beach',
-            'https://source.unsplash.com/featured/?architecture',
-            'https://source.unsplash.com/featured/?cityscape',
-            'https://source.unsplash.com/featured/?computer',
-            'https://source.unsplash.com/featured/?food'
+            // 'https://source.unsplash.com/featured/?landscape',
+            // 'https://source.unsplash.com/featured/?nature',
+            // 'https://source.unsplash.com/featured/?beach',
+            // 'https://source.unsplash.com/featured/?architecture',
+            // 'https://source.unsplash.com/featured/?cityscape',
+            // 'https://source.unsplash.com/featured/?computer',
+            // 'https://source.unsplash.com/featured/?food'
         ];
 
         // Load image when input changes
@@ -824,8 +824,13 @@
             reader.onload = () => {
                 previewImage.src = reader.result;
                 imageName.textContent = file.name;
+                images.push({
+                    img: reader.result,
+                    txt: file.name
+                });
             };
             reader.readAsDataURL(file);
+            console.log(images);
         });
 
         // Remove image when button is clicked
@@ -863,6 +868,46 @@
                 $("#table_model").removeClass("hidden");
                 $("#prev_images_container_model").addClass("hidden");
             }
+        }
+
+        function saveImage() {
+
+            for (let i = 0; i < images.length; i++) {
+                var file = images[i];
+                var formData = new FormData();
+                formData.append('image', file);
+
+                $.ajax({
+                    url: '/master/input/model/images',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+
+                // // Kirim formData ke backend menggunakan AJAX atau Fetch
+                // // Contoh menggunakan Fetch:
+                // fetch('/upload', {
+                //         method: 'POST',
+                //         body: formData
+                //     })
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         // Handle response dari backend setelah gambar disimpan
+                //         console.log(data);
+                //     })
+                //     .catch(error => {
+                //         // Handle error jika terjadi kesalahan
+                //         console.error(error);
+                //     });
+            }
+
         }
     </script>
 

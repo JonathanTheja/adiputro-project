@@ -54,6 +54,7 @@ Route::prefix('master')->group(function () {
             Route::prefix('detail')->group(function () {
                 Route::get('/{input_ti_id}', [MasterInputController::class,'getDetailTI']);
             });
+            
         });
 
         Route::prefix('gt')->group(function () {
