@@ -21,6 +21,7 @@ use App\Models\UserDefined;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
@@ -650,5 +651,36 @@ class MasterInputController extends Controller
         ]);
         Alert::success('Sukses!', 'Berhasil Approve TI!');
         return back();
+    }
+    function addModel(Request $request){
+
+
+        if($request->images != null){
+            $folderPath = "images/input/model/{$request->item_component_id}";
+            $files = Storage::disk('public')->files($folderPath);
+            foreach ($files as $file) {
+                Storage::disk('public')->delete($file);
+            }
+
+            $images = $request->images;
+            $texts = $request->texts;
+
+            for ($i=0; $i < count($images); $i++) {
+                # code...
+                $photo = $images[$i];
+                $namafile = $texts[$i].".".$photo->getClientOriginalExtension();
+                $namafolder = "images/input/model/".$request->item_component_id;
+                $photo->storeAs($namafolder,$namafile,'public');
+            }
+
+            return response()->json([
+                'success' => true,
+                'message'=>$request->images
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message'=>$request->images
+        ]);
     }
 }

@@ -658,10 +658,10 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Kode
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <select id="kode_komponen_model" placeholder="Kode Komponen" required
+                            <select id="id_komponen_model" placeholder="Kode Komponen" required
                                 onchange="getDetailComponentModel(this.value)"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="kode_komponen_model">
+                                autocomplete="off" name="id_komponen_model">
                                 @if (isset($item_components))
                                     @forelse ($item_components as $item_component)
                                         <option value="{{ $item_component->item_component_id }}">
@@ -677,55 +677,9 @@
                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Nama
                                 Komponen</label>
                             <div class="w-4"></div>
-                            <input type="text" id="nama_komponen_model" name="kode_komponen_model" oninput=""
+                            <input type="text" id="nama_komponen_model" name="nama_komponen_model" oninput=""
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                 placeholder="Nama Komponen">
-                        </div>
-
-
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="kode_gt_model"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Kode
-                                Gambar Teknik</label>
-                            <div class="w-4"></div>
-                            <select id="kode_gt_model" placeholder="Kode Gambar Teknik" required
-                                onchange="getDetailGTModel(this.value)"
-                                class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="kode_gt_model">
-                                @if (isset($gts))
-                                    @forelse ($gts as $gt)
-                                        <option value="{{ $gt->input_gt_id }}">{{ $gt->kode_gt }}</option>
-                                    @empty
-                                    @endforelse
-                                @endif
-                            </select>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="user_defined_model"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">User
-                                Defined (OPT)</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="user_defined_model" name="user_defined_model"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="User Defined Model" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="desc_model"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Desc
-                                (OPT)</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="desc_model" name="desc_model"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Desc Model" required>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="merujuk_model"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Merujuk
-                            </label>
-                            <div class="w-4"></div>
-                            <input type="text" id="merujuk_model" name="merujuk_model"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Merujuk" required>
                         </div>
 
 
@@ -862,8 +816,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="hidden" id="submit_gt"></button>
-                        <div onclick="submitGT()"
+                        <button type="submit" class="hidden" id="submit_model"></button>
+                        <div onclick="submitModel()"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-fit cursor-pointer">
                             Input Model
                         </div>
@@ -905,15 +859,8 @@
             "TAMPAK SAMPING KANAN", "TAMPAK SAMPING KIRI"
         ]
         let currentIndex = 0;
-        const images = [
-            // 'https://source.unsplash.com/featured/?landscape',
-            // 'https://source.unsplash.com/featured/?nature',
-            // 'https://source.unsplash.com/featured/?beach',
-            // 'https://source.unsplash.com/featured/?architecture',
-            // 'https://source.unsplash.com/featured/?cityscape',
-            // 'https://source.unsplash.com/featured/?computer',
-            // 'https://source.unsplash.com/featured/?food'
-        ];
+        let totalImages = 7;
+        const images = [];
 
         // Load image when input changes
         loadImage.addEventListener('change', () => {
@@ -923,24 +870,23 @@
                 previewImage.src = reader.result;
                 imageName.textContent = file.name;
                 images.push({
-                    img: reader.result,
-                    txt: file.name
+                    img: file,
+                    name: texts[currentIndex]
                 });
             };
+            console.log(images);
             reader.readAsDataURL(file);
             console.log(images);
         });
 
-        // Remove image when button is clicked
         removeImage.addEventListener('click', () => {
             previewImage.src = '';
             loadImage.value = '';
             imageName.textContent = '';
         });
 
-        // Navigate to previous image
         prevImage.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;
             previewImage.src = images[currentIndex];
             console.log(currentIndex);
 
@@ -948,7 +894,7 @@
         });
 
         nextImage.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1 + images.length) % images.length;
+            currentIndex = (currentIndex + 1 + totalImages) % totalImages;
             previewImage.src = images[currentIndex];
             console.log(currentIndex);
 
@@ -968,44 +914,29 @@
             }
         }
 
-        function saveImage() {
+        function submitModel() {
+            var formData = new FormData();
+            var itemComponentModelId = $("#id_komponen_model").val();
+            formData.append('item_component_id', itemComponentModelId);
 
             for (let i = 0; i < images.length; i++) {
                 var file = images[i];
-                var formData = new FormData();
-                formData.append('image', file);
-
-                $.ajax({
-                    url: '/master/input/model/images',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-
-                // // Kirim formData ke backend menggunakan AJAX atau Fetch
-                // // Contoh menggunakan Fetch:
-                // fetch('/upload', {
-                //         method: 'POST',
-                //         body: formData
-                //     })
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         // Handle response dari backend setelah gambar disimpan
-                //         console.log(data);
-                //     })
-                //     .catch(error => {
-                //         // Handle error jika terjadi kesalahan
-                //         console.error(error);
-                //     });
+                formData.append('images[]', file.img);
+                formData.append('texts[]', file.name);
             }
-
+            $.ajax({
+                url: '/master/input/model/add',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response.message);
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
         }
     </script>
 
