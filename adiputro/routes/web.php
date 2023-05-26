@@ -50,6 +50,7 @@ Route::prefix('master')->group(function () {
             Route::post('/addTI', [MasterInputController::class,'addTI']);
             Route::post('/loadKodeTI', [MasterInputController::class,'loadKodeTI']);
             Route::post('/loadInputTI', [MasterInputController::class,'loadInputTI']);
+            Route::post('/approveTI', [MasterInputController::class,'approveTI']);
 
             Route::prefix('detail')->group(function () {
                 Route::get('/{input_ti_id}', [MasterInputController::class,'getDetailTI']);

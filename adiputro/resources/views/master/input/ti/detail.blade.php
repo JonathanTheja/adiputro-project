@@ -44,7 +44,7 @@
             </div>
             <div class="w-full flex items-center justify-center">
                 <div id='imgPagination{{ $key }}'
-                    class='img{{ $key }} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg bg-blue-500'>
+                    class='img{{ $key }} py-1 px-2 cursor-pointer m-1 rounded-lg bg-blue-500'>
                     {{ $key + 1 }}</div>
             </div>
         @endpush
@@ -56,7 +56,7 @@
             document.getElementById("accordion_input_ti").click();
         }, 500);
         setTimeout(() => {
-            loadKodeTI($("#nomor_laporan_ti").val());
+            loadKodeTI($("#nomor_laporan_ti").val(), "{{ $input_ti_detail->input_ti_id }}");
             // loadKodeTI("{{ $kode_ti }}", "{{ $input_ti_detail->input_ti_id }}", undefined, false);
             setTimeout(() => {
                 // nomor_laporan_ti.clear();

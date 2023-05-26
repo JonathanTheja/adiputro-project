@@ -44,7 +44,7 @@
             </div>
             <div class="w-full flex items-center justify-center">
                 <div id='imgPagination{{ $key }}'
-                    class='img{{ $key }} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg bg-blue-500'>
+                    class='img{{ $key }} py-1 px-2 cursor-pointer m-1 rounded-lg bg-blue-500'>
                     {{ $key + 1 }}</div>
             </div>
         @endpush
