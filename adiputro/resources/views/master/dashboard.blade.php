@@ -182,48 +182,25 @@
                     </div>
 
 
+
                     <h1 class="my-4">Gambar Komponen</h1>
                     <div id="photosLoader" class="mb-4"></div>
                     <div id="photosPagination" class="mb-4 flex justify-center"></div>
 
                     <div id="pe_container">
+                    </div>
+                    <div id="myModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+                        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+                        <div class="relative bg-white rounded-lg p-8 w-3/5">
+                            <h2 class="text-2xl mb-4" id="item_component_number_modal"></h2>
+                            <p id="item_component_name_modal"></p>
+                            <div id="photosLoaderModal" class="mb-4"></div>
+                            <div id="photosPaginationModal" class="mb-4 flex justify-center"></div>
 
-                        {{-- <div class="pe_table">
-                        <h1>Persiapan pembongkaran Unit sesuai dengan Jadwal</h1>
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            No
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Kode
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Nama Komponen
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Jumlah
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Satuan
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Keterangan
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Gambar
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableCol">
-
-                                </tbody>
-                            </table>
+                            <button id="closeModal"
+                                class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                                onclick="removeModal()">Tutup</button>
                         </div>
-                    </div> --}}
-
                     </div>
 
                 </div>
@@ -353,7 +330,6 @@
                         );
                     })
 
-                    //load all process entries
                     $("#pe_container").html("");
                     loadProcessEntries(response.data.process_entries, response.data.tables, response.data
                         .table_tier);
@@ -372,10 +348,9 @@
             var kategori = document.getElementById("kategori_report").value;
             if (username == "" || password == "") {
                 alert("Username dan password harus terisi!");
-            }
-            else if (kategori == "belumDipilih"){
+            } else if (kategori == "belumDipilih") {
                 alert("Kategori belum dipilih!");
-            }else {
+            } else {
                 $.ajax({
                     url: `/dashboard/report/konfirmasi`,
                     type: "POST",
@@ -409,6 +384,18 @@
             $(`.imgPagination`).addClass(unselectedClass);
             $(`#imgPagination${id_target}`).removeClass(unselectedClass);
             $(`#imgPagination${id_target}`).addClass(selectedClass);
+            // document.getElementById(`img${id_this}`).classList.add("hidden");
+            // document.getElementById(`img${id_target}`).classList.remove("hidden");
+        }
+        function slideImgModal(id_target) {
+            let selectedClass = "bg-blue-500";
+            let unselectedClass = "bg-white";
+            $(`.imgModal`).addClass("hidden");
+            $(`.imgModal${id_target}`).removeClass("hidden");
+            $(`.imgPaginationModal`).removeClass(selectedClass);
+            $(`.imgPaginationModal`).addClass(unselectedClass);
+            $(`#imgPaginationModal${id_target}`).removeClass(unselectedClass);
+            $(`#imgPaginationModal${id_target}`).addClass(selectedClass);
             // document.getElementById(`img${id_this}`).classList.add("hidden");
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
@@ -471,9 +458,77 @@
                 </div>`);
         }
 
+        function showModal(item_component_id) {
+            $.ajax({
+                url: `/master/data/getDataModal`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_component_id": item_component_id
+                },
+                success: function(response) {
+                    $("#item_component_number_modal").text(response.data.item_component.item_number);
+                    $("#item_component_name_modal").text(response.data.item_component.item_description);
+                    $("#photosLoaderModal").html("");
+                    $("#photosPaginationModal").html("");
+                    $.each(response.data.all_photos, function(key, value) {
+                        let id_target_left = key - 1;
+                        let id_target_right = key + 1;
+                        let boleh = false;
+                        if (key == 0) {
+                            boleh = true;
+                            id_target_left = response.data.all_photos.length - 1;
+                        }
+                        if (key == response.data.all_photos.length - 1) {
+                            id_target_right = 0;
+                        }
+                        $('#photosLoaderModal').append(
+                            `<div class='imgModal${key} imgModal w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>
+                            `
+                        );
+                        $('#photosPaginationModal').append(
+                            `
+                            <div id='imgPaginationModal${key}' class='imgModal${key} imgPaginationModal py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal(${key})'>${key+1}</div>
+                            `
+                        );
+                    })
+                    const modal = document.getElementById('myModal');
+                    modal.classList.remove('hidden');
+                    disableScroll();
+                }
+            });
+
+        }
+
+        function removeModal() {
+            const modal = document.getElementById('myModal');
+            modal.classList.add('hidden');
+            enableScroll();
+        }
+
+        function disableScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            window.onscroll = function() {
+                window.scrollTo(scrollLeft, scrollTop);
+            };
+        }
+
+        // Aktifkan kembali scroll pada halaman
+        function enableScroll() {
+            window.onscroll = null;
+        }
         //DONE
         function placeComponentToTable(table_id, item) {
-            console.log(item);
+
             var rowCount = $(`#${table_id} tbody tr`).length;
             $(`#${table_id} tbody`).append(`<tr class="bg-white border-b">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -495,7 +550,8 @@
                     -
                 </td>
                 <td class="px-6 py-4">
-                    <a href='https://google.com'>detail</a>
+                    <a href="javascript:void(0)" id="openModal" class="text-blue-500" onclick='showModal(` + item
+                .item_component_id + `)'>Detail</a>
                 </td>
             </tr>`);
         }
@@ -512,9 +568,11 @@
                 $.each(tables[table_id], function(key, item) {
                     console.log(item);
                     let it = {
+                        item_component_id: item.item_component_id,
                         item_number: item.item_number,
                         item_description: item.item_description,
-                        item_component_qty: parseInt(item.pivot.item_kit_qty) + parseInt(item.pivot.bom_qty) + parseInt(item.pivot.component_qty),
+                        item_component_qty: parseInt(item.pivot.item_kit_qty) + parseInt(item.pivot
+                            .bom_qty) + parseInt(item.pivot.component_qty),
                         item_uofm: item.item_uofm
                     };
                     placeComponentToTable(table_id, it);

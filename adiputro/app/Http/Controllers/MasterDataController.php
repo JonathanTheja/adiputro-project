@@ -296,6 +296,25 @@ class MasterDataController extends Controller
             ],
         ]);
     }
+
+    function getDataModal(Request $request)
+    {
+
+        $item_component_id = $request->item_component_id;
+        $item_component = ItemComponent::find($item_component_id);
+
+        //get all photos
+        $allPhotos = Storage::disk('public')->files("images/input/model/".$item_component_id);
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                'item_component'=>$item_component,
+                'all_photos'=>$allPhotos
+            ],
+        ]);
+    }
+
     function getProcessEntryItem(Request $request){
         $session_status = $request->session_status;
         $components = null;
