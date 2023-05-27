@@ -387,6 +387,7 @@
             // document.getElementById(`img${id_this}`).classList.add("hidden");
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
+
         function slideImgModal(id_target) {
             let selectedClass = "bg-blue-500";
             let unselectedClass = "bg-white";
@@ -524,7 +525,7 @@
 
         // Aktifkan kembali scroll pada halaman
         function enableScroll() {
-            window.onscroll = null;
+            window.onscroll = changeNavbarSize;
         }
         //DONE
         function placeComponentToTable(table_id, item) {
