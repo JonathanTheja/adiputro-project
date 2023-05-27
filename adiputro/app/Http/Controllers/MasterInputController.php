@@ -693,7 +693,6 @@ class MasterInputController extends Controller
 
     function addModel(Request $request){
 
-
         if($request->images != null){
             $folderPath = "images/input/model/{$request->item_component_id}";
             $files = Storage::disk('public')->files($folderPath);
@@ -705,11 +704,12 @@ class MasterInputController extends Controller
             $texts = $request->texts;
 
             for ($i=0; $i < count($images); $i++) {
-                # code...
-                $photo = $images[$i];
-                $namafile = $texts[$i].".".$photo->getClientOriginalExtension();
-                $namafolder = "images/input/model/".$request->item_component_id;
-                $photo->storeAs($namafolder,$namafile,'public');
+                if($images[$i]!="null"){
+                    $photo = $images[$i];
+                    $namafile = $texts[$i].".".$photo->getClientOriginalExtension();
+                    $namafolder = "images/input/model/".$request->item_component_id;
+                    $photo->storeAs($namafolder,$namafile,'public');
+                }
             }
 
             return response()->json([

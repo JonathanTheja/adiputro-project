@@ -755,7 +755,6 @@
                                 Gambar Model
                             </label>
                             <div class="container py-10">
-
                                 <div class="flex flex-col" id="table_model">
                                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                                         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -773,7 +772,7 @@
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                                 Isometri
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="isometri_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(0)">Edit</a>
@@ -782,7 +781,7 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Depan
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="depan_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(1)">Edit</a>
@@ -792,7 +791,7 @@
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                                 Belakang
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="belakang_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(2)">Edit</a>
@@ -801,14 +800,14 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Atas
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="atas_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4"
                                                                 onclick="toggleToShowImage(3)">Edit</td>
                                                         </tr>
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="bawah_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(4)">Edit</a>
@@ -817,7 +816,7 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Samping
                                                                 Kanan</td>
-                                                            <td class="whitespace-nowrap px-6 py-4">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="kanan_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(5)">Edit</a>
@@ -826,7 +825,7 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Samping
                                                                 Kiri</td>
-                                                            <td class="whitespace-nowrap px-6 py-4">v</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="kiri_check">x</td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(6)">Edit</a>
@@ -946,6 +945,14 @@
         let totalImages = 7;
         const images = [];
 
+        for (let i = 0; i < texts.length; i++) {
+            images.push({
+                img: null,
+                name: texts[i],
+                src: null
+            });
+        }
+
         // Load image when input changes
         loadImage.addEventListener('change', () => {
             const file = loadImage.files[0];
@@ -953,34 +960,58 @@
             reader.onload = () => {
                 previewImage.src = reader.result;
                 imageName.textContent = file.name;
-                images.push({
-                    img: file,
-                    name: texts[currentIndex]
-                });
+                images[currentIndex].img = file;
+                images[currentIndex].src = reader.result;
             };
             console.log(images);
             reader.readAsDataURL(file);
             console.log(images);
         });
 
-        removeImage.addEventListener('click', () => {
+        function resetCheck(){
+            var elements = [$("#isometri_check"),$("#depan_check"),$("#belakang_check"),$("#atas_check"),$("#bawah_check"),$("#kanan_check"),$("kiri_check")];
+            for (let i = 0; i < images.length; i++) {
+                let image = images[i];
+                if(image.img == null){
+                    elements[i].text("x");
+                }
+                else{
+                    elements[i].text("v");
+                }
+            }
+        }
+
+        function reset() {
             previewImage.src = '';
             loadImage.value = '';
             imageName.textContent = '';
+        }
+
+
+        removeImage.addEventListener('click', () => {
+            images[currentIndex].img = null;
+            images[currentIndex].src = null;
+            reset();
         });
 
         prevImage.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + totalImages) % totalImages;
-            previewImage.src = images[currentIndex];
-            console.log(currentIndex);
+            if (images[currentIndex].src != null) {
+                previewImage.src = images[currentIndex].src;
+            } else {
+                reset();
+            }
 
             $("#text_model").text(texts[currentIndex]);
         });
 
         nextImage.addEventListener('click', () => {
             currentIndex = (currentIndex + 1 + totalImages) % totalImages;
-            previewImage.src = images[currentIndex];
-            console.log(currentIndex);
+            if (images[currentIndex].src != null) {
+                previewImage.src = images[currentIndex].src;
+            } else {
+                reset();
+            }
 
             $("#text_model").text(texts[currentIndex]);
         });
@@ -989,10 +1020,11 @@
             if (current_index != -1) {
                 $("#table_model").addClass("hidden");
                 $("#prev_images_container_model").removeClass("hidden");
-                previewImage.src = images[current_index];
+                previewImage.src = images[current_index].src;
                 $("#text_model").text(texts[current_index]);
                 currentIndex = current_index;
             } else {
+                resetCheck();
                 $("#table_model").removeClass("hidden");
                 $("#prev_images_container_model").addClass("hidden");
             }
@@ -1016,11 +1048,31 @@
                 contentType: false,
                 success: function(response) {
                     console.log(response.message);
+                    Swal.fire({
+                        // text: "You won't be able to revert this!",
+                        icon: 'success',
+                        title: 'Berhasil Tambah Model!',
+                        // showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                        // confirmButtonText: 'Yes, Update it!'
+                        allowOutsideClick: false
+                    })
                 },
                 error: function(response) {
-                    console.log(response);
+                    Swal.fire({
+                            // text: "You won't be able to revert this!",
+                            icon: 'error',
+                            title: 'Gagal Tambah Model!',
+                            // showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                            // confirmButtonText: 'Yes, Update it!'
+                            allowOutsideClick: false
+                    })
                 }
             });
+
         }
 
         //accordion agak bug
@@ -1337,26 +1389,7 @@
                 success: function(response) {
                     if (response.success) {
                         console.log(response);
-                        // show nomor_laporan_ti
-                        // nomor_laporan_ti.removeOption(response.nomor_laporan);
-                        // if (isEdit) {
-                        // nomor_laporan_ti.clear();
-                        // nomor_laporan_ti.clearOptions();
-                        // nomor_laporan_ti.addOption({
-                        //     value: response.nomor_laporan,
-                        //     text: response.nomor_laporan
-                        // });
-                        // nomor_laporan_ti.addItem(response.nomor_laporan);
-                        //     nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
-                        // } else {
-                        // nomor_laporan_ti.clear();
-                        // nomor_laporan_ti.clearOptions();
-                        // nomor_laporan_ti.addOption({
-                        //     value: response.input_ti.nomor_laporan,
-                        //     text: response.input_ti.nomor_laporan
-                        // });
-                        //     nomor_laporan_ti.addItem(response.input_ti.nomor_laporan);
-                        // }
+
                         // show nama_ti
                         $("#nama_ti").val(response.input_ti.nama_ti);
                         //show level_proses dulu, process entry dulu, show komponen
