@@ -936,7 +936,7 @@
             if (current_index != -1) {
                 $("#table_model").addClass("hidden");
                 $("#prev_images_container_model").removeClass("hidden");
-                previewImage.src = images[current_index];
+                previewImage.src = images[current_index].src;
                 $("#text_model").text(texts[current_index]);
                 currentIndex = current_index;
             } else {
