@@ -305,12 +305,15 @@ class MasterDataController extends Controller
 
         //get all photos
         $allPhotos = Storage::disk('public')->files("images/input/model/".$item_component_id);
+        $photos = [];
+        $photos = Storage::disk('public')->files("images/input/approved/gt/item_component_id_".$item_component_id);
 
         return response()->json([
             'success' => true,
             'data'    => [
                 'item_component'=>$item_component,
-                'all_photos'=>$allPhotos
+                'all_photos'=>$allPhotos,
+                'photos'=>$photos,
             ],
         ]);
     }

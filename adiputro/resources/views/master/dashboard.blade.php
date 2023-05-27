@@ -189,11 +189,15 @@
 
                     <div id="pe_container">
                     </div>
-                    <div id="myModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+                    <div id="myModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
                         <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
-                        <div class="relative bg-white rounded-lg p-8 w-3/5">
+                        <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
                             <h2 class="text-2xl mb-4" id="item_component_number_modal"></h2>
                             <p id="item_component_name_modal"></p>
+                            <h2 class="text-center text-3xl">Input 3</h2>
+                            <div id="photosLoaderModal3" class="mb-4"></div>
+                            <div id="photosPaginationModal3" class="mb-4 flex justify-center"></div>
+                            <h2 class="text-center text-3xl">Input 4</h2>
                             <div id="photosLoaderModal" class="mb-4"></div>
                             <div id="photosPaginationModal" class="mb-4 flex justify-center"></div>
 
@@ -459,7 +463,7 @@
                 </div>`);
         }
 
-        function showModal(item_component_id) {
+        function showModal(item_component_id, item_level_id) {
             $.ajax({
                 url: `/master/data/getDataModal`,
                 type: "POST",
@@ -468,8 +472,11 @@
                     "item_component_id": item_component_id
                 },
                 success: function(response) {
+                    console.log(response);
                     $("#item_component_number_modal").text(response.data.item_component.item_number);
                     $("#item_component_name_modal").text(response.data.item_component.item_description);
+                    $("#photosLoaderModal3").html("");
+                    $("#photosPaginationModal3").html("");
                     $("#photosLoaderModal").html("");
                     $("#photosPaginationModal").html("");
                     $.each(response.data.all_photos, function(key, value) {
@@ -500,6 +507,39 @@
                             <div id='imgPaginationModal${key}' class='imgModal${key} imgPaginationModal py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal(${key})'>${key+1}</div>
                             `
                         );
+                    })
+                    $.each(response.data.photos, function(key, value) {
+                        let id_target_left = key - 1;
+                        let id_target_right = key + 1;
+                        let boleh = false;
+                        if (key == 0) {
+                            boleh = true;
+                            id_target_left = response.data.all_photos.length - 1;
+                        }
+                        if (key == response.data.all_photos.length - 1) {
+                            id_target_right = 0;
+                        }
+                        id_target_left = "id"+id_target_left;
+                        id_target_right = "id"+id_target_right;
+                        let nowKey = 'key'+key;
+                        let nextKey = 'key'+(key+1);
+                        $('#photosLoaderModal3').append(
+                            `<div class='imgModal${key} imgModal w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>
+                            `
+                        );
+                        // $('#photosPaginationModal3').append(
+                        //     `
+                        //     <div id='imgPaginationModal${key}' class='imgModal${key} imgPaginationModal py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal(${key})'>${key+1}</div>
+                        //     `
+                        // );
                     })
                     const modal = document.getElementById('myModal');
                     modal.classList.remove('hidden');
@@ -552,7 +592,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <a href="javascript:void(0)" id="openModal" class="text-blue-500" onclick='showModal(` + item
-                .item_component_id + `)'>Detail</a>
+                .item_component_id + ',' + item.item_level_id +`)'>Detail</a>
                 </td>
             </tr>`);
         }

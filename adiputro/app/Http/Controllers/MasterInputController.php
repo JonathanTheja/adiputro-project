@@ -7,6 +7,7 @@ use App\Models\CheckedByTI;
 use App\Models\Department;
 use App\Models\FormReport;
 use App\Models\InputGT;
+use App\Models\InputGTApproved;
 use App\Models\InputTI;
 use App\Models\InputTIApproved;
 use App\Models\ItemComponent;
@@ -627,6 +628,13 @@ class MasterInputController extends Controller
         // $input_gt_detail_json = json_encode($input_gt_detail);
 
         $input_gt = InputGT::where("status",1)->with("form_report")->orderBy('kode_gt','asc')->get();
+        $input_gt_approved = InputGTApproved::where('input_gt_id', $input_gt_detail->input_gt_id)->get();
+        $hasUserNowApproved = false;
+        foreach ($input_gt_approved as $key => $gt_approved) {
+            if($gt_approved->user_id == Auth::user()->user_id){
+                $hasUserNowApproved = true;
+            }
+        }
         return view('master.input.gt.detail', [
             "form_report_ti" => $form_report_ti,
             "form_report_gt" => $form_report_gt,
@@ -639,7 +647,9 @@ class MasterInputController extends Controller
             "all_photos_gt" => $all_photos_gt,
             "input_gt" => $input_gt,
             "input_gt_detail" => $input_gt_detail,
-            "item_level_process_entry" => $form_report_gt_detail->item_level_process_entry()->with("process_entry")->get()
+            "item_level_process_entry" => $form_report_gt_detail->item_level_process_entry()->with("process_entry")->get(),
+            "hasUserNowApproved" => $hasUserNowApproved,
+            "input_gt_approved" => $input_gt_approved
         ]);
     }
 
@@ -649,9 +659,38 @@ class MasterInputController extends Controller
             "input_ti_id" => $request->input_ti_id,
             "user_id" => Auth::user()->user_id
         ]);
+        $input_ti = InputTI::find($request->input_ti_id);
+        $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
+        $destinationFolder = "images/input/approved/ti/item_level_id_$form_report->item_level_id";
+        Storage::makeDirectory($destinationFolder);
+        foreach ($photos as $photo) {
+            $fileName = basename($photo);
+            Storage::disk('public')->put($destinationFolder . '/' . $fileName, $photo);
+        }
         Alert::success('Sukses!', 'Berhasil Approve TI!');
         return back();
     }
+
+    function approveGT(Request $request)
+    {
+        $input_gt_approved = InputGTApproved::create([
+            "input_gt_id" => $request->input_gt_id,
+            "user_id" => Auth::user()->user_id
+        ]);
+        $input_gt = InputGT::find($request->input_gt_id);
+        $photos = Storage::disk('public')->files("images/input/gt/".strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)));
+        $form_report = FormReport::where('nomor_laporan', $input_gt->nomor_laporan)->first();
+        $destinationFolder = "images/input/approved/gt/item_component_id_$request->item_component_id";
+        Storage::makeDirectory($destinationFolder);
+        foreach ($photos as $photo) {
+            $fileName = basename($photo);
+            Storage::disk('public')->put($destinationFolder . '/' . $fileName, $photo);
+        }
+        Alert::success('Sukses!', 'Berhasil Approve Gambar Teknik!');
+        return back();
+    }
+
     function addModel(Request $request){
 
 

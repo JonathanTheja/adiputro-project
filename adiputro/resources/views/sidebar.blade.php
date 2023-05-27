@@ -1,7 +1,7 @@
 <span class="fixed text-white text-4xl top-5 left-4 cursor-pointer" onclick="openSidebar();" id="openSidebar">
     <i class="bi bi-filter-left py-1 px-2 bg-gray-900 rounded-md"></i>
 </span>
-<div class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900 z-50" id="sidebar">
+<div class="fixed top-0 bottom-0 p-2 w-250px overflow-y-auto text-center bg-gray-900 z-[100]" id="sidebar">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <div class="justify-center w-full">

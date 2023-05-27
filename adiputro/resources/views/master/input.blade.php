@@ -273,53 +273,50 @@
                 <div class="lg:mb-4 mb-2">
                     @stack('photosFullTI')
                 </div>
-                @isset($hasUserNowApproved)
+                @isset($hasUserNowApproved, $input_ti_detail)
                     <div
                         class="focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-2.5 text-center w-full">
                         User yang sudah Approve
                     </div>
-                    <div id="dashboard_container">
-                        <div id="">
-                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
-                                <table class="w-full text-md text-left text-gray-500">
-                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-3">
-                                                Username
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+                        <table class="w-full text-md text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Username
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Full Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Department
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Role
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($input_ti_approved)
+                                    @foreach ($input_ti_approved as $ti_approved)
+                                        <tr class="bg-white border-b">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                {{ $ti_approved->user->username }}
                                             </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Full Name
-                                            </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Department
-                                            </th>
-                                            <th scope="col" class="px-6 py-3">
-                                                Role
-                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{ $ti_approved->user->full_name }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $ti_approved->user->department->name }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $ti_approved->user->role->name }}
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($input_ti_approved as $ti_approved)
-                                            <tr class="bg-white border-b">
-                                                <th scope="row"
-                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $ti_approved->user->username }}
-                                                </th>
-                                                <td class="px-6 py-4">
-                                                    {{ $ti_approved->user->full_name }}
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    {{ $ti_approved->user->department->name }}
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    {{ $ti_approved->user->role->name }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                    @endforeach
+                                @endisset
+                            </tbody>
+                        </table>
                     </div>
                     @if (!$hasUserNowApproved)
                         @isset($input_ti_detail)
@@ -617,16 +614,85 @@
                                 Input Gambar Teknik
                             </div>
                         </div>
-                        <div class="lg:mb-4 mb-2">
-                            @yield('photos_gt')
-                        </div>
-                        <div id="photosPaginationGT" class="mb-4 flex justify-center">
-                            @stack('photosPaginationGT')
-                        </div>
-                        <div class="lg:mb-4 mb-2">
-                            @stack('photosFullGT')
-                        </div>
                     </form>
+                    <div class="lg:mb-4 mb-2">
+                        @yield('photos_gt')
+                    </div>
+                    <div id="photosPaginationGT" class="mb-4 flex justify-center">
+                        @stack('photosPaginationGT')
+                    </div>
+                    <div class="lg:mb-4 mb-2">
+                        @stack('photosFullGT')
+                    </div>
+                    @isset($hasUserNowApproved, $input_gt_detail)
+                        <div
+                            class="focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-2.5 text-center w-full">
+                            User yang sudah Approve
+                        </div>
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-4">
+                            <table class="w-full text-md text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Username
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Full Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Department
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Role
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @isset($input_gt_approved)
+                                        @foreach ($input_gt_approved as $gt_approved)
+                                            <tr class="bg-white border-b">
+                                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                    {{ $gt_approved->user->username }}
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                    {{ $gt_approved->user->full_name }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $gt_approved->user->department->name }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $gt_approved->user->role->name }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endisset
+                                </tbody>
+                            </table>
+                        </div>
+                        @if (!$hasUserNowApproved)
+                            @isset($input_gt_detail)
+                                @if ($input_gt_detail->status == 1)
+                                    <form action="{{ url('/master/input/gt/approveGT') }}" method="POST">
+                                        @csrf
+                                        <input class="hidden" name="input_gt_id" type="text"
+                                            value="{{ $input_gt_detail->input_gt_id }}">
+                                        <input class="hidden" id="item_component_id" name="item_component_id" type="text">
+                                        <button class="hidden" id="btn_approve_gt" type="submit"></button>
+                                        {{-- <div onclick="approveTI()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full cursor-pointer">
+                                Approve
+                            </div> --}}
+                                        <label for="my-modal-konfirmasi-gt">
+                                            <div
+                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full cursor-pointer">
+                                                Approve
+                                            </div>
+                                        </label>
+                                    </form>
+                                @endif
+                            @endisset
+                        @endif
+                    @endisset
                 </div>
             </div>
         </div>
@@ -787,7 +853,6 @@
 
                                     </div>
                                     <div class="flex flex-row justify-around mt-2">
-
                                         <input id="load-image" type="file" accept="image/*" class="hidden">
                                         <label for="load-image"
                                             class="w-full mr-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Upload
@@ -842,6 +907,25 @@
                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Password" required>
                 <button type="submit" onclick="approveTI()"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Konfirmasi</button>
+            </label>
+        </label>
+    </div>
+    <div class="hidden" id="modalKonfirmasiGT">
+        <input type="checkbox" id="my-modal-konfirmasi-gt" class="modal-toggle" />
+        <label for="my-modal-konfirmasi-gt" class="modal cursor-pointer">
+            <label class="modal-box relative" for="">
+                <label for="my-modal-konfirmasi-gt" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold" id="titleModal">Konfirmasi Approve Gambar Teknik</h3>
+                <div class="py-4" id="bodyModal">Username</div>
+                <input type="text" name="username_gt" id="username_gt"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Username" required>
+                <div class="py-4" id="bodyModal">Password</div>
+                <input type="password" name="password_gt" id="password_gt"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Password" required>
+                <button type="submit" onclick="approveGT()"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5">Konfirmasi</button>
             </label>
         </label>
@@ -938,6 +1022,17 @@
                 }
             });
         }
+
+        //accordion agak bug
+        setTimeout(() => {
+            document.getElementById("btnApprovedBy1").click();
+            document.getElementById("btnApprovedBy2").click();
+        }, 500);
+
+        setTimeout(() => {
+            document.getElementById("modalKonfirmasiTI").classList.remove("hidden");
+            document.getElementById("modalKonfirmasiGT").classList.remove("hidden");
+        }, 1000);
     </script>
 
 
@@ -1014,9 +1109,6 @@
                 $(this).prop('checked', true);
             });
         }
-
-
-
         //                                                  param    ini           ini               ini hanya untuk edit
         function getLevelProsesTI(nomor_laporan_ti, level_process_input_ti, item_component_ti, process_entry_id) {
             //setiap kali nomor laporan diganti, reset
@@ -1382,12 +1474,15 @@
             });
         }
 
-        let item_level_id_gt;
-        let level_gt;
+        var item_level_id_gt;
+        var level_gt;
 
         //alur paling pertama setelah nomor_laporan langsung ambil process entry
         //apabila edit cek apakah ada input_gt kalau ada langsung tampilkan semua datanya
         function getProcessEntryGT(nomor_laporan) {
+            if (!nomor_laporan) {
+                resetDataGT();
+            }
             return new Promise((resolve, reject) => {
                 // alert(nomor_laporan)
                 if (nomor_laporan == "tambah") {
@@ -1490,6 +1585,7 @@
                         $('#level_proses_gt').val(level_gt);
                         try {
                             $('#nama_komponen_gt').val(response.item_component.item_description);
+                            $('#item_component_id').val(response.item_component.item_component_id);
                         } catch (error) {
 
                         }
@@ -1612,7 +1708,6 @@
             });
         }
 
-
         function approveTI() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
@@ -1638,18 +1733,48 @@
             }
         }
 
+        function approveGT() {
+            var username = document.getElementById("username_gt").value;
+            var password = document.getElementById("password_gt").value;
+            if (username == "" || password == "") {
+                alert("Username dan password harus terisi!");
+            } else {
+                $.ajax({
+                    url: `/dashboard/report/konfirmasi`,
+                    type: "POST",
+                    cache: false,
+                    data: {
+                        "username": username,
+                        "password": password,
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert("Data kredensial salah!");
+                        } else {
+                            $('#btn_approve_gt').click();
+                        }
+                    }
+                });
+            }
+        }
+
+        function resetDataGT() {
+            $("#kode_gt").val("");
+            $("#level_proses_gt").val("");
+            process_entry_gt.clear();
+            diperiksa_oleh_gt.clear();
+            kode_komponen_gt.clear();
+            user_defined_gt.clear();
+            $('input[type=checkbox].cb_gt').each(function() {
+                $(this).prop('checked', false);
+            });
+            user_defined_gt.clear();
+            $("#description_gt").val("");
+            $("#komponen_gt").html("");
+        }
+
         // function loadInputGT(input_gt, ) {
         //     console.log(input_gt);
         // }
-
-        //accordion agak bug
-        setTimeout(() => {
-            document.getElementById("btnApprovedBy1").click();
-            document.getElementById("btnApprovedBy2").click();
-        }, 500);
-
-        setTimeout(() => {
-            document.getElementById("modalKonfirmasiTI").classList.remove("hidden");
-        }, 1000);
     </script>
 @endsection

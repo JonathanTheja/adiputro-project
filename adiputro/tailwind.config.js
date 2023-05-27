@@ -118,6 +118,9 @@ module.exports = {
                 "80vh": "80vh",
                 "90vh": "90vh",
             },
+            minWidth: {
+                '3/5': '60%',
+            },
         },
         fontSize: {
             '15px': '15px',
@@ -168,6 +171,6 @@ module.exports = {
         // require('flowbite/plugin'),
     ],
     daisyui: {
-    themes: false,
+        themes: false,
     },
 }

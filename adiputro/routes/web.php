@@ -65,6 +65,7 @@ Route::prefix('master')->group(function () {
             Route::post('/getComponentGT', [MasterInputController::class,'getComponentGT']);
             Route::post('/getDetailComponentGT', [MasterInputController::class,'getDetailComponentGT']);
             Route::post('/getUserDefinedDescGT', [MasterInputController::class,'getUserDefinedDescGT']);
+            Route::post('/approveGT', [MasterInputController::class,'approveGT']);
 
             Route::prefix('detail')->group(function () {
                 Route::get('/{input_gt_id}', [MasterInputController::class,'getDetailGT']);

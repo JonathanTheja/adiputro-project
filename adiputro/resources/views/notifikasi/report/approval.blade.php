@@ -121,7 +121,8 @@
                                         <td class="p-2 py-4"><a class="hover:bg-blue-200"
                                                 href="/master/input/gt/detail/{{ $input->input_gt_id }}">{{ $input->kode_ti }}</a>
                                         </td>
-                                        <td class="p-2 py-4">{{ $input->kode_gt }}
+                                        <td class="p-2 py-4"><a class="hover:bg-blue-200"
+                                                href="/master/input/gt/detail/{{ $input->input_gt_id }}">{{ $input->kode_gt }}</a>
                                         </td>
 
                                         <td class="p-2 py-4 text-center">{{ $input->process_entry->work_description }}
