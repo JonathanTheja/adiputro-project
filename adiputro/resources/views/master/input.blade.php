@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="accordion_input_ti" id="accordion_input_ti">
-        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_ti"
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 hidden input_container input_ti"
             style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -38,15 +38,6 @@
         </button>
         <div class=" bg-white border border-gray-200 rounded-lg hidden input_container input_ti"
             style="transition: opacity 0.3s ease;opacity: 0;" id="">
-            <div style="position:absolute;top:10px;left:0;">
-                <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    <span class="text-gray-900">Kembali</span>
-                </button>
-            </div>
             <h2 class="mb-0" id="headingTwo">
                 <button id="accordion_input_ti"
                     class="relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
@@ -387,7 +378,7 @@
         </div>
     </div>
     <div class="mt-4 accordion_input_gt" id="accordion_input_gt">
-        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_gt"
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 hidden input_container input_gt"
             style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -397,15 +388,6 @@
         </button>
         <div class=" bg-white border border-gray-200 rounded-lg hidden input_container input_gt"
             style="transition: opacity 0.3s ease;opacity: 0;" id="">
-            <div style="position:absolute;top:10px;left:0;">
-                <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    <span class="text-gray-900">Kembali</span>
-                </button>
-            </div>
             <h2 class="mb-0" id="headingTwo">
                 <button id="accordion_input_gt"
                     class="relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
@@ -756,7 +738,7 @@
     </div>
 
     <div class="mt-4 accordion_input_model" id="accordion_input_model">
-        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_model"
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 hidden input_container input_model"
             style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
