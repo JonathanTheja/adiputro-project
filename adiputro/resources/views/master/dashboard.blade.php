@@ -36,113 +36,7 @@
                 <span class="sr-only">Search</span>
             </button>
         </form>
-        <div class="accordion pointer-events-none" id="accordionReport">
-            <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-                <h2 class="accordion-header mb-0" id="headingTwo">
-                    <button
-                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
-                bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                        type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                        aria-controls="collapseTwo">
-                        <h1 class="text-xl text-gray-800">
-                            Report
-                        </h1>
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body py-4 px-5">
-                        <form action="{{ url('/dashboard/report/add') }}" method="POST">
-                            @csrf
-                            <input class="hidden" type="text" name="item_level_id" id="item_level_id">
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
-                                    Laporan</label>
-                                <div class="w-4"></div>
-                                <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="Nomor Laporan" required>
-                                <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
-                                    class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
-                                    placeholder="Nomor Laporan" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col justify-start">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
-                                <div class="w-4"></div>
-                                <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    placeholder="Nomor Laporan">
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Pelapor</label>
-                                <div class="w-4"></div>
-                                <input disabled type="text" id="full_name" name="pelapor"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    value="{{ $pelapor->full_name }}" placeholder="Pelapor" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Departemen</label>
-                                <div class="w-4"></div>
-                                <input disabled type="text" id="full_name" name="departemen"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Jenis</label>
-                                <div class="w-4"></div>
-                                <select id="jenis" name="jenis"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
-                                    <option value="TI">TI</option>
-                                    <option value="Gambar Teknik">Gambar Teknik</option>
-                                    <option value="Process Entry">Process Entry</option>
-                                </select>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="kode"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kode</label>
-                                <div class="w-4"></div>
-                                <input type="text" id="full_name" name="kode"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                    value="" placeholder="Kode" required>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
-                                <div class="w-4"></div>
-                                <select id="kategori_report" name="kategori_report_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
-                                    onchange="tambahUpdate(this.value)" required>
-                                    <option disabled selected value="belumDipilih">Belum Dipilih</option>
-                                    @foreach ($kategori_report as $kategori)
-                                        <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}
-                                        </option>
-                                    @endforeach
-                                    <option value="tambahUpdate" id="tambahUpdate">Tambah /
-                                        Update Kategori</option>
-                                </select>
-                            </div>
-                            <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                                <label for="full_name"
-                                    class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Temuan</label>
-                                <div class="w-4"></div>
-                                <input type="text" id="full_name" name="temuan"
-                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
-                                    placeholder="Temuan" required>
-                            </div>
-                            <button type="submit" class="hidden" id="submitReport"></button>
-                            <label for="my-modal-konfirmasi"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5 cursor-pointer">Tambah
-                                report baru</label>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <div id="content">
@@ -155,7 +49,113 @@
             <div class="w-9/12 bg-slate-200 rounded-lg p-5">
                 <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
                 <div id="dashboard_container" class="hidden">
-
+                    <div class="accordion pointer-events-none" id="accordionReport">
+                        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
+                            <h2 class="accordion-header mb-0" id="headingTwo">
+                                <button
+                                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                            bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo">
+                                    <h1 class="text-xl text-gray-800">
+                                        Report
+                                    </h1>
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body py-4 px-5">
+                                    <form action="{{ url('/dashboard/report/add') }}" method="POST">
+                                        @csrf
+                                        <input class="hidden" type="text" name="item_level_id" id="item_level_id">
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
+                                                Laporan</label>
+                                            <div class="w-4"></div>
+                                            <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                                placeholder="Nomor Laporan" required>
+                                            <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
+                                                class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
+                                                placeholder="Nomor Laporan" required>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col justify-start">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
+                                            <div class="w-4"></div>
+                                            <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                                placeholder="Nomor Laporan">
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Pelapor</label>
+                                            <div class="w-4"></div>
+                                            <input disabled type="text" id="full_name" name="pelapor"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                                value="{{ $pelapor->full_name }}" placeholder="Pelapor" required>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Departemen</label>
+                                            <div class="w-4"></div>
+                                            <input disabled type="text" id="full_name" name="departemen"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                                value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Jenis</label>
+                                            <div class="w-4"></div>
+                                            <select id="jenis" name="jenis"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                                                <option value="TI">TI</option>
+                                                <option value="Gambar Teknik">Gambar Teknik</option>
+                                                <option value="Process Entry">Process Entry</option>
+                                            </select>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="kode"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kode</label>
+                                            <div class="w-4"></div>
+                                            <input type="text" id="full_name" name="kode"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
+                                                value="" placeholder="Kode" required>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Kategori</label>
+                                            <div class="w-4"></div>
+                                            <select id="kategori_report" name="kategori_report_id"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+                                                onchange="tambahUpdate(this.value)" required>
+                                                <option disabled selected value="belumDipilih">Belum Dipilih</option>
+                                                @foreach ($kategori_report as $kategori)
+                                                    <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}
+                                                    </option>
+                                                @endforeach
+                                                <option value="tambahUpdate" id="tambahUpdate">Tambah /
+                                                    Update Kategori</option>
+                                            </select>
+                                        </div>
+                                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
+                                            <label for="full_name"
+                                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Temuan</label>
+                                            <div class="w-4"></div>
+                                            <input type="text" id="full_name" name="temuan"
+                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 "
+                                                placeholder="Temuan" required>
+                                        </div>
+                                        <button type="submit" class="hidden" id="submitReport"></button>
+                                        <label for="my-modal-konfirmasi"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5 cursor-pointer">Tambah
+                                            report baru</label>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <h1 class="text-lg" id="component_name">Name</h1>
 
                     <div id="table_container">
