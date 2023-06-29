@@ -691,7 +691,7 @@ class MasterDataController extends Controller
             return response()->json([
                 'success' => true,
                 'is_multiple'=>false,
-                'table_tier'=>$table_tier[$table_id],
+                'table_tier'=>$table_tier[$table_id] ?? null,
                 'items' => $tables[$table_id]
             ]);
         }

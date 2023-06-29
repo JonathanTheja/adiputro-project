@@ -220,7 +220,7 @@
                 console.log(comp);
                 iter++;
                 let appendedClass = "border-b dark:border-neutral-500";
-                // let total_available = comp.item_component_qty - comp.total_item_used;
+                let total_available = comp.item_component_qty - comp.total_item_used;
 
                 let total_available_item_kit = comp.item_kit_count - comp.total_item_kit_used;
                 let total_available_bom = comp.bom_count - comp.total_bom_used;
@@ -228,12 +228,12 @@
                 let total_available_component = comp.component_count - comp.total_component_used;
 
                 appendedClass = "border-b dark:border-neutral-500 text-black";
-                // if (comp.total_item_kit_used != 0 || comp.bom_used != 0 || comp.component_used != 0) {
-                //     appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
-                // }
-                // if (!comp.is_available) {
-                //     appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
-                // }
+                if (comp.total_item_kit_used != 0 || comp.bom_used != 0 || comp.component_used != 0) {
+                    appendedClass = "border-b dark:border-neutral-500 bg-yellow-100 text-black";
+                }
+                if (!comp.is_available) {
+                    appendedClass = "border-b dark:border-neutral-500 bg-red-700 text-white";
+                }
                 let item_kit_numbers = comp.item_kit_numbers.join(", ");
                 let bom_numbers = comp.bom_numbers.join(", ");
 
@@ -382,6 +382,7 @@
         function placeComponentToProcess(select_val, input_val, table_id) {
             const selectedComp = $("#" + select_val).val();
             const desc = $("#" + input_val).val();
+            console.log("tablenya: " + table_id);
             $.ajax({
                 url: `/master/data/placeComponentToProcess`,
                 type: "POST",
@@ -518,6 +519,7 @@
         }
 
         function addComponent(table_id, item_number) {
+            console.log("tableku: " + table_id);
             $.ajax({
                 url: `/master/data/updateSpecComponent`,
                 type: "POST",
@@ -595,6 +597,7 @@
 
         //call the placeComponentToTable
         function refreshTable(table_id) {
+            console.log("table: " + table_id);
             $.ajax({
                 url: `/master/data/getComponents`,
                 type: "POST",
@@ -610,9 +613,10 @@
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
                         let tier = response.table_tier;
-                        $("#input_tier_" + table_id).val(tier.desc);
-                        $("#tier_" + table_id).val(tier.item_component_id);
-
+                        if(tier!=null){
+                            $("#input_tier_" + table_id).val(tier.desc);
+                            $("#tier_" + table_id).val(tier.item_component_id);
+                        }
                         if (items != null) {
                             //foreach
                             $.each(items, function(key, item) {
@@ -628,10 +632,13 @@
                             let table_id = 'pe_table_' + pe.process_entry_id;
                             generateTable(pe.process_entry_id, pe.work_description, table_id);
 
-                            let tier = (response.table_tier)[table_id];
-                            $("#input_tier_" + table_id).val(tier.desc);
-                            $("#tier_" + table_id).val(tier.item_component_id);
 
+                            let tier = (response.table_tier);
+                            if (tier != null) {
+                                tier = (response.table_tier)[table_id];
+                                $("#input_tier_" + table_id).val(tier.desc);
+                                $("#tier_" + table_id).val(tier.item_component_id);
+                            }
 
                             $.each(tables[table_id], function(key, item) {
                                 let it = {
@@ -663,6 +670,7 @@
                     "table_id": table_id
                 },
                 success: function(response) {
+                    console.log("deleted");
                     if (response.success) {
                         refreshTable(table_id);
                         reloadComponentListTable(response.components);
