@@ -15,7 +15,7 @@
                     <a href="{{ url('/master/input') }}"
                         class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('master/input') ? 'text-white underline' : 'text-gray-300' }}">Input</a>
                     <a href="{{ url('/process-entry') }}"
-                        class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('process-entry') ? 'text-white underline' : 'text-gray-300' }}">Entry</a>
+                        class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('process-entry') ? 'text-white underline' : 'text-gray-300' }}">Process Entry</a>
                     <a href="{{ url('/notifikasi/report') }}"
                         class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('notifikasi/report') ? 'text-white underline' : 'text-gray-300' }}">Notifikasi
                         Report</a>
