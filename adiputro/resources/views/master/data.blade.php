@@ -2,14 +2,14 @@
 
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master Data</h1>
-
+    {{--
     <button onclick="tambah()" type="submit"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-md">Tambah
         LV 0
     </button>
     <br>
-    <br>
-    @foreach ($item_levels as $item_level)
+    <br> --}}
+    {{-- @foreach ($item_levels as $item_level)
         <button id="multiLevelDropdownButton" data-dropdown-placement="right-start"
             data-dropdown-toggle="dropdown{{ $item_level->item_level_id }}"
             class="relative w-[128.837] text-white bg-gray-900 hover:bgb-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-t-md text-sm px-4 text-left py-2.5 inline-flex items-center dark:focus:ring-gray-800 mr-2"
@@ -54,32 +54,36 @@
             @endforeach
         </div>
         <br>
-    @endforeach
+    @endforeach --}}
 
-    <div class="overflow-x-auto">
-        <table class="border-2 border-collapse border-gray-300">
-            <tr class="border-2 border-collapse max-w-32 border-gray-300">
-                <td class="border-2 border-collapse border-gray-300">
-                    <button onclick="tambah()" type="submit"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-md">Tambah
-                    </button>
-                </td>
-            </tr>
+    <div class="bg-gray-100 flex items-center justify-center">
+        <div class="w-full max-w-5xl px-4">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300">
+                    <tr class="border border-gray-300">
+                        <td class="border border-gray-300">
+                            <button onclick="tambah()"
+                                class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium text-sm px-5 py-2.5 text-center max-w-32 rounded-md">
+                                Tambah
+                            </button>
+                        </td>
+                    </tr>
 
-            @foreach ($item_levels as $item_level)
-                <tr class="border-2 border-collapse max-w-32 border-gray-300">
-                    <td class="">
-                        <button type="submit"
-                            class="text-white bg-white hover:bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center max-w-32">
-                        </button>
-                    </td>
-                </tr>
-                <x-data-item :item="$item_level" :level=0 :max="$max"></x-data-item>
-            @endforeach
-
-        </table>
-
+                    @foreach ($item_levels as $item_level)
+                        <tr class="border border-gray-300">
+                            <td>
+                                <button
+                                    class="bg-white hover:bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium text-sm px-5 py-2.5 text-center max-w-32">
+                                </button>
+                            </td>
+                        </tr>
+                        <x-data-item :item="$item_level" :level=0 :max="$max"></x-data-item>
+                    @endforeach
+                </table>
+            </div>
+        </div>
     </div>
+
 
     <div class="hidden" id="showModal">
         @include('modal.add.data')
