@@ -22,8 +22,8 @@
                     <a href="{{ url('/notifikasi/report/approval') }}"
                         class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('notifikasi/report/approval') ? 'text-white underline' : 'text-gray-300' }}">Report
                         Approval</a>
-                    <a href="{{ url('/notifikasi/report/approval') }}"
-                        class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('notifikasi/report/approval') ? 'text-white underline' : 'text-gray-300' }}">Logout</a>
+                    <a href="{{ url('/login') }}"
+                        class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('/login') ? 'text-white underline' : 'text-gray-300' }}">Logout</a>
                     <div class="flex-grow"></div>
                 </div>
             </div>
