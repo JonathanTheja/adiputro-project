@@ -2,22 +2,64 @@
 
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master Input</h1>
-    <div class="accordion accordion_input_ti" id="accordionExample">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingTwo">
+
+    <div class="flex justify-center items-center space-x-10"
+        style="height: 450px;position: relative; transition: opacity 0.3s ease;opacity: 1" id="input_menu">
+        <div class="mr-2">
+            <button id="technicalBtn"
+                class="flex items-center justify-center w-96 h-64 p-4 bg-[rgb(238,137,128)] hover:bg-[rgb(218,117,108)] text-black text-xl font-bold rounded-3xl"
+                onclick="changeContent('input_ti')">
+                <span class="text-center" style="line-height: 60px; font-size: 45px">Tambah Technical Instruction</span>
+            </button>
+        </div>
+        <div>
+            <button
+                class="flex items-center justify-center w-96 h-64 p-4 bg-[rgb(255,205,170)] hover:bg-[rgb(235,185,150)] text-black text-xl font-bold rounded-3xl"
+                onclick="changeContent('input_gt')">
+                <span class="text-center" style="line-height: 60px; font-size: 45px">Tambah Gambar Teknik</span>
+            </button>
+        </div>
+        <div>
+            <button
+                class="flex items-center justify-center w-96 h-64 p-4 bg-[rgb(156,184,155)] hover:bg-[rgb(136,164,135)] text-black text-xl font-bold rounded-3xl"
+                onclick="changeContent('input_model')">
+                <span class="text-center" style="line-height: 60px; font-size: 45px">Tambah Model</span>
+            </button>
+        </div>
+    </div>
+    <div class="accordion_input_ti" id="accordion_input_ti">
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_ti"
+            style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="text-gray-900">Kembali</span>
+        </button>
+        <div class=" bg-white border border-gray-200 rounded-lg hidden input_container input_ti"
+            style="transition: opacity 0.3s ease;opacity: 0;" id="">
+            <div style="position:absolute;top:10px;left:0;">
+                <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="text-gray-900">Kembali</span>
+                </button>
+            </div>
+            <h2 class="mb-0" id="headingTwo">
                 <button id="accordion_input_ti"
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                    class="relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                    type="button" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-controls="">
                     <h1 class="text-xl text-gray-800">
                         Tambah Technical Instruction [Input 2]
                     </h1>
                 </button>
             </h2>
-            <div id="collapseOne" data-te-collapse-item data-te-collapse-show class="accordion-collapse collapse"
-                aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body py-4 px-5">
+            <div id="" data-te-collapse-item data-te-collapse-show class="" aria-labelledby="headingTwo"
+                data-bs-parent="#accordion_input_ti">
+                <div class=" py-4 px-5">
                     <form action="{{ url('/master/input/ti/addTI') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
@@ -168,11 +210,11 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="accordion mb-4" id="accordionCBApprovedBy">
-                            <div class="accordion-item bg-white border border-gray-200 rounded-lg mb-4">
-                                <h2 class="accordion-header mb-0" id="headingCB">
+                        <div class="mb-4" id="accordionCBApprovedBy">
+                            <div class=" bg-white border border-gray-200 rounded-lg mb-4">
+                                <h2 class="mb-0" id="headingCB">
                                     <button id="btnApprovedBy1"
-                                        class="accordion-button collapsed relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
+                                        class="relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
                                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                                         type="button" data-bs-toggle="collapse" data-bs-target="#collapseCB1"
                                         aria-expanded="true" aria-controls="">
@@ -344,23 +386,38 @@
             </div>
         </div>
     </div>
-    </div>
-    <div class="accordion mt-4 accordion_input_gt" id="accordionExample">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingTwo">
+    <div class="mt-4 accordion_input_gt" id="accordion_input_gt">
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_gt"
+            style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="text-gray-900">Kembali</span>
+        </button>
+        <div class=" bg-white border border-gray-200 rounded-lg hidden input_container input_gt"
+            style="transition: opacity 0.3s ease;opacity: 0;" id="">
+            <div style="position:absolute;top:10px;left:0;">
+                <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="text-gray-900">Kembali</span>
+                </button>
+            </div>
+            <h2 class="mb-0" id="headingTwo">
                 <button id="accordion_input_gt"
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                    class="relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                    aria-controls="collapseTwo">
+                    type="button" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="false" aria-controls="">
                     <h1 class="text-xl text-gray-800">
                         Tambah Gambar Teknik [Input 3]
                     </h1>
                 </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body py-4 px-5">
+            <div id="" class="" aria-labelledby="headingTwo" data-bs-parent="#accordion_input_gt">
+                <div class=" py-4 px-5">
                     <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
@@ -514,14 +571,14 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="accordion mb-4" id="accordionCB">
-                            <div class="accordion-item bg-white border border-gray-200 rounded-lg mb-4">
-                                <h2 class="accordion-header mb-0" id="headingCB">
+                        <div class="mb-4" id="accordionCB">
+                            <div class=" bg-white border border-gray-200 rounded-lg mb-4">
+                                <h2 class="mb-0" id="headingCB">
                                     <button id="btnApprovedBy2"
-                                        class="accordion-button collapsed relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
+                                        class="relative flex items-center w-full py-2 px-5 text-base text-gray-800 text-left
                                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
                                         type="button" data-bs-toggle="collapse" data-bs-target="#collapseCB2"
-                                        aria-expanded="false" aria-controls="collapseTwo">
+                                        aria-expanded="false" aria-controls="">
                                         <h1 class="text-md text-gray-800">
                                             Approved By
                                         </h1>
@@ -698,22 +755,29 @@
         </div>
     </div>
 
-    <div class="accordion mt-4 accordion_input_model" id="accordionExample">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingThree">
+    <div class="mt-4 accordion_input_model" id="accordion_input_model">
+        <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10 input_container input_model"
+            style="transition: opacity 0.3s ease;opacity: 0;" onclick="backToMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span class="text-gray-900">Kembali</span>
+        </button>
+        <div class=" bg-white border border-gray-200 rounded-lg hidden input_container input_model"
+            style="transition: opacity 0.3s ease;opacity: 0;">
+            <h2 class="mb-0" id="headingThree">
                 <button
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
+                    class="relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                 bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-                    aria-controls="collapseThree">
+                    type="button" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="false" aria-controls="">
                     <h1 class="text-xl text-gray-800">
                         Tambah Model [Input 4]
                     </h1>
                 </button>
             </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body py-4 px-5">
+            <div id="" class="" aria-labelledby="headingThree" data-bs-parent="#accordion_input_model">
+                <div class=" py-4 px-5">
                     <form action="{{ url('/master/input/gt/add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="hidden" type="text" name="item_level_id" id="item_level_id">
@@ -772,7 +836,8 @@
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                                 Isometri
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4" id="isometri_check">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="isometri_check">x
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(0)">Edit</a>
@@ -781,7 +846,8 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Depan
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4" id="depan_check">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="depan_check">x
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(1)">Edit</a>
@@ -791,7 +857,8 @@
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                                 Belakang
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4" id="belakang_check">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="belakang_check">x
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(2)">Edit</a>
@@ -807,7 +874,8 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Bawah
                                                             </td>
-                                                            <td class="whitespace-nowrap px-6 py-4" id="bawah_check">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="bawah_check">x
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(4)">Edit</a>
@@ -816,7 +884,8 @@
                                                         <tr class="border-b dark:border-neutral-500">
                                                             <td class="whitespace-nowrap px-6 py-4 font-medium">Samping
                                                                 Kanan</td>
-                                                            <td class="whitespace-nowrap px-6 py-4" id="kanan_check">x</td>
+                                                            <td class="whitespace-nowrap px-6 py-4" id="kanan_check">x
+                                                            </td>
                                                             <td class="whitespace-nowrap px-6 py-4">
                                                                 <a href="javascript:void(0);"
                                                                     onclick="toggleToShowImage(5)">Edit</a>
@@ -968,14 +1037,14 @@
             console.log(images);
         });
 
-        function resetCheck(){
-            var elements = [$("#isometri_check"),$("#depan_check"),$("#belakang_check"),$("#atas_check"),$("#bawah_check"),$("#kanan_check"),$("kiri_check")];
+        function resetCheck() {
+            var elements = [$("#isometri_check"), $("#depan_check"), $("#belakang_check"), $("#atas_check"), $(
+                "#bawah_check"), $("#kanan_check"), $("kiri_check")];
             for (let i = 0; i < images.length; i++) {
                 let image = images[i];
-                if(image.img == null){
+                if (image.img == null) {
                     elements[i].text("x");
-                }
-                else{
+                } else {
                     elements[i].text("v");
                 }
             }
@@ -1061,21 +1130,21 @@
                 },
                 error: function(response) {
                     Swal.fire({
-                            // text: "You won't be able to revert this!",
-                            icon: 'error',
-                            title: 'Gagal Tambah Model!',
-                            // showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
-                            // confirmButtonText: 'Yes, Update it!'
-                            allowOutsideClick: false
+                        // text: "You won't be able to revert this!",
+                        icon: 'error',
+                        title: 'Gagal Tambah Model!',
+                        // showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        // html: `<div class='flex items-center justify-center w-full'>${html}</div>`,
+                        // confirmButtonText: 'Yes, Update it!'
+                        allowOutsideClick: false
                     })
                 }
             });
 
         }
 
-        //accordion agak bug
+        //agak bug
         setTimeout(() => {
             document.getElementById("btnApprovedBy1").click();
             document.getElementById("btnApprovedBy2").click();
@@ -1090,6 +1159,28 @@
 
     <script src="{{ asset('js/tom-select.complete.min.js') }}"></script>
     <script>
+        function changeContent(id) {
+            $('#input_menu').css('opacity', 0);
+            setTimeout(() => {
+                $('#input_menu').addClass('hidden');
+                $(`.${id}`).removeClass('hidden');
+                setTimeout(() => {
+                    $(`.${id}`).css('opacity', 1);
+                }, 50);
+            }, 300);
+        }
+
+        function backToMenu() {
+            $('.input_container').css('opacity', 0);
+            setTimeout(() => {
+                $('.input_container').addClass('hidden');
+                $('#input_menu').removeClass('hidden');
+                setTimeout(() => {
+                    $('#input_menu').css('opacity', 1);
+                }, 50);
+            }, 300);
+        }
+
         function generateTom(id) {
             return new TomSelect(id, {
                 plugins: {

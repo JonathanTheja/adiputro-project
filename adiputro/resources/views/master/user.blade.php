@@ -204,7 +204,6 @@
     </script>
 @endsection --}}
 
-
 @extends('main')
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master User</h1>
