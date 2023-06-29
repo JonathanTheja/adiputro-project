@@ -1,23 +1,66 @@
 @extends('main')
+
 @section('container')
-    <h1 class="text-center text-5xl font-semibold mb-4">Report Approval</h1>
-    <div class="accordion" id="accordionExample">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingTwo">
-                <button
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
-                bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseTwo">
-                    <h1 class="text-xl text-gray-800">
-                        Input Technical Instruction
-                    </h1>
-                </button>
-            </h2>
-            <div id="collapseOne" data-te-collapse-item data-te-collapse-show class="accordion-collapse collapse"
-                aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body py-2 overflow-x-auto">
-                    <div class="py-4">
+    <div id="contentContainer" style="position: relative; transition: opacity 0.3s ease;">
+    </div>
+
+    <script>
+        function fadeIn(element) {
+            element.style.opacity = "1";
+        }
+
+        function fadeOut(element) {
+            element.style.opacity = "0";
+        }
+
+        function returnState() {
+            const contentContainer = document.getElementById('contentContainer');
+            fadeOut(contentContainer);
+            setTimeout(() => {
+                contentContainer.innerHTML = `
+                    <div id="contentContainer">
+
+                        <h1 class="text-center text-5xl font-semibold">Report Approval</h1>
+                        <div class="flex justify-center items-center space-x-10" style="height: 450px">
+                            <div class="mr-2">
+                                <button id="technicalBtn"
+                                    class="flex items-center justify-center w-96 h-64 bg-gray-900 hover:bg-gray-600 text-white text-xl font-bold rounded-lg"
+                                    onclick="changeContent(0)">
+                                    <span class="text-center" style="line-height: 60px; font-size: 45px">Technical Instruction</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    class="flex items-center justify-center w-96 h-64 bg-gray-900 hover:bg-gray-600 text-white text-xl font-bold rounded-lg"
+                                    onclick="changeContent(1)">
+                                    <span class="text-center" style="line-height: 60px; font-size: 45px">Gambar Teknik</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                fadeIn(contentContainer);
+            }, 300);
+        }
+        returnState();
+
+        function changeContent(index) {
+            const contentContainer = document.getElementById('contentContainer');
+            fadeOut(contentContainer);
+            setTimeout(() => {
+                if (index == 0) {
+                    contentContainer.innerHTML = `
+                        <div style="position:absolute;top:10px;left:0;">
+                            <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                <span class="text-gray-900">Kembali</span>
+                            </button>
+                        </div>
+                        <h1 class="text-center text-5xl font-semibold mb-5">Report Approval</h1>
+                        <div class="accordion-body py-2 overflow-x-auto">
+                            <div class="py-4">
                         <table class="w-full text-md bg-white shadow-md rounded mb-2">
                             <tbody>
                                 <tr class="border-b">
@@ -72,28 +115,21 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion mt-4" id="accordionExample">
-        <div class="accordion-item bg-white border border-gray-200 rounded-lg">
-            <h2 class="accordion-header mb-0" id="headingTwo">
-                <button
-                    class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
-                bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                    aria-controls="collapseTwo">
-                    <h1 class="text-xl text-gray-800">
-                        Input Gambar Teknik
-                    </h1>
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body py-2 overflow-x-auto">
-                    <div class="py-4">
+                        </div>
+                    `;
+                } else {
+                    contentContainer.innerHTML = `
+                        <div style="position:absolute;top:10px;left:0;">
+                            <button id="arrowBackBtn" class="flex items-center justify-center w-20 h-10" onclick="returnState()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                <span class="text-gray-900">Kembali</span>
+                            </button>
+                        </div>
+                        <h1 class="text-center text-5xl font-semibold mb-5">Report Approval</h1>
+                        <div class="accordion-body py-2 overflow-x-auto">
+                            <div class="py-4">
                         <table class="w-full text-md bg-white shadow-md rounded mb-2">
                             <tbody>
                                 <tr class="border-b">
@@ -153,14 +189,11 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        //accordion agak bug
-        // setTimeout(() => {
-        //     document.getElementById("btnAccordion").click();
-        // }, 500);
+                        </div>
+                    `;
+                }
+                fadeIn(contentContainer);
+            }, 300);
+        }
     </script>
 @endsection
