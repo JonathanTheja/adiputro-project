@@ -14,15 +14,16 @@
 @include('loading')
 
 <body class="bg-gray-200 min-h-screen" onload="loadingOff()">
-    @include('sidebar')
+    @include('navbar')
 
-    <div class="ml-[250px] p-10" id="container" class="">
+    <div class="p-10 mt-16" id="container">
         <div class="bg-white p-10 rounded-md">
             @yield('container')
         </div>
     </div>
     @include('sweetalert::alert')
 </body>
+
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('js/tom-select.base.js') }}"></script>
 <script src="{{ asset('js/jquery.js') }}"></script>
@@ -33,4 +34,5 @@
         }
     });
 </script>
+
 </html>
