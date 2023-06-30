@@ -299,7 +299,6 @@ class MasterDataController extends Controller
 
     function getDataModal(Request $request)
     {
-
         $item_component_id = $request->item_component_id;
         $item_component = ItemComponent::find($item_component_id);
 

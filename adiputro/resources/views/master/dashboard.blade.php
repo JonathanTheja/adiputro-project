@@ -400,6 +400,19 @@
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
 
+        function slideImgModal3(id_target) {
+            let selectedClass = "bg-blue-500";
+            let unselectedClass = "bg-white";
+            $(`.imgModal3`).addClass("hidden");
+            $(`.imgModal3_${id_target}`).removeClass("hidden");
+            $(`.imgPaginationModal3`).removeClass(selectedClass);
+            $(`.imgPaginationModal3`).addClass(unselectedClass);
+            $(`#imgPaginationModal3_${id_target}`).removeClass(unselectedClass);
+            $(`#imgPaginationModal3_${id_target}`).addClass(selectedClass);
+            // document.getElementById(`img${id_this}`).classList.add("hidden");
+            // document.getElementById(`img${id_target}`).classList.remove("hidden");
+        }
+
         setTimeout(() => {
             document.getElementById("modalKonfirmasi").classList.remove("hidden");
             document.getElementById("modalKategori").classList.remove("hidden");
@@ -485,6 +498,7 @@
                         if (key == response.data.all_photos.length - 1) {
                             id_target_right = 0;
                         }
+                        console.log(value);
                         $('#photosLoaderModal').append(
                             `<div class='imgModal${key} imgModal w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
                                 <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_left})'>
@@ -503,38 +517,38 @@
                             `
                         );
                     })
+                    // console.log(response.data.all_photos)
+                    console.log(response.data.photos)
                     $.each(response.data.photos, function(key, value) {
                         let id_target_left = key - 1;
                         let id_target_right = key + 1;
                         let boleh = false;
                         if (key == 0) {
                             boleh = true;
-                            id_target_left = response.data.all_photos.length - 1;
+                            id_target_left = response.data.photos.length - 1;
                         }
-                        if (key == response.data.all_photos.length - 1) {
+                        if (key == response.data.photos.length - 1) {
                             id_target_right = 0;
                         }
-                        id_target_left = "id"+id_target_left;
-                        id_target_right = "id"+id_target_right;
-                        let nowKey = 'key'+key;
-                        let nextKey = 'key'+(key+1);
+                        console.log(value);
                         $('#photosLoaderModal3').append(
-                            `<div class='imgModal${key} imgModal w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
-                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_left})'>
+                            `
+                            <div class='imgModal3_${key} imgModal3 w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal3(${id_target_left})'>
                                     <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
                                 <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
-                                <div class="text-center cursor-pointer" onclick='slideImgModal(${id_target_right})'>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal3(${id_target_right})'>
                                     <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
                                 </div>
                             </div>
                             `
                         );
-                        // $('#photosPaginationModal3').append(
-                        //     `
-                        //     <div id='imgPaginationModal${key}' class='imgModal${key} imgPaginationModal py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal(${key})'>${key+1}</div>
-                        //     `
-                        // );
+                        $('#photosPaginationModal3').append(
+                            `
+                            <div id='imgPaginationModal3_${key}' class='imgModal3_${key} imgPaginationModal3 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal3(${key})'>${key+1}</div>
+                            `
+                        );
                     })
                     const modal = document.getElementById('myModal');
                     modal.classList.remove('hidden');

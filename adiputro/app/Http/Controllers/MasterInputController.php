@@ -676,11 +676,15 @@ class MasterInputController extends Controller
         $input_ti = InputTI::find($request->input_ti_id);
         $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
         $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
-        $destinationFolder = "images/input/approved/ti/item_level_id_$form_report->item_level_id";
+        $destinationFolder = "images/input/approved/ti/item_component_id_$form_report->item_component_id";
         Storage::makeDirectory($destinationFolder);
         foreach ($photos as $photo) {
-            $fileName = basename($photo);
-            Storage::disk('public')->put($destinationFolder . '/' . $fileName, $photo);
+            $filename = pathinfo($photo, PATHINFO_FILENAME);
+            $extension = pathinfo($photo, PATHINFO_EXTENSION);
+            $newFilename = $filename . '.' . $extension;
+
+            // Copy the photo to the destination folder
+            Storage::disk('public')->copy($photo, $destinationFolder . '/' . $newFilename);
         }
         Alert::success('Sukses!', 'Berhasil Approve TI!');
         return back();
@@ -697,9 +701,17 @@ class MasterInputController extends Controller
         $form_report = FormReport::where('nomor_laporan', $input_gt->nomor_laporan)->first();
         $destinationFolder = "images/input/approved/gt/item_component_id_$request->item_component_id";
         Storage::makeDirectory($destinationFolder);
+        // foreach ($photos as $photo) {
+        //     $fileName = basename($photo);
+        //     Storage::disk('public')->put($destinationFolder . '/' . $fileName, file_get_contents($photo));
+        // }
         foreach ($photos as $photo) {
-            $fileName = basename($photo);
-            Storage::disk('public')->put($destinationFolder . '/' . $fileName, $photo);
+            $filename = pathinfo($photo, PATHINFO_FILENAME);
+            $extension = pathinfo($photo, PATHINFO_EXTENSION);
+            $newFilename = $filename . '.' . $extension;
+
+            // Copy the photo to the destination folder
+            Storage::disk('public')->copy($photo, $destinationFolder . '/' . $newFilename);
         }
         Alert::success('Sukses!', 'Berhasil Approve Gambar Teknik!');
         return back();
