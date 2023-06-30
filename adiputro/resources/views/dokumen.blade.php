@@ -1,5 +1,6 @@
 @extends('main')
 @section('container')
+
     <div style="position: relative; transition: opacity 0.3s ease;">
         <div style="position:absolute;top:10px;left:0;">
             <a href="{{ url('/home') }}">
