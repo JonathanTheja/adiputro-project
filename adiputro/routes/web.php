@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
@@ -121,6 +122,11 @@ Route::prefix('process-entry')->group(function () {
 Route::prefix('home')->group(function () {
     Route::get('/', [HomeController::class,'index']);
 });
+
+Route::prefix('dokumen')->group(function () {
+    Route::get('/', [DokumenController::class,'index']);
+});
+
 
 Route::prefix('notifikasi')->group(function () {
     Route::prefix('report')->group(function () {

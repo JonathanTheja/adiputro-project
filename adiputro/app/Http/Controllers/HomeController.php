@@ -11,9 +11,6 @@ class HomeController extends Controller
 {
     //
     function index(){
-        $users = User::all();
-        $roles = Role::all();
-        $departments = Department::all();
-        return view("home",["users"=>$users,"roles"=>$roles,"departments"=>$departments]);
+        return view("home");
     }
 }

@@ -1,7 +1,11 @@
 @extends('main')
 @section('container')
     <div class="flex justify-between px-4 py-2 text-white my-2">
-        <button class="bg-gray-900 text-white rounded-full px-4 py-2">Daftar Induk</button>
+        <button class="bg-gray-900 text-white rounded-full px-4 py-2">
+        <a href="{{ url('/dokumen') }}">
+            Daftar Induk
+         </a>
+        </button>
         <button class="bg-gray-900 text-white rounded-full px-4 py-2 flex items-center">
             Spotlight
             <span class="ml-2">
