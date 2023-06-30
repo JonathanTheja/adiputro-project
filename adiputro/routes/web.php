@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\MasterDepartemenController;
 use App\Http\Controllers\MasterFormReportController;
@@ -115,6 +116,10 @@ Route::prefix('process-entry')->group(function () {
     Route::post('/add', [ProcessEntryController::class,'addNewProcessEntry']);
     Route::post('/delete', [ProcessEntryController::class,'deleteProcessEntry']);
     Route::get('/get', [ProcessEntryController::class,'getProcessEntries']);
+});
+
+Route::prefix('home')->group(function () {
+    Route::get('/', [HomeController::class,'index']);
 });
 
 Route::prefix('notifikasi')->group(function () {

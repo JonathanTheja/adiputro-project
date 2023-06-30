@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-center h-16">
             <div class="flex items-center">
-                <img src="{{ asset('img/logo_adiputro.png') }}" style="width: 130px;height:30px" alt="logo" />
+                <a href="{{ url('/home') }}"><img src="{{ asset('img/logo_adiputro.png') }}" style="width: 130px;height:30px" alt="logo" /></a>
                 <div class="ml-4 flex items-center flex-grow space-x-4">
                     <a href="{{ url('/master/user') }}"
                         class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('master/user') ? 'text-white underline' : 'text-gray-300' }}">User</a>
