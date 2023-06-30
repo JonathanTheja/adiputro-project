@@ -27,6 +27,7 @@
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('js/tom-select.base.js') }}"></script>
 <script src="{{ asset('js/jquery.js') }}"></script>
+<script src="{{ asset('js/moment.js') }}"></script>
 <script>
     $.ajaxSetup({
         headers: {

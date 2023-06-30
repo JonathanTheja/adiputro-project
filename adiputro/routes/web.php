@@ -113,6 +113,8 @@ Route::prefix('master')->group(function () {
 Route::prefix('process-entry')->group(function () {
     Route::get('/', [ProcessEntryController::class,'index']);
     Route::post('/add', [ProcessEntryController::class,'addNewProcessEntry']);
+    Route::post('/delete', [ProcessEntryController::class,'deleteProcessEntry']);
+    Route::get('/get', [ProcessEntryController::class,'getProcessEntries']);
 });
 
 Route::prefix('notifikasi')->group(function () {
