@@ -1,6 +1,6 @@
 <nav class="bg-gray-900 fixed top-0 left-0 right-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-center h-16">
             <div class="flex items-center">
                 <img src="{{ asset('img/logo_adiputro.png') }}" style="width: 130px;height:30px" alt="logo" />
                 <div class="ml-4 flex items-center flex-grow space-x-4">
@@ -56,7 +56,7 @@
                         Approval</a> --}}
                     <a href="{{ url('/login') }}"
                         class="hover:text-white px-3 py-2 rounded-md text-sm font-medium flex-grow {{ Request::is('/login') ? 'text-white underline' : 'text-gray-300' }}">Logout</a>
-                    <div class="flex-grow"></div>
+
                 </div>
             </div>
         </div>
