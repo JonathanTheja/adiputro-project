@@ -832,11 +832,11 @@
             try {
                 if (window.pageYOffset > offset) {
                     nav.style.position = "fixed";
-                    nav.style.top = 0;
+                    nav.style.top = '64px';
                     $('#content').css('margin-top', $("#searchNavbar").height() + 10);
                 } else {
                     nav.style.position = "relative";
-                    nav.style.top = offset;
+                    nav.style.top = `0px`;
                     $('#content').css('margin-top', "0px");
                 }
                 $("#searchNavbar").width($("#content").width());
