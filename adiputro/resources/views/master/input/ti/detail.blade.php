@@ -50,6 +50,24 @@
         @endpush
     @endforeach
     <script>
+        setTimeout(() => {
+            $('#input_menu').addClass('hidden');
+            $('.input_ti').removeClass('hidden');
+            // $('.input_ti.back_btn').addClass('hidden');
+            $('.back_btn.input_ti').html(`
+                <a href='/notifikasi/report/approval'>
+                    <button class="flex items-center justify-center w-20 h-10 input_container input_ti"
+                        style="transition: opacity 0.3s ease;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span class="text-gray-900">Kembali</span>
+                    </button>
+                </a>
+            `);
+            $('.input_ti').css('opacity', 1);
+        }, 500);
         document.getElementById("photos_ti").classList.add("hidden");
         document.getElementById("nomor_laporan_ti").value = "{{ $input_ti_detail->nomor_laporan }}";
         setTimeout(() => {
