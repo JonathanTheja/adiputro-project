@@ -37,7 +37,7 @@ class AuthController extends Controller
             "password" => $password
         ];
         if(Auth::attempt($credentials)){
-            return redirect("/master/user");
+            return redirect("/home");
         }
 
         return redirect('/login');
