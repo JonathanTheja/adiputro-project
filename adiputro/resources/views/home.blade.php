@@ -15,32 +15,32 @@
 
     </div>
 
-    <div id="default-carousel" class="relative w-full bg-gray-100" data-carousel="slide">
+    <div id="default-carousel" class="relative w-fullbg-gray-100" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
             <!-- Item 1 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ url('img/adiputro_hd.jpg') }}"
                     class="absolute block object-cover w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    style="object-fit: cover" alt="...">
+                    style="object-fit: contain" alt="...">
             </div>
             <!-- Item 2 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ url('img/adiputro_hd.jpg') }}"
                     class="absolute block object-cover w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    style="object-fit: cover" alt="...">
+                    style="object-fit: contain" alt="...">
             </div>
             <!-- Item 3 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ url('img/adiputro_hd.jpg') }}"
                     class="absolute block object-cover w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    style="object-fit: cover" alt="...">
+                    style="object-fit: contain" alt="...">
             </div>
             <!-- Item 4 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ url('img/adiputro_hd.jpg') }}"
                     class="absolute block object-cover w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    style="object-fit: cover" alt="...">
+                    style="object-fit: contain" alt="...">
             </div>
 
 
