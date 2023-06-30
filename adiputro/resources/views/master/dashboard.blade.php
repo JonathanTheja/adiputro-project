@@ -181,14 +181,10 @@
                         </div>
                     </div>
 
-
-
                     <h1 class="my-4">Gambar Komponen</h1>
                     <div id="photosLoader" class="mb-4"></div>
                     <div id="photosPagination" class="mb-4 flex justify-center"></div>
-
-                    <div id="pe_container">
-                    </div>
+                    <div id="pe_container"></div>
                     <div id="myModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
                         <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
                         <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
@@ -206,7 +202,6 @@
                                 onclick="removeModal()">Tutup</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

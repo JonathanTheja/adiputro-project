@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('pembuat_id'); //user login
             // $table->string('diperiksa_oleh_ti'); many to many checked_by_ti
             // $table->string('approved_by_ti'); many to many
-            $table->integer('user_defined_id');
+            // $table->integer('user_defined_id');//diganti jadi many to many
             // $table->string('description');
             // $table->string('nama_gambar_ti');
             $table->integer('status');

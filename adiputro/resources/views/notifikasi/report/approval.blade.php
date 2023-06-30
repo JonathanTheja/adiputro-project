@@ -70,8 +70,6 @@
                                     <th scope="col" class="px-6 pb-3">Nama TI</th>
                                     <th scope="col" class="px-6 pb-3">Model</th>
                                     <th scope="col" class="px-6 pb-3">Pembuat</th>
-                                    <th scope="col" class="px-6 pb-3">User Defined</th>
-                                    <th scope="col" class="px-6 pb-3">Description</th>
                                     <th scope="col" class="px-6 pb-3">Action</th>
                                 </tr>
                                 @foreach ($input_ti as $input)
@@ -97,8 +95,6 @@
                                         <td class="p-2 py-4 text-center">{{ $input->nama_ti }}</td>
                                         <td class="p-2 py-4 text-center">{{ $input->model }}</td>
                                         <td class="p-2 py-4 text-center">{{ $input->pembuat->full_name }}</td>
-                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->name }}</td>
-                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->desc }}</td>
 
                                         @if ($input->status == 0)
                                             <td class="p-2 py-4 text-center">Revisi</td>
@@ -141,8 +137,6 @@
                                     <th scope="col" class="px-6 pb-3">Nama GT</th>
                                     {{-- <th scope="col" class="px-6 pb-3">Model</th>
                                     <th scope="col" class="px-6 pb-3">Pembuat</th> --}}
-                                    <th scope="col" class="px-6 pb-3">User Defined</th>
-                                    <th scope="col" class="px-6 pb-3">Description</th>
                                     <th scope="col" class="px-6 pb-3">Action</th>
                                 </tr>
                                 @foreach ($input_gt as $input)
@@ -172,8 +166,6 @@
                                                 href="/dashboard/{{ $input->form_report->item_level_id }}">{{ $input->nomor_laporan }}</a>
                                         </td>
                                         <td class="p-2 py-4 text-center">{{ $input->nama_gt }}</td>
-                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->name }}</td>
-                                        <td class="p-2 py-4 text-center">{{ $input->user_defined->desc }}</td>
                                         @if ($input->status == 0)
                                             <td class="p-2 py-4 text-center">Revisi</td>
                                         @else

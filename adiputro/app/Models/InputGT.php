@@ -36,14 +36,18 @@ class InputGT extends Model
         return $this->belongsTo(FormReport::class, "nomor_laporan", "nomor_laporan");
     }
 
-    function user_defined()
-    {
-        return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
-    }
+    // function user_defined()
+    // {
+    //     return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
+    // }
 
     function item_component()
     {
         return $this->belongsTo(ItemComponent::class,"item_component_id","item_component_id");
     }
 
+    function user_defined()
+    {
+        return $this->belongsToMany(UserDefined::class,"input_gt_user_defined",'input_gt_id','user_defined_id')->withPivot('created_at','updated_at','deleted_at');
+    }
 }

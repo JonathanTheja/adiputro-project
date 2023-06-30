@@ -14,7 +14,7 @@ class InputTI extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-    protected $fillable = ['revisi','kode_ti','process_entry_id','nomor_laporan','nama_ti','model','pembuat_id','user_defined_id','description','status'];
+    protected $fillable = ['revisi','kode_ti','process_entry_id','nomor_laporan','nama_ti','model','pembuat_id','description','status'];
 
     function level_process_input_ti()
     {
@@ -42,10 +42,10 @@ class InputTI extends Model
         return $this->belongsToMany(Department::class,"approved_by_ti",'input_ti_id','department_id')->withPivot('created_at','updated_at','deleted_at');
     }
 
-    function user_defined()
-    {
-        return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
-    }
+    // function user_defined()
+    // {
+    //     return $this->belongsTo(UserDefined::class,"user_defined_id","user_defined_id");
+    // }
 
     function pembuat()
     {
@@ -55,5 +55,10 @@ class InputTI extends Model
     function form_report()
     {
         return $this->belongsTo(FormReport::class, "nomor_laporan", "nomor_laporan");
+    }
+
+    function user_defined()
+    {
+        return $this->belongsToMany(UserDefined::class,"input_ti_user_defined",'input_ti_id','user_defined_id')->withPivot('created_at','updated_at','deleted_at');
     }
 }

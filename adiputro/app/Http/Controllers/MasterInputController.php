@@ -211,6 +211,7 @@ class MasterInputController extends Controller
             $input_ti_lama->status = 0;
             $input_ti_lama->save();
         }
+
         $input_ti = InputTI::create([
             "revisi" => $revisi,
             "kode_ti" => $kode_ti,
@@ -219,10 +220,16 @@ class MasterInputController extends Controller
             "nama_ti" => $nama_ti,
             "model" => $model,
             "pembuat_id" => $pembuat->user_id,
-            "user_defined_id" => $user_defined_ti,
+            // "user_defined_id" => $user_defined_ti,
             // "description" => $description,
             "status" => 1,
         ]);
+
+        //bisa banyak user defined
+        foreach ($user_defined_ti as $key => $user_defined_id) {
+            $user_defined = UserDefined::find($user_defined_id);
+            $input_ti->user_defined()->attach($user_defined);
+        }
 
         //level process only
         foreach ($level_proses_ti as $key => $level_proses) {
@@ -420,7 +427,8 @@ class MasterInputController extends Controller
                 'item_level_id' => $form_report_gt->item_level_id,
                 'level' => $form_report_gt->item_level->level,
                 'kode_gt' => $form_report_gt->kode,
-                'input_gt_detail' =>$input_gt_detail
+                'input_gt_detail' =>$input_gt_detail,
+                'user_defined' => $input_gt_detail->user_defined
             ]);
         }
         else{
@@ -541,13 +549,19 @@ class MasterInputController extends Controller
             "nomor_laporan" => $nomor_laporan,
             "nama_gt" => $nama_gt,
             "item_component_id" => $item_component->item_component_id,
-            "user_defined_id" => $user_defined_gt,
+            // "user_defined_id" => $user_defined_gt,
             "status" => 1
             // "model" => $model,
             // "pembuat_id" => $pembuat->user_id,
             // "item_component_"
             // "status" => 1,
         ]);
+
+        //bisa banyak user defined
+        foreach ($user_defined_gt as $key => $user_defined_id) {
+            $user_defined = UserDefined::find($user_defined_id);
+            $input_gt->user_defined()->attach($user_defined);
+        }
 
         foreach ($diperiksa_oleh_gt as $key => $user_id) {
             $user = User::find($user_id);

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('nomor_laporan');
             $table->string('nama_gt');
             $table->integer('item_component_id');
-            $table->integer('user_defined_id');
+            // $table->integer('user_defined_id'); diubah jadi many to many
             //diperiksa oleh / checkedbygt sendiri many to many
             //approvedbygt table sendiri many to many
             // $table->string('description');

@@ -265,7 +265,7 @@
                             <div class="w-4"></div>
                             <select id="user_defined_ti" placeholder="User Defined" onchange="getUserDefinedDescTI();"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="user_defined_ti" required>
+                                autocomplete="off" name="user_defined_ti[]" required multiple>
                                 <option disabled selected value>Pilih User Defined</option>
                                 @forelse ($user_defined as $item)
                                     <option value="{{ $item->user_defined_id }}">{{ $item->name }} -
@@ -273,14 +273,6 @@
                                 @empty
                                 @endforelse
                             </select>
-                        </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="description"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 flex-shrink-0 w-32">Description</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="description_ti" name="description" readonly
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Description" required>
                         </div>
                         {{-- saat lihat detail upload photo, button submit dimatikan --}}
                         <div id="photos_ti">
@@ -620,7 +612,7 @@
                             <div class="w-4"></div>
                             <select id="user_defined_gt" placeholder="User Defined"
                                 class="text-gray-900 text-sm mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full"
-                                autocomplete="off" name="user_defined_gt" required
+                                autocomplete="off" name="user_defined_gt[]" required multiple
                                 onchange="getUserDefinedDescGT(this.value)">
                                 <option disabled selected value>Pilih User Defined</option>
                                 @forelse ($user_defined as $item)
@@ -630,15 +622,6 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
-                            <label for="description"
-                                class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Description</label>
-                            <div class="w-4"></div>
-                            <input type="text" id="description_gt" name="description_gt"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                placeholder="Description" required>
-                        </div>
-
 
                         {{-- saat lihat detail upload photo, button submit dimatikan --}}
                         <div id="photos_gt">
@@ -1486,10 +1469,13 @@
                             diperiksa_oleh.addItem(user.user_id);
                         });
                         //show user_defined
-                        user_defined_ti.addItem(response.input_ti.user_defined.user_defined_id);
-                        setTimeout(() => {
-                            $("#description_ti").val(response.input_ti.user_defined.desc);
-                        }, 500);
+                        console.log("user_defined");
+                        for (const user_defined of response.input_ti.user_defined) {
+                            user_defined_ti.addItem(user_defined.user_defined_id);
+                        }
+                        // setTimeout(() => {
+                        //     $("#description_ti").val(response.input_ti.user_defined.desc);
+                        // }, 500);
 
                         //show all of approvedby
                         //refresh cb_ti
@@ -1630,7 +1616,7 @@
                                         response.input_gt_detail.item_component.item_number,
                                         response.input_gt_detail.checked_by_gt,
                                         response.input_gt_detail.approved_by_gt,
-                                        response.input_gt_detail.user_defined_id
+                                        response.input_gt_detail.user_defined
                                     );
                                 }
                                 // When the operation is completed successfully, call the resolve function with the result
@@ -1726,7 +1712,7 @@
 
         //menampilkan detail gambar teknik
         function loadInputGT(kode_ti, nama_gt, process_entry_id, item_number, checked_by_gt, approved_by_gt,
-            user_defined_id, item_level_process_entry) {
+            user_defined, item_level_process_entry) {
             console.log(process_entry_id)
             console.log(item_number)
             console.log(kode_ti)
@@ -1778,7 +1764,9 @@
                 })
             });
 
-            user_defined_gt.addItem(user_defined_id);
+            for (const u_d of user_defined) {
+                user_defined_gt.addItem(u_d.user_defined_id);
+            }
         }
 
         function getDetailGTModel(gt_id) {

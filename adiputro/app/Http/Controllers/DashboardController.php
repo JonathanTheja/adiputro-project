@@ -83,11 +83,6 @@ class DashboardController extends Controller
         return redirect('/dashboard')->with(['qrcode' => $qrcode]);
     }
 
-    function updateReport(Request $request)
-    {
-
-    }
-
     function konfirmasi(Request $request)
     {
         $username = $request->username;
