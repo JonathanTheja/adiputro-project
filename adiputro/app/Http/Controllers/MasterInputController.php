@@ -676,7 +676,7 @@ class MasterInputController extends Controller
         $input_ti = InputTI::find($request->input_ti_id);
         $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
         $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
-        $destinationFolder = "images/input/approved/ti/item_component_id_$form_report->item_component_id";
+        $destinationFolder = "images/input/approved/ti/item_level_id_$form_report->item_level_id";
         Storage::makeDirectory($destinationFolder);
         foreach ($photos as $photo) {
             $filename = pathinfo($photo, PATHINFO_FILENAME);

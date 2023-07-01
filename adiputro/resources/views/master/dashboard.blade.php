@@ -10,7 +10,7 @@
         {{ Session::get('qrcode') }}
     @endif --}}
 
-    <div id="searchNavbar" class="w-[72.3vw] relative bg-white z-50">
+    <div id="searchNavbar" class="w-full relative bg-white z-50">
         <form class="flex items-center my-4">
             <label for="simple-search" class="sr-only">Search</label>
             <div class="relative w-full">
@@ -54,9 +54,9 @@
                             <h2 class="accordion-header mb-0" id="headingTwo">
                                 <button
                                     class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
-                            bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
+                            bg-gray-300 hover:bg-gray-200 border-0 rounded-lg transition focus:outline-none"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
                                     <h1 class="text-xl text-gray-800">
                                         Report
                                     </h1>
@@ -73,10 +73,12 @@
                                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
                                                 Laporan</label>
                                             <div class="w-4"></div>
-                                            <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
+                                            <input disabled type="text" id="full_name" name="nomor"
+                                                value="{{ $nomor_laporan }}"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                                 placeholder="Nomor Laporan" required>
-                                            <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
+                                            <input type="text" id="full_name" name="nomor_laporan"
+                                                value="{{ $nomor_laporan }}"
                                                 class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
                                                 placeholder="Nomor Laporan" required>
                                         </div>
@@ -84,7 +86,8 @@
                                             <label for="full_name"
                                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
                                             <div class="w-4"></div>
-                                            <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
+                                            <input disabled type="text" id="full_name" name="tanggal"
+                                                value="{{ $tanggal }}"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                                 placeholder="Nomor Laporan">
                                         </div>
@@ -102,7 +105,8 @@
                                             <div class="w-4"></div>
                                             <input disabled type="text" id="full_name" name="departemen"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                                value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
+                                                value="{{ $pelapor->department->name }}" placeholder="Departemen"
+                                                required>
                                         </div>
                                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                             <label for="full_name"
@@ -132,7 +136,8 @@
                                                 onchange="tambahUpdate(this.value)" required>
                                                 <option disabled selected value="belumDipilih">Belum Dipilih</option>
                                                 @foreach ($kategori_report as $kategori)
-                                                    <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}
+                                                    <option value="{{ $kategori->kategori_report_id }}">
+                                                        {{ $kategori->name }}
                                                     </option>
                                                 @endforeach
                                                 <option value="tambahUpdate" id="tambahUpdate">Tambah /
@@ -156,6 +161,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="flex justify-center items-center my-4" id="btn_detail_ti"></div>
                     <h1 class="text-lg" id="component_name">Name</h1>
 
                     <div id="table_container">
@@ -282,7 +289,14 @@
                 success: function(response) {
                     // //fill data to form
                     $('#component_name').text(response.data.item_level.name);
-                    $("#tableCol").html("");
+                    $("#btn_detail_ti").html(`
+                    <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
+                        SOP
+                    </button>
+                    <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
+                        3D
+                    </button>
+                    `);
                     $.each(response.data.item_components, function(key, value) {
                         $('#tableCol').append(`<tr class="bg-white border-b">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -400,9 +414,22 @@
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
 
+        function slideImgModal2(id_target) {
+            let selectedClass = "bg-blue-500";
+            let unselectedClass = "bg-gray-300";
+            $(`.imgModal3`).addClass("hidden");
+            $(`.imgModal3_${id_target}`).removeClass("hidden");
+            $(`.imgPaginationModal3`).removeClass(selectedClass);
+            $(`.imgPaginationModal3`).addClass(unselectedClass);
+            $(`#imgPaginationModal3_${id_target}`).removeClass(unselectedClass);
+            $(`#imgPaginationModal3_${id_target}`).addClass(selectedClass);
+            // document.getElementById(`img${id_this}`).classList.add("hidden");
+            // document.getElementById(`img${id_target}`).classList.remove("hidden");
+        }
+
         function slideImgModal3(id_target) {
             let selectedClass = "bg-blue-500";
-            let unselectedClass = "bg-white";
+            let unselectedClass = "bg-gray-300";
             $(`.imgModal3`).addClass("hidden");
             $(`.imgModal3_${id_target}`).removeClass("hidden");
             $(`.imgPaginationModal3`).removeClass(selectedClass);
@@ -546,7 +573,7 @@
                         );
                         $('#photosPaginationModal3').append(
                             `
-                            <div id='imgPaginationModal3_${key}' class='imgModal3_${key} imgPaginationModal3 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgModal3(${key})'>${key+1}</div>
+                            <div id='imgPaginationModal3_${key}' class='imgModal3_${key} imgPaginationModal3 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-gray-300"}' onclick='slideImgModal3(${key})'>${key+1}</div>
                             `
                         );
                     })
@@ -601,7 +628,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <a href="javascript:void(0)" id="openModal" class="text-blue-500" onclick='showModal(` + item
-                .item_component_id + ',' + item.item_level_id +`)'>Detail</a>
+                .item_component_id + ',' + item.item_level_id + `)'>Detail</a>
                 </td>
             </tr>`);
         }
@@ -855,9 +882,6 @@
         }
         window.onscroll = changeNavbarSize;
 
-        setTimeout(() => {
-            changeNavbarSize();
-        }, 1000);
         window.addEventListener("resize", changeNavbarSize);
 
         //cek dari return with dalam session
