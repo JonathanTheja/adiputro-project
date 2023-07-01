@@ -45,6 +45,18 @@ class DashboardController extends Controller
         return view("master.dashboard",compact("item_levels","form_reports","nomor_laporan","tanggal","pelapor","kategori_report"));
     }
 
+    function getItemLevelParent(Request $request){
+        $itemLevel = ItemLevel::find($request->item_level_id);
+        $ancestors = $itemLevel->ancestors()->get();
+        $ancestors->prepend($itemLevel);
+        $reversedAncestors = array_reverse($ancestors->toArray());
+
+        return response()->json([
+            'success' => true,
+            'ancestors' => $reversedAncestors,
+        ]);
+    }
+
     function addReport(Request $request)
     {
         // dump($request);

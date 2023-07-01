@@ -39,7 +39,24 @@
 
     </div>
 
+
     <div id="content">
+        <hr class="border-2 border-gray-400">
+        <div id="tracker" class="flex items-center bg-gray-100 p-4 text-lg">
+            <div class="flex items-center">
+                <div class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                        <path
+                            d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+                    </svg>
+                </div>
+                <span class="text-gray-500">Dashboard</span>
+            </div>
+            <div id="tracker-item" class="flex items-center">
+
+            </div>
+        </div>
+        <hr class="border-2 border-gray-400">
         <div class="w-full flex min-h-[60vh] mt-4">
             <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
                 @foreach ($item_levels as $item_level)
@@ -275,6 +292,48 @@
     </div>
     <label for="my-modal-kategori" class="" id="labelKategori"></label>
     <script>
+        function getItemLevelParent(item_level_id) {
+            $.ajax({
+                url: `/dashboard/getItemLevelParent`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_level_id": item_level_id
+                },
+                success: function(response) {
+                    if (!response.success) {
+                        console.log("Error!");
+                    } else {
+                        $("#tracker-item").html("");
+                        let data = response.ancestors;
+                        data.forEach((item, index) => {
+                            const delay = 0.2 *
+                                index;
+
+                            $("#tracker-item").append(`
+                                <div class="flex items-center ml-4" style="opacity: 0; transition: opacity 0.3s ${delay}s;">
+                                <div class="mr-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                                    <path
+                                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
+                                    />
+                                    </svg>
+                                </div>
+                                <span class="text-gray-500">${item.name}</span>
+                                </div>
+                            `);
+
+                            setTimeout(() => {
+                                const element = $("#tracker-item > div").eq(index);
+                                element.css("opacity", 1);
+                            }, 10);
+                        });
+
+                    }
+                }
+            });
+        }
+
         function updateLevelData(item_level_id) {
             //ajax call
             document.getElementById("loadingDashboard").classList.remove("hidden");
