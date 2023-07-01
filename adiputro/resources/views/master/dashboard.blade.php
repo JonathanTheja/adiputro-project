@@ -39,7 +39,41 @@
 
     </div>
 
+
     <div id="content">
+        <div id="tracker" class="flex items-center">
+            <div class="flex items-center">
+                <div class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                        <path
+                            d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+                    </svg>
+                </div>
+                <span class="text-gray-500">Dashboard</span>
+            </div>
+            <div id="tracker-item" class="flex items-center">
+                <div class="flex items-center ml-4">
+                    <div class="mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                            <path
+                                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+                        </svg>
+                    </div>
+                    <span class="text-gray-500">Bus</span>
+                </div>
+
+                <div class="flex items-center ml-4">
+                    <div class="mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                            <path
+                                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+                        </svg>
+                    </div>
+                    <span class="text-gray-500">SDD</span>
+                </div>
+            </div>
+
+        </div>
         <div class="w-full flex min-h-[60vh] mt-4">
             <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
                 @foreach ($item_levels as $item_level)
@@ -55,8 +89,8 @@
                                 <button
                                     class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left
                             bg-gray-200 hover:bg-gray-300 border-0 rounded-lg transition focus:outline-none"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
                                     <h1 class="text-xl text-gray-800">
                                         Report
                                     </h1>
@@ -73,10 +107,12 @@
                                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Nomor
                                                 Laporan</label>
                                             <div class="w-4"></div>
-                                            <input disabled type="text" id="full_name" name="nomor" value="{{ $nomor_laporan }}"
+                                            <input disabled type="text" id="full_name" name="nomor"
+                                                value="{{ $nomor_laporan }}"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                                 placeholder="Nomor Laporan" required>
-                                            <input type="text" id="full_name" name="nomor_laporan" value="{{ $nomor_laporan }}"
+                                            <input type="text" id="full_name" name="nomor_laporan"
+                                                value="{{ $nomor_laporan }}"
                                                 class="hidden shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full p-2.5"
                                                 placeholder="Nomor Laporan" required>
                                         </div>
@@ -84,7 +120,8 @@
                                             <label for="full_name"
                                                 class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900 w-40">Tanggal</label>
                                             <div class="w-4"></div>
-                                            <input disabled type="text" id="full_name" name="tanggal" value="{{ $tanggal }}"
+                                            <input disabled type="text" id="full_name" name="tanggal"
+                                                value="{{ $tanggal }}"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                                 placeholder="Nomor Laporan">
                                         </div>
@@ -102,7 +139,8 @@
                                             <div class="w-4"></div>
                                             <input disabled type="text" id="full_name" name="departemen"
                                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
-                                                value="{{ $pelapor->department->name }}" placeholder="Departemen" required>
+                                                value="{{ $pelapor->department->name }}" placeholder="Departemen"
+                                                required>
                                         </div>
                                         <div class="lg:mb-4 mb-2 w-full flex lg:flex-row flex-col">
                                             <label for="full_name"
@@ -132,7 +170,8 @@
                                                 onchange="tambahUpdate(this.value)" required>
                                                 <option disabled selected value="belumDipilih">Belum Dipilih</option>
                                                 @foreach ($kategori_report as $kategori)
-                                                    <option value="{{ $kategori->kategori_report_id }}">{{ $kategori->name }}
+                                                    <option value="{{ $kategori->kategori_report_id }}">
+                                                        {{ $kategori->name }}
                                                     </option>
                                                 @endforeach
                                                 <option value="tambahUpdate" id="tambahUpdate">Tambah /
@@ -268,6 +307,48 @@
     </div>
     <label for="my-modal-kategori" class="" id="labelKategori"></label>
     <script>
+        function getItemLevelParent(item_level_id) {
+            $.ajax({
+                url: `/dashboard/getItemLevelParent`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_level_id": item_level_id
+                },
+                success: function(response) {
+                    if (!response.success) {
+                        console.log("Error!");
+                    } else {
+                        $("#tracker-item").html("");
+                        let data = response.ancestors;
+                        data.forEach((item, index) => {
+                            const delay = 0.2 *
+                                index;
+
+                            $("#tracker-item").append(`
+                                <div class="flex items-center ml-4" style="opacity: 0; transition: opacity 0.3s ${delay}s;">
+                                <div class="mr-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                                    <path
+                                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
+                                    />
+                                    </svg>
+                                </div>
+                                <span class="text-gray-500">${item.name}</span>
+                                </div>
+                            `);
+
+                            setTimeout(() => {
+                                const element = $("#tracker-item > div").eq(index);
+                                element.css("opacity", 1);
+                            }, 10);
+                        });
+
+                    }
+                }
+            });
+        }
+
         function updateLevelData(item_level_id) {
             //ajax call
             document.getElementById("loadingDashboard").classList.remove("hidden");
@@ -601,7 +682,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <a href="javascript:void(0)" id="openModal" class="text-blue-500" onclick='showModal(` + item
-                .item_component_id + ',' + item.item_level_id +`)'>Detail</a>
+                .item_component_id + ',' + item.item_level_id + `)'>Detail</a>
                 </td>
             </tr>`);
         }
