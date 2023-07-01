@@ -41,7 +41,8 @@
 
 
     <div id="content">
-        <div id="tracker" class="flex items-center">
+        <hr class="border-2 border-gray-400">
+        <div id="tracker" class="flex items-center bg-gray-100 p-4 text-lg">
             <div class="flex items-center">
                 <div class="mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
@@ -72,8 +73,8 @@
                     <span class="text-gray-500">SDD</span>
                 </div>
             </div>
-
         </div>
+        <hr class="border-2 border-gray-400">
         <div class="w-full flex min-h-[60vh] mt-4">
             <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
                 @foreach ($item_levels as $item_level)
