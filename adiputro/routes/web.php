@@ -99,6 +99,7 @@ Route::prefix('master')->group(function () {
         Route::post('/delete', [MasterDataController::class,'deleteData']);
         Route::post('/getData', [MasterDataController::class,'getData']);
         Route::post('/getDataModal', [MasterDataController::class,'getDataModal']);
+        Route::post('/getDataModal2', [MasterDataController::class,'getDataModal2']);
         Route::post('/getProcessEntryItem', [MasterDataController::class,'getProcessEntryItem']);
         Route::post('/updateSpecComponent', [MasterDataController::class,'updateSpecComponent']);
         Route::post('/placeComponentToProcess', [MasterDataController::class,'placeComponentToProcess']);

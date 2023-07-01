@@ -317,6 +317,22 @@ class MasterDataController extends Controller
         ]);
     }
 
+    function getDataModal2(Request $request)
+    {
+        $item_level_id = $request->item_level_id;
+        $item_level = ItemLevel::find($item_level_id);
+        $photos = [];
+        $photos = Storage::disk('public')->files("images/input/approved/ti/item_level_id_".$item_level_id);
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                'item_level'=>$item_level,
+                'photos'=>$photos,
+            ],
+        ]);
+    }
+
     function getProcessEntryItem(Request $request){
         $session_status = $request->session_status;
         $components = null;

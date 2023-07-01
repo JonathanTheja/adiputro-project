@@ -209,23 +209,6 @@
                     <div id="photosLoader" class="mb-4"></div>
                     <div id="photosPagination" class="mb-4 flex justify-center"></div>
                     <div id="pe_container"></div>
-                    <div id="myModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
-                        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
-                        <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
-                            <h2 class="text-2xl mb-4" id="item_component_number_modal"></h2>
-                            <p id="item_component_name_modal"></p>
-                            <h2 class="text-center text-3xl">Input 3</h2>
-                            <div id="photosLoaderModal3" class="mb-4"></div>
-                            <div id="photosPaginationModal3" class="mb-4 flex justify-center"></div>
-                            <h2 class="text-center text-3xl">Input 4</h2>
-                            <div id="photosLoaderModal" class="mb-4"></div>
-                            <div id="photosPaginationModal" class="mb-4 flex justify-center"></div>
-
-                            <button id="closeModal"
-                                class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                                onclick="removeModal()">Tutup</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -290,7 +273,107 @@
             </label>
         </label>
     </div>
+    <div id="myModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
+        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+        <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
+            <h2 class="text-2xl mb-4" id="item_component_number_modal"></h2>
+            <p id="item_component_name_modal"></p>
+            <h2 class="text-center text-3xl">Input 3 Gambar Teknik</h2>
+            <div id="photosLoaderModal3" class="mb-4"></div>
+            <div id="photosPaginationModal3" class="mb-4 flex justify-center"></div>
+            <h2 class="text-center text-3xl">Input 4 Nodel</h2>
+            <div id="photosLoaderModal" class="mb-4"></div>
+            <div id="photosPaginationModal" class="mb-4 flex justify-center"></div>
+
+            <button id="closeModal" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onclick="removeModal()">Tutup</button>
+        </div>
+    </div>
+    <div id="myModal2" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
+        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+        <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
+            <h2 class="text-2xl mb-4" id="item_level_name"></h2>
+            <h2 class="text-center text-3xl">Input 2 Technical Information</h2>
+            <div id="photosLoaderModal2" class="mb-4"></div>
+            <div id="photosPaginationModal2" class="mb-4 flex justify-center"></div>
+
+            <button id="closeModal" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onclick="removeModal()">Tutup</button>
+        </div>
+    </div>
+    <div id="myModal3D" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
+        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+        <div class="relative bg-white rounded-lg py-8 px-12 min-w-3/5 max-h-screen overflow-x-auto">
+            <h2 class="text-2xl mb-4" id="item_level_name"></h2>
+            <h2 class="text-center text-3xl">3D</h2>
+            <div id="container_stl" class="mb-4">
+                <div id="stl_cont" class="bg-slate-200" style="width:1000px;height:500px;margin:0 auto;"></div>
+            </div>
+            <label for="rotationX">Rotation X:</label>
+            <input type="range" id="rotationx" min="0" max="360" step="1" value="0"
+                oninput="updateRotation()">
+            <br>
+            <label for="rotationY">Rotation Y:</label>
+            <input type="range" id="rotationy" min="0" max="360" step="1" value="0"
+                oninput="updateRotation()">
+            <br>
+            <label for="rotationZ">Rotation Z:</label>
+            <input type="range" id="rotationz" min="0" max="360" step="1" value="0"
+                oninput="updateRotation()">
+            <br>
+            <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                onclick="refreshAllRotation()">Refresh</button>
+            <br>
+            <button id="closeModal" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onclick="removeModal()">Tutup</button>
+        </div>
+    </div>
+
     <label for="my-modal-kategori" class="" id="labelKategori"></label>
+
+    <script src="{{ asset('js/stl_viewer/stl_viewer.min.js') }}"></script>
+    <script>
+        let container = document.getElementById('container_stl');
+        let stl_viewer = new StlViewer(document.getElementById("stl_cont"));
+        let filename = 'trail_stl.STL';
+        STL_INIT();
+        refreshAllRotation();
+
+        function STL_INIT() {
+            document.getElementById('container_stl').innerHTML = `
+            <div id="stl_cont" class="bg-slate-200" style="width:1000px;height:500px;margin:0 auto;"></div>
+            `;
+            stl_viewer = new StlViewer(document.getElementById("stl_cont"));
+            newModel = {
+                id: 1,
+                filename: `{{ asset('js/stl_viewer/${filename}') }}`,
+                // rotationx: rotationx,
+                // rotationy: rotationy,
+                // rotationz: rotationz,
+            };
+
+            stl_viewer.add_model(newModel);
+            refreshSTL();
+        }
+
+        function refreshSTL(rotationx = 0, rotationy = 0, rotationz = 0) {
+            stl_viewer.rotate(newModel.id, rotationx / 1000, rotationy / 1000, rotationz / 1000);
+        }
+
+        function refreshAllRotation() {
+            document.getElementById('rotationx').value = 0;
+            document.getElementById('rotationy').value = 0;
+            document.getElementById('rotationz').value = 0;
+            STL_INIT();
+        }
+
+        function updateRotation() {
+            const rotationx = document.getElementById('rotationx').value;
+            const rotationy = document.getElementById('rotationy').value;
+            const rotationz = document.getElementById('rotationz').value;
+            refreshSTL(rotationx, rotationy, rotationz);
+        }
+    </script>
     <script>
         function getItemLevelParent(item_level_id) {
             $.ajax({
@@ -349,12 +432,16 @@
                     // //fill data to form
                     $('#component_name').text(response.data.item_level.name);
                     $("#btn_detail_ti").html(`
-                    <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
-                        SOP
-                    </button>
-                    <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
-                        3D
-                    </button>
+                    <a href="javascript:void(0)" class="w-full" id="openModal2" onclick='showModal2(${item_level_id})'>
+                        <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
+                            SOP
+                        </button>
+                    </a>
+                    <a href="javascript:void(0)" class="w-full" id="openModal3D" onclick='showModal3D()'>
+                        <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
+                            3D
+                        </button>
+                    </a>
                     `);
                     $.each(response.data.item_components, function(key, value) {
                         $('#tableCol').append(`<tr class="bg-white border-b">
@@ -476,12 +563,12 @@
         function slideImgModal2(id_target) {
             let selectedClass = "bg-blue-500";
             let unselectedClass = "bg-gray-300";
-            $(`.imgModal3`).addClass("hidden");
-            $(`.imgModal3_${id_target}`).removeClass("hidden");
-            $(`.imgPaginationModal3`).removeClass(selectedClass);
-            $(`.imgPaginationModal3`).addClass(unselectedClass);
-            $(`#imgPaginationModal3_${id_target}`).removeClass(unselectedClass);
-            $(`#imgPaginationModal3_${id_target}`).addClass(selectedClass);
+            $(`.imgModal2`).addClass("hidden");
+            $(`.imgModal2_${id_target}`).removeClass("hidden");
+            $(`.imgPaginationModal2`).removeClass(selectedClass);
+            $(`.imgPaginationModal2`).addClass(unselectedClass);
+            $(`#imgPaginationModal2_${id_target}`).removeClass(unselectedClass);
+            $(`#imgPaginationModal2_${id_target}`).addClass(selectedClass);
             // document.getElementById(`img${id_this}`).classList.add("hidden");
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
@@ -641,12 +728,73 @@
                     disableScroll();
                 }
             });
+        }
 
+        function showModal2(item_level_id) {
+            $.ajax({
+                url: `/master/data/getDataModal2`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "item_level_id": item_level_id
+                },
+                success: function(response) {
+                    console.log(response);
+                    $("#item_level_name").text(response.data.item_level.name);
+                    $("#photosLoaderModal2").html("");
+                    $("#photosPaginationModal2").html("");
+                    $.each(response.data.photos, function(key, value) {
+                        let id_target_left = key - 1;
+                        let id_target_right = key + 1;
+                        let boleh = false;
+                        if (key == 0) {
+                            boleh = true;
+                            id_target_left = response.data.photos.length - 1;
+                        }
+                        if (key == response.data.photos.length - 1) {
+                            id_target_right = 0;
+                        }
+                        console.log(value);
+                        $('#photosLoaderModal2').append(
+                            `
+                            <div class='imgModal2_${key} imgModal2 w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+                                <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>
+                            `
+                        );
+                        $('#photosPaginationModal2').append(
+                            `
+                            <div id='imgPaginationModal2_${key}' class='imgModal2_${key} imgPaginationModal2 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-gray-300"}' onclick='slideImgModal2(${key})'>${key+1}</div>
+                            `
+                        );
+                    })
+                    const modal = document.getElementById('myModal2');
+                    modal.classList.remove('hidden');
+                    disableScroll();
+                }
+            });
+        }
+
+        function showModal3D() {
+            const modal = document.getElementById('myModal3D');
+            modal.classList.remove('hidden');
+            STL_INIT();
+            disableScroll();
         }
 
         function removeModal() {
             const modal = document.getElementById('myModal');
+            const modal2 = document.getElementById('myModal2');
+            const modal3D = document.getElementById('myModal3D');
             modal.classList.add('hidden');
+            modal2.classList.add('hidden');
+            modal3D.classList.add('hidden');
             enableScroll();
         }
 
