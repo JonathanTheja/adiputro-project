@@ -26,9 +26,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
-use Spatie\PdfToImage\Pdf;
 use Intervention\Image\Facades\Image as ImageInter;
 use Mockery\Undefined;
+use PDF;
 
 class MasterInputController extends Controller
 {
@@ -153,6 +153,17 @@ class MasterInputController extends Controller
             'success' => true,
             'user_defined' => $user_defined
         ]);
+    }
+
+    function pdf_viewer(){
+        // return view('pdf_viewer.input2_pdf');
+        $pdf = PDF::loadView('pdf_viewer.input2_pdf', [
+            'imagePath' => public_path('img/adiputro_logo.svg'),
+        ]);
+        sleep(3);
+        $pdf->setPaper('a4','portrait');
+        $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
+        return $pdf->stream();
     }
 
     function addTI(Request $request){

@@ -41,6 +41,7 @@ Route::prefix('master')->group(function () {
     });
 
     Route::prefix('input')->group(function () {
+        Route::get('/pdf_viewer', [MasterInputController::class,'pdf_viewer']);
         Route::get('/', [MasterInputController::class,'masterInput']);
 
         Route::prefix('ti')->group(function () {
@@ -57,7 +58,6 @@ Route::prefix('master')->group(function () {
             Route::prefix('detail')->group(function () {
                 Route::get('/{input_ti_id}', [MasterInputController::class,'getDetailTI']);
             });
-
         });
 
         Route::prefix('gt')->group(function () {

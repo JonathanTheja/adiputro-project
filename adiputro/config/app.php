@@ -196,7 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -212,7 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-		'ImageInter' => 'Intervention\Image\Facades\Image'
+		'ImageInter' => 'Intervention\Image\Facades\Image',
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
     'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 

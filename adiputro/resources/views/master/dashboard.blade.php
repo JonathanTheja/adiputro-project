@@ -281,7 +281,7 @@
             <h2 class="text-center text-3xl">Input 3 Gambar Teknik</h2>
             <div id="photosLoaderModal3" class="mb-4"></div>
             <div id="photosPaginationModal3" class="mb-4 flex justify-center"></div>
-            <h2 class="text-center text-3xl">Input 4 Nodel</h2>
+            <h2 class="text-center text-3xl">Input 4 Model</h2>
             <div id="photosLoaderModal" class="mb-4"></div>
             <div id="photosPaginationModal" class="mb-4 flex justify-center"></div>
 
