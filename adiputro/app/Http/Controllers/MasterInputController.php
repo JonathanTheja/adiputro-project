@@ -157,10 +157,10 @@ class MasterInputController extends Controller
 
     function pdf_viewer(){
         // return view('pdf_viewer.input2_pdf');
-        $pdf = PDF::loadView('pdf_viewer.input2_pdf', [
-            'imagePath' => public_path('img/adiputro_logo.svg'),
+        $pdf = PDF::loadView('pdf.input2', [
+            'imagePath' => 'img/adiputro_logo.jpg',
         ]);
-        sleep(3);
+        // sleep(3);
         $pdf->setPaper('a4','portrait');
         $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
         return $pdf->stream();
