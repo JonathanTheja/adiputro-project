@@ -84,15 +84,22 @@
                     </div>
                     <div id="secondDiv"
                         style="float:left; width: 610px; word-wrap: break-word;padding: 20px 10px;text-align: center;margin-left: -2px;border-left: 2px solid black">
-                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     </div>
                     <div style="clear: both"></div>
                 </div>
             </div>
+            @for ($i = 0; $i < 5; $i++)
+                <div
+                    style="width: 200px;height:250px;position: absolute;border-top: 3px solid black;border-left: 3px solid black;right: {{ ($i % 7) * 200 }}px;bottom: {{ floor($i / 7) * 250 }}px;font-size:25px;">
+                    <div style="border-bottom: 3px solid black;text-align: center">DISETUJUI</div>
+                </div>
+            @endfor
             <div style="position: absolute;bottom: 0;right: 0">
                 {{-- {{ $imagePath }} --}}
             </div>
         </div>
     </div>
 </body>
+
 </html>
