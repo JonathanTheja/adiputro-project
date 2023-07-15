@@ -19,6 +19,7 @@ use App\Models\LevelProcessInputTI;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserDefined;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as ImageInter;
 use Mockery\Undefined;
 use PDF;
+use Spatie\PdfToImage\Pdf as PdfToImagePdf;
 
 class MasterInputController extends Controller
 {
@@ -158,7 +160,14 @@ class MasterInputController extends Controller
     function pdf_viewer(){
         // return view('pdf_viewer.input2_pdf');
         $pdf = PDF::loadView('pdf.input2', [
-            'imagePath' => 'img/adiputro_logo.jpg',
+            'nomor_laporan_ti' => FormReport::find(1)->nomor_laporan,
+            'no_ti' => 'TI-001',
+            'tanggal' => '9 November 2023',
+            'checked_by' => [Department::find(1)],
+            'revisi' => 'A',
+            'total_page' => 10,
+            'printed_by' => 'John Doe / IT Department',
+            'print_date' => '15 Juli 2023'
         ]);
         // sleep(3);
         $pdf->setPaper('a4','portrait');
@@ -279,9 +288,10 @@ class MasterInputController extends Controller
         $file = $request->file("photos")[0];
         $file->storeAs("pdf/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)), $file->getClientOriginalName(), 'public');
         $path = Storage::disk('public')->path('pdf/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'.$file->getClientOriginalName());
+        $total_page = 0;
         // dd(Storage::url($pdf));
         if($request->file('photos')[0]->getClientOriginalExtension() == 'pdf'){
-            $pdf = new Pdf($path);
+            $pdf = new PdfToImagePdf($path);
             if (!Storage::exists('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)))) {
                 Storage::makeDirectory('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
             }
@@ -289,6 +299,7 @@ class MasterInputController extends Controller
                 $pdf->setPage($pageNumber)
                     ->setOutputFormat('png')
                     ->saveImage(Storage::disk('public')->path('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'));
+                $total_page++;
             };
         }
         else{
@@ -311,18 +322,44 @@ class MasterInputController extends Controller
         foreach ($photos as $key => $photo) {
             $path = Storage::disk('public')->path($photo);
             $img = ImageInter::make($path);
-            $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
+            // $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
 
-            $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
-                $font->size(35);
-                $font->color('#000000');
-                $font->align('left');
-                $font->valign('top');
-                $font->angle(90);
-            });
+            // $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
+            //     $font->size(35);
+            //     $font->color('#000000');
+            //     $font->align('left');
+            //     $font->valign('top');
+            //     $font->angle(90);
+            // });
             // dump(public_path("$photo"));
             $img->save(Storage::disk('public')->path($photo));
         }
+
+        $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $print_date = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [AT] HH.mm');
+
+        $checked_by = Department::whereIn('department_id', $cb_ti)->get();
+        $pdf = PDF::loadView('pdf.input2', [
+            'nomor_laporan_ti' => $nomor_laporan_ti,
+            'no_ti' => $nama_ti,
+            'tanggal' => $tanggal,
+            'checked_by' => $checked_by,
+            'revisi' => $revisi,
+            'total_page' => $total_page,
+            'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
+            'print_date' => $print_date,
+            'photos' => $photos
+        ]);
+
+        // sleep(3);
+
+        $pdf->setPaper('a4','portrait');
+        $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
+
+        // Simpan file PDF ke penyimpanan lokal
+        $pdf->save(Storage::disk('public')->path("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/input2.pdf'));
 
         Alert::success('Sukses!', 'Berhasil Tambah TI!');
         return redirect("/master/input");
@@ -591,7 +628,7 @@ class MasterInputController extends Controller
         $path = Storage::disk('public')->path('pdf/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)).'/'.$file->getClientOriginalName());
         // dd(Storage::url($pdf));
         if($request->file('photos')[0]->getClientOriginalExtension() == 'pdf'){
-            $pdf = new Pdf($path);
+            $pdf = new PdfToImagePdf($path);
             if (!Storage::exists('public/images/input/gt/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)))) {
                 Storage::makeDirectory('public/images/input/gt/'.strval(date("Y-m-d H-i-s", $input_gt->created_at->timestamp)));
             }
@@ -618,14 +655,14 @@ class MasterInputController extends Controller
         foreach ($photos as $key => $photo) {
             $path = Storage::disk('public')->path($photo);
             $img = ImageInter::make($path);
-            $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
-            $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
-                $font->size(35);
-                $font->color('#000000');
-                $font->align('left');
-                $font->valign('top');
-                $font->angle(90);
-            });
+            // $img->insert(public_path(('img/controlled_copy.png')), 'top-right', 0, 0);
+            // $img->text($this->getDay().'; '.$this->getFormattedDate(), 20, 20, function($font) {
+            //     $font->size(35);
+            //     $font->color('#000000');
+            //     $font->align('left');
+            //     $font->valign('top');
+            //     $font->angle(90);
+            // });
             $img->save(Storage::disk('public')->path($photo));
         }
 
