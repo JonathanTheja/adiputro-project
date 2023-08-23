@@ -3,7 +3,16 @@
 @section('photos_ti')
     <div class="w-full text-center text-xl font-medium">Gambar TI</div>
 
-    @foreach ($all_photos_ti as $key => $photo)
+    @foreach ($all_photos_ti_from_pdf as $photo)
+        <div class="flex justify-center items-center">
+            <img src="{{ asset("storage/$photo") }}" style="height: 1200px" alt="">
+        </div>
+    @endforeach
+
+    {{-- @php
+        echo 'gambar_komponen/images/input/ti/' . strval(date('Y-m-d H-i-s', $input_ti_detail->created_at->timestamp)) . '/input2.pdf';
+    @endphp --}}
+    {{-- @foreach ($all_photos_ti as $key => $photo)
         <div class="w-full flex lg:flex-row flex-col text-gray-900 font-medium">
             @php
                 $id_target_left = $key - 1;
@@ -48,7 +57,7 @@
                     {{ $key + 1 }}</div>
             </div>
         @endpush
-    @endforeach
+    @endforeach --}}
     <script>
         setTimeout(() => {
             $('#input_menu').addClass('hidden');

@@ -97,7 +97,8 @@
                                         <td class="p-2 py-4 text-center">{{ $input->pembuat->full_name }}</td>
 
                                         @if ($input->status == 0)
-                                            <td class="p-2 py-4 text-center">Revisi</td>
+                                            <td class="p-2 py-4 text-center"><a
+                                            href="/master/input/ti/detail/{{ $input->input_ti_id }}">Revisi</a></td>
                                         @else
                                             <td class="border-collapse">
                                                 <a href="/master/input/ti/detail/{{ $input->input_ti_id }}">
@@ -167,7 +168,8 @@
                                         </td>
                                         <td class="p-2 py-4 text-center">{{ $input->nama_gt }}</td>
                                         @if ($input->status == 0)
-                                            <td class="p-2 py-4 text-center">Revisi</td>
+                                            <td class="p-2 py-4 text-center"><a
+                                            href="/master/input/gt/detail/{{ $input->input_gt_id }}">Revisi</a></td>
                                         @else
                                             <td class="border-collapse">
                                                 <a href="/master/input/gt/detail/{{ $input->input_gt_id }}">

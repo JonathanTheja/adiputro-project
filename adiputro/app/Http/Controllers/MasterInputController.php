@@ -161,13 +161,14 @@ class MasterInputController extends Controller
         // return view('pdf_viewer.input2_pdf');
         $pdf = PDF::loadView('pdf.input2', [
             'nomor_laporan_ti' => FormReport::find(1)->nomor_laporan,
+            'nama_ti' => FormReport::find(1)->nomor_laporan,
             'no_ti' => 'TI-001',
             'tanggal' => '9 November 2023',
             'checked_by' => [Department::find(1)],
             'revisi' => 'A',
             'total_page' => 10,
             'printed_by' => 'John Doe / IT Department',
-            'print_date' => '15 Juli 2023'
+            'print_date' => '15 Juli 2023',
         ]);
         // sleep(3);
         $pdf->setPaper('a4','portrait');
@@ -176,7 +177,6 @@ class MasterInputController extends Controller
     }
 
     function addTI(Request $request){
-        // dd($request);
         $kode_ti = $request->kode_ti;
         $nomor_laporan_ti = $request->nomor_laporan_ti;
         $nama_ti = $request->nama_ti;
@@ -341,9 +341,13 @@ class MasterInputController extends Controller
         $print_date = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [AT] HH.mm');
 
         $checked_by = Department::whereIn('department_id', $cb_ti)->get();
+        $item_components = ItemComponent::whereIn('item_component_id', $request->kode_komponen_ti)->get();
+        $item_descriptions = $item_components->pluck('item_description');
         $pdf = PDF::loadView('pdf.input2', [
             'nomor_laporan_ti' => $nomor_laporan_ti,
-            'no_ti' => $nama_ti,
+            'no_ti' => $kode_ti,
+            'nama_ti' => $nama_ti,
+            'item_descriptions' => $item_descriptions,
             'tanggal' => $tanggal,
             'checked_by' => $checked_by,
             'revisi' => $revisi,
@@ -435,7 +439,22 @@ class MasterInputController extends Controller
                 $hasUserNowApproved = true;
             }
         }
-        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail", "input_ti_approved", "hasUserNowApproved"));
+
+        $path = Storage::disk('public')->path("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)))."/input2.pdf";
+        // dd(Storage::url($pdf));
+        $pdf = new PdfToImagePdf($path);
+        if (!Storage::exists('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp))).'/pdf_to_img') {
+            Storage::makeDirectory('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)).'/pdf_to_img');
+        }
+        foreach(range(1, $pdf->getNumberOfPages()) as $pageNumber) {
+            $pdf->setPage($pageNumber)
+                ->setOutputFormat('png')
+                ->saveImage(Storage::disk('public')->path('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)).'/pdf_to_img'), true);
+        };
+
+        $all_photos_ti_from_pdf = Storage::disk('public')->files('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti_detail->created_at->timestamp)).'/pdf_to_img');
+
+        return view('master.input.ti.detail', compact("form_report_ti","pembuat","diperiksa_oleh","approved_by_bus","approved_by_minibus","user_defined","kode_ti","all_photos_ti","input_ti","input_ti_detail", "input_ti_approved", "hasUserNowApproved","all_photos_ti_from_pdf"));
     }
 
     function getGTByKodeTI(Request $request)

@@ -16,6 +16,7 @@
 
 <body>
     @foreach ($photos as $i => $photo)
+        {{-- @foreach ([1] as $i => $photo) --}}
         <div
             style="width: 94%;height: 95%;position: static;box-sizing: border-box;margin: 50px; border: 3px solid black;page-break-before: {{ $i > 0 ? 'always' : 'unset' }};">
             <div style="position: relative;">
@@ -73,26 +74,28 @@
                     </div>
                     <div style="clear: both"></div>
                 </div>
-                {{-- <div style="border-bottom: 3px solid black">
-                <div style="float: left;margin-left: 420px">HAL</div>
-                <div style="float: left;margin-left: 670px">MODEL</div>
-                <div style="clear: both"></div>
-                </div> --}}
-                {{-- <div style="position: relative;border-bottom: 3px solid black">
-                <div style="margin-bottom: -3px;">
-                    <div id="firstDiv"
-                        style="float:left; width: 900px; word-wrap: break-word;padding: 20px 10px;text-align: center; border-right: 2px solid black;">
-                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                @if ($i == 0)
+                    <div style="border-bottom: 3px solid black">
+                        <div style="float: left;margin-left: 420px">HAL</div>
+                        <div style="float: left;margin-left: 670px">MODEL</div>
+                        <div style="clear: both"></div>
                     </div>
-                    <div id="secondDiv"
-                        style="float:left; width: 610px; word-wrap: break-word;padding: 20px 10px;text-align: center;margin-left: -2px;border-left: 2px solid black">
-                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    <div style="position: relative;border-bottom: 3px solid black">
+                        <div style="margin-bottom: -3px;">
+                            <div id="firstDiv"
+                                style="float:left; width: 900px; word-wrap: break-word;padding: 20px 10px;text-align: center; border-right: 2px solid black;">
+                                {{ $nama_ti }}
+                            </div>
+                            <div id="secondDiv"
+                                style="float:left; width: 610px; word-wrap: break-word;padding: 20px 10px;text-align: center;margin-left: -2px;border-left: 2px solid black">
+                                {{ $i < count($item_descriptions) ? $item_descriptions[$i] : '' }}
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
                     </div>
-                    <div style="clear: both"></div>
-                </div>
-                </div> --}}
+                @endif
                 <div
-                    style="height: 800px; width: 100%; margin: 100px 20px; background-image: url('{{ public_path('gambar_komponen/' . $photo) }}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                    style="height: 1000px; width: 100%; margin: 100px 20px; background-image: url('{{ public_path('gambar_komponen/' . $photo) }}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
                 </div>
                 @if ($i == 0)
                     @for ($j = 0; $j < count($checked_by); $j++)

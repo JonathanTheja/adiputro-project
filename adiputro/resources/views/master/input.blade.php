@@ -2,7 +2,7 @@
 
 @section('container')
     <h1 class="text-center text-5xl font-semibold mb-4">Master Input</h1>
-    <button><a href="/master/input/pdf_viewer">pdf_viewer</a></button>
+    {{-- <button><a href="/master/input/pdf_viewer">pdf_viewer</a></button> --}}
 
     <div class="flex justify-center items-center space-x-10"
         style="height: 450px;position: relative; transition: opacity 0.3s ease;opacity: 1" id="input_menu">
