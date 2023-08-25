@@ -64,6 +64,7 @@
                 @endforeach
             </div>
             <div class="w-9/12 bg-slate-200 rounded-lg p-5">
+                
                 <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
                 <div id="dashboard_container" class="hidden">
                     <div class="accordion pointer-events-none" id="accordionReport">
@@ -443,6 +444,7 @@
                         </button>
                     </a>
                     `);
+                    $('#tableCol').html('');
                     $.each(response.data.item_components, function(key, value) {
                         $('#tableCol').append(`<tr class="bg-white border-b">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">

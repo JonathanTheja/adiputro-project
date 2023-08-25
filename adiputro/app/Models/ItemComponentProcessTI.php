@@ -14,5 +14,5 @@ class ItemComponentProcessTI extends Model
     public $incrementing = true;
     public $timestamps = true;
 
-protected $fillable = ['input_ti_id','item_level_id','item_component_id'];
+    protected $fillable = ['input_ti_id','item_level_id','item_component_id'];
 }

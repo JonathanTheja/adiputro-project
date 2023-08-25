@@ -3,17 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormReport;
+use App\Models\InputTI;
 use App\Models\ItemLevel;
 use App\Models\KategoriReport;
 use DateTime;
+use Exception;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
+    function getDay()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $day = date('l');
+        $hari = [
+            "Sunday" => "Minggu",
+            "Monday" => "Senin",
+            "Tuesday" => "Selasa",
+            "Wednesday" => "Rabu",
+            "Thursday" => "Kamis",
+            "Friday" => "Jumat",
+            "Saturday" => "Sabtu",
+        ];
+
+        return $hari[$day];
+    }
+
+    function getFormattedDate()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $date = new DateTime();
+        $formatted_date = $date->format('j F Y; h:i A');
+        return $formatted_date;
+    }
+
     function dashboard(Request $request)
     {
         $bulan = array("","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII");
@@ -89,7 +117,7 @@ class DashboardController extends Controller
             Auth::user()->full_name.'; '.
             Auth::user()->role->name.'; '.
             Auth::user()->department->name.'; '.
-            $hari[$day].'; '.$formatted_date
+            $this->getDay().'; '.$this->getFormattedDate()
         );
         // Alert::success('Sukses!', 'Berhasil Tambah Report Baru!');
         return redirect('/dashboard')->with(['qrcode' => $qrcode]);

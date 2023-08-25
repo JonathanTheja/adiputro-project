@@ -26,7 +26,7 @@ class AuthController extends Controller
         $username = $request->username;
         $password = $request->password;
         $request->validate([
-            "username" => 'required',
+            "username" => 'required|exists:users,username',
             "password" => "required"
         ],[
             "username.required" => "Username is required!",
@@ -39,8 +39,7 @@ class AuthController extends Controller
         if(Auth::attempt($credentials)){
             return redirect("/home");
         }
-
-        return redirect('/login');
+        return redirect('/login')->withErrors(['Invalid password']);
     }
 
     function doRegister(Request $request)

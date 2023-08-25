@@ -76,7 +76,7 @@
                 </div>
                 @if ($i == 0)
                     <div style="border-bottom: 3px solid black">
-                        <div style="float: left;margin-left: 420px">HAL</div>
+                        <div style="float: left;margin-left: 430px">HAL</div>
                         <div style="float: left;margin-left: 670px">MODEL</div>
                         <div style="clear: both"></div>
                     </div>
@@ -88,31 +88,50 @@
                             </div>
                             <div id="secondDiv"
                                 style="float:left; width: 610px; word-wrap: break-word;padding: 20px 10px;text-align: center;margin-left: -2px;border-left: 2px solid black">
-                                {{ $i < count($item_descriptions) ? $item_descriptions[$i] : '' }}
+                                {{ $model }}
                             </div>
                             <div style="clear: both"></div>
                         </div>
                     </div>
                 @endif
                 <div
-                    style="height: 1000px; width: 100%; margin: 100px 20px; background-image: url('{{ public_path('gambar_komponen/' . $photo) }}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                    style="height: 1000px; width: 100%; margin: 20px 20px; background-image: url('{{ public_path('gambar_komponen/' . $photo) }}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
                 </div>
                 @if ($i == 0)
-                    @for ($j = 0; $j < count($checked_by); $j++)
+                    @for ($j = 0; $j < count($approved_by); $j++)
                         <div
                             style="width: 200px;height:250px;position: absolute;border-top: 3px solid black;border-left: 3px solid black;right: {{ ($j % 7) * 200 }}px;bottom: {{ floor($j / 7) * 250 }}px;font-size:25px;">
                             <div style="border-bottom: 3px solid black;text-align: center">DISETUJUI</div>
                             <div style="text-align: center;margin: 5px 0;font-size: 20px">
-                                {{ strtoupper($checked_by[$j]->name) }}</div>
+                                {{ strtoupper($approved_by[$j]->name) }}</div>
+                            @if (isset($input_ti_approved) && isset($qrcodes))
+                                @foreach ($input_ti_approved as $input_user)
+                                    @if ($input_user->user->department->department_id == $approved_by[$j]->department_id)
+                                        <img src="{{ public_path('gambar_komponen/images/input/ti/' . date('Y-m-d H-i-s', $input_ti->created_at->timestamp) . '/qrcode/' . $input_user->user_id . '.png') }}"
+                                            alt=""
+                                            style="width: 130px; height: 130px;margin-left: 35px;margin-top: 10px">
+                                        <div style="text-align: center;font-size: 18px;margin-top: 8px">
+                                            {{ substr($input_user->user->full_name, 0, strpos($input_user->user->full_name, ' ')) }}
+                                            {{ strval(date('d/m/Y', $input_user->created_at->timestamp)) }}</div>
+                                        @break
+                                    @endif
+                                {{-- <div>{{ $input_user->user->department->department_id }}</div> --}}
+                                @endforeach
+                            @endif
+                        {{-- <div>{{ $qrcodes[0] }}</div> --}}
                         </div>
                     @endfor
                 @endif
-                <div style="position: absolute;bottom: 0;right: 0">
-                    {{-- {{ $imagePath }} --}}
-                </div>
+
+            {{-- <img src="{{ public_path('gambar_komponen/' . $qrcodes[0]) }}" alt=""
+                    style="width: 50px; height: 50px;"> --}}
+
+            <div style="position: absolute;bottom: 0;right: 0">
+                {{-- {{ $imagePath }} --}}
             </div>
         </div>
-    @endforeach
+    </div>
+@endforeach
 </body>
 
 </html>

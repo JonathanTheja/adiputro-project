@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('item_description',100)->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('level')->nullable();
+            $table->integer('input_ti_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -939,6 +939,7 @@
                 <label for="my-modal-konfirmasi-ti" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                 <h3 class="text-lg font-bold" id="titleModal">Konfirmasi Approve TI</h3>
                 <div class="py-4" id="bodyModal">Username</div>
+                <input type="text" class="hidden" id="input_ti_id" value="{{ isset($input_ti_detail) ? $input_ti_detail->input_ti_id : '' }}">
                 <input type="text" name="username" id="username"
                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Username" required>
@@ -1812,6 +1813,7 @@
         function approveTI() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
+            var input_ti_id = document.getElementById("input_ti_id").value;
             if (username == "" || password == "") {
                 alert("Username dan password harus terisi!");
             } else {
@@ -1822,6 +1824,7 @@
                     data: {
                         "username": username,
                         "password": password,
+                        "input_ti_id": input_ti_id,
                     },
                     success: function(response) {
                         if (!response.success) {

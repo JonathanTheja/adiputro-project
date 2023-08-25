@@ -31,6 +31,7 @@ use Intervention\Image\Facades\Image as ImageInter;
 use Mockery\Undefined;
 use PDF;
 use Spatie\PdfToImage\Pdf as PdfToImagePdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MasterInputController extends Controller
 {
@@ -164,7 +165,7 @@ class MasterInputController extends Controller
             'nama_ti' => FormReport::find(1)->nomor_laporan,
             'no_ti' => 'TI-001',
             'tanggal' => '9 November 2023',
-            'checked_by' => [Department::find(1)],
+            'approved_by' => [Department::find(1)],
             'revisi' => 'A',
             'total_page' => 10,
             'printed_by' => 'John Doe / IT Department',
@@ -217,7 +218,6 @@ class MasterInputController extends Controller
             $department_ids = array_map(function($department) {
                 return $department["department_id"];
             }, $input_ti_lama->approved_by_ti->toArray());
-
 
             //gabung approvedby department id dengan yang baru ditambah
             // $cb_ti = array_merge($cb_ti, $department_ids);
@@ -298,8 +298,7 @@ class MasterInputController extends Controller
             foreach(range(1, $pdf->getNumberOfPages()) as $pageNumber) {
                 $pdf->setPage($pageNumber)
                     ->setOutputFormat('png')
-                    ->saveImage(Storage::disk('public')->path('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/'));
-                $total_page++;
+                    ->saveImage(Storage::disk('public')->path('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp))));
             };
         }
         else{
@@ -333,6 +332,7 @@ class MasterInputController extends Controller
             // });
             // dump(public_path("$photo"));
             $img->save(Storage::disk('public')->path($photo));
+            $total_page++;
         }
 
         $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
@@ -340,21 +340,22 @@ class MasterInputController extends Controller
 
         $print_date = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [AT] HH.mm');
 
-        $checked_by = Department::whereIn('department_id', $cb_ti)->get();
-        $item_components = ItemComponent::whereIn('item_component_id', $request->kode_komponen_ti)->get();
-        $item_descriptions = $item_components->pluck('item_description');
+        $approved_by = Department::whereIn('department_id', $cb_ti)->get();
+        // $item_components = ItemComponent::whereIn('item_component_id', $request->kode_komponen_ti)->get();
+        // $item_descriptions = $item_components->pluck('item_description');
         $pdf = PDF::loadView('pdf.input2', [
+            'input_ti' => $input_ti,
             'nomor_laporan_ti' => $nomor_laporan_ti,
             'no_ti' => $kode_ti,
             'nama_ti' => $nama_ti,
-            'item_descriptions' => $item_descriptions,
+            'model' => $input_ti->model,
             'tanggal' => $tanggal,
-            'checked_by' => $checked_by,
+            'approved_by' => $approved_by,
             'revisi' => $revisi,
             'total_page' => $total_page,
             'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
             'print_date' => $print_date,
-            'photos' => $photos
+            'photos' => $photos,
         ]);
 
         // sleep(3);
@@ -742,17 +743,66 @@ class MasterInputController extends Controller
         ]);
         $input_ti = InputTI::find($request->input_ti_id);
         $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        $photos = array_filter($photos, function($photo) {
+            return Str::endsWith($photo, ['.png', '.jpg']);
+        });
+        $qrcodes = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/qrcode');
         $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
-        $destinationFolder = "images/input/approved/ti/item_level_id_$form_report->item_level_id";
-        Storage::makeDirectory($destinationFolder);
-        foreach ($photos as $photo) {
-            $filename = pathinfo($photo, PATHINFO_FILENAME);
-            $extension = pathinfo($photo, PATHINFO_EXTENSION);
-            $newFilename = $filename . '.' . $extension;
+        // $destinationFolder = "images/input/approved/ti/item_level_id_$form_report->item_level_id";
+        // Storage::makeDirectory($destinationFolder);
+        $total_page = count($photos);
+        // foreach ($photos as $photo) {
+        //     $filename = pathinfo($photo, PATHINFO_FILENAME);
+        //     $extension = pathinfo($photo, PATHINFO_EXTENSION);
+        //     $newFilename = $filename . '.' . $extension;
 
-            // Copy the photo to the destination folder
-            Storage::disk('public')->copy($photo, $destinationFolder . '/' . $newFilename);
+        //     // Copy the photo to the destination folder
+        //     Storage::disk('public')->copy($photo, $destinationFolder . '/' . $newFilename);
+        //     $total_page++;
+        // }
+
+        $qrcode = QrCode::size(200)->format('png')->generate(
+            Auth::user()->full_name.'; '.
+            Auth::user()->role->name.'; '.
+            Auth::user()->department->name.'; '.
+            $this->getDay().'; '.$this->getFormattedDate()
+        );
+        if (!Storage::exists('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/qrcode')) {
+            Storage::makeDirectory('public/images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/qrcode');
         }
+        Storage::disk('public')->put('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/qrcode/'.Auth::user()->user_id.'.png', $qrcode);
+
+        $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $print_date = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [AT] HH.mm');
+
+        $cb_ti = ApprovedByTI::where('input_ti_id', $input_ti->input_ti_id)->get()->pluck('department_id');
+        $input_ti_approved = InputTIApproved::where('input_ti_id', $input_ti->input_ti_id)->get();
+        $approved_by = Department::whereIn('department_id', $cb_ti)->get();
+        $pdf = PDF::loadView('pdf.input2', [
+            'input_ti' => $input_ti,
+            'nomor_laporan_ti' => $input_ti->form_report->nomor_laporan,
+            'no_ti' => $input_ti->kode_ti,
+            'nama_ti' => $input_ti->nama_ti,
+            'model' => $input_ti->model,
+            'tanggal' => $tanggal,
+            'approved_by' => $approved_by,
+            'revisi' => $input_ti->revisi,
+            'total_page' => $total_page,
+            'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
+            'print_date' => $print_date,
+            'photos' => $photos,
+            'input_ti_approved' => $input_ti_approved,
+            'qrcodes' => $qrcodes,
+        ]);
+
+        $pdf->setPaper('a4','portrait');
+        $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
+
+        // Simpan file PDF ke penyimpanan lokal
+        $pdf->save(Storage::disk('public')->path("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/input2.pdf'));
+
         Alert::success('Sukses!', 'Berhasil Approve TI!');
         return back();
     }
