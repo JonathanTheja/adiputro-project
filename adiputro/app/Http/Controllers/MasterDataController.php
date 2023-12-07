@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bom;
 use App\Models\Department;
 use App\Models\DepartmentItemLevel;
+use App\Models\InputTI;
 use App\Models\ItemLevel;
 use App\Models\item_level;
 use App\Models\ItemComponent;
@@ -245,6 +246,13 @@ class MasterDataController extends Controller
                 $photo->storeAs($namafolder,$namafile,'public');
             }
         }
+        if ($request->hasFile("stl")) {
+            $stl = $request->file("stl");
+            $namafile = 'stl.' . $stl->getClientOriginalExtension();
+            $namafolder = "stl/" . $request->item_level_id;
+            $stl->storeAs($namafolder, $namafile, 'public');
+        }
+
         Alert::success('Sukses!', 'Berhasil Update Komponen!');
         return redirect('master/data');
     }
@@ -266,6 +274,19 @@ class MasterDataController extends Controller
         $item_components = $item_level->itemComponents;
         //get pictures
         $allPhotos = Storage::disk('public')->files("images/$item_level_id");
+        if(isset($item_level->input_ti)){
+            $allPhotosSOP = array_filter(
+                Storage::disk('public')->files('images/input/ti/'.strval(date("Y-m-d H-i-s", $item_level->input_ti->created_at->timestamp))),
+                function ($filename) {
+                    return in_array(pathinfo($filename, PATHINFO_EXTENSION), ['png', 'jpg']);
+                }
+            );
+            $input_ti_id = $item_level->input_ti->input_ti_id;
+        }
+        else{
+            $allPhotosSOP = [];
+            $input_ti_id = null;
+        }
 
         //get all process entries
         $item_level_process_entries = $item_level->processEntries;
@@ -288,8 +309,10 @@ class MasterDataController extends Controller
             'success' => true,
             'data'    => [
                 "item_level"=>$item_level,
+                "input_ti_id"=>$input_ti_id,
                 "item_components"=>$item_components,
                 "all_photos"=>$allPhotos,
+                "all_photos_sop"=>$allPhotosSOP,
                 "process_entries"=>$item_level_process_entries,
                 "tables"=>$tables,
                 "table_tier"=>$table_tier
@@ -322,7 +345,10 @@ class MasterDataController extends Controller
         $item_level_id = $request->item_level_id;
         $item_level = ItemLevel::find($item_level_id);
         $photos = [];
-        $photos = Storage::disk('public')->files("images/input/approved/ti/item_level_id_".$item_level_id);
+        // $photos = Storage::disk('public')->files("images/input/approved/ti/item_level_id_".$item_level_id);
+
+        $input_ti = InputTI::find($item_level->input_ti_id);
+        $photos = Storage::disk('public')->files('images/input/ti/'.strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/pdf_to_img');
 
         return response()->json([
             'success' => true,

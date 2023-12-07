@@ -174,7 +174,7 @@
                                 <label for="nama_ti"
                                     class="flex items-center justify-start mb-2 lg:mb-0 text-md font-medium text-gray-900  flex-shrink-0 w-32">Model</label>
                                 <div class="w-4"></div>
-                                <input type="text" id="model" name="model" readonly
+                                <input type="text" id="model" name="model"
                                     value="{{ $pembuat->department->name }}"
                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5"
                                     placeholder="Model" required>

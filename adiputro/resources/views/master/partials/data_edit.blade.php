@@ -81,6 +81,10 @@
             <input
                 class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
                 id="multiple_files" type="file" multiple name="photos[]">
+            <label class="block mb-2 font-medium text-gray-900 my-2" for="stl_file">Upload STL</label>
+            <input
+                class="block w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2.5"
+                id="stl_file" type="file" name="stl">
             <label for="input-process" class="block my-2 text-gray-900">Process Entry</label>
             <select id="input-process" multiple autocomplete="off" name="process[]" onchange="updateEntryTable()">
                 @foreach ($process_entry as $pe)
@@ -613,7 +617,7 @@
                         let table_body = $(`#${table_id} tbody`);
                         table_body.eq(0).html("");
                         let tier = response.table_tier;
-                        if(tier!=null){
+                        if (tier != null) {
                             $("#input_tier_" + table_id).val(tier.desc);
                             $("#tier_" + table_id).val(tier.item_component_id);
                         }

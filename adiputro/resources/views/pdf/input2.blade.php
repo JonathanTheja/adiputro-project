@@ -43,7 +43,7 @@
                         <div style="float: left;width: 600px; ">{{ $no_ti }}</div>
                         <div style="float: left;width: 220px">PRINTED AT</div>
                         <div style="float: left;">:&nbsp;</div>
-                        <div style="float: left;">EPSON L120 10.10.47.10</div>
+                        <div style="float: left;">{{ $printed_at }}</div>
                     </div>
                     <div style="clear: both"></div>
                     <div>
@@ -61,7 +61,7 @@
                         <div style="float: left;width: 600px; ">{{ $revisi }} Kali</div>
                         <div style="float: left;width: 220px">NO OF PRINT</div>
                         <div style="float: left;">:&nbsp;</div>
-                        <div style="float: left;">1</div>
+                        <div style="float: left;">{{ $no_of_print }}</div>
                     </div>
                     <div style="clear: both"></div>
                     <div>

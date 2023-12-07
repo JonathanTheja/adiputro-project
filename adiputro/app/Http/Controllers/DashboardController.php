@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApprovedByTI;
+use App\Models\Department;
 use App\Models\FormReport;
 use App\Models\InputTI;
+use App\Models\InputTIApproved;
 use App\Models\ItemLevel;
 use App\Models\KategoriReport;
+use App\Models\PrintInput2;
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -14,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use PDF;
+use Spatie\PdfToImage\Pdf as PdfToImagePdf;
 
 class DashboardController extends Controller
 {
@@ -176,5 +183,60 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    function printSOP(Request $request)
+    {
+        $input_ti = InputTI::find($request->input_ti_id);
+        $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
+        $photos = array_filter($photos, function($photo) {
+            return Str::endsWith($photo, ['.png', '.jpg']);
+        });
+        $qrcodes = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)).'/qrcode');
+        $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
+        $total_page = count($photos);
+
+        $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $print_date = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [AT] HH.mm');
+
+        $cb_ti = ApprovedByTI::where('input_ti_id', $input_ti->input_ti_id)->get()->pluck('department_id');
+        $input_ti_approved = InputTIApproved::where('input_ti_id', $input_ti->input_ti_id)->get();
+        $approved_by_ti = ApprovedByTI::where('input_ti_id', $input_ti->input_ti_id)->get();
+
+        $approved_by = Department::whereIn('department_id', $cb_ti)->get();
+
+        $print_input2 = PrintInput2::create([
+            'input_ti_id' => $input_ti->input_ti_id,
+            'user_id' => Auth::user()->user_id,
+            'printed_at' => 'EPSON L120 10.10.47.10'
+        ]);
+        $all_print_input2 = PrintInput2::where('input_ti_id', $input_ti->input_ti_id)->get();
+        $total_print = count($all_print_input2);
+
+        $pdf = PDF::loadView('pdf.input2', [
+            'input_ti' => $input_ti,
+            'nomor_laporan_ti' => $input_ti->form_report->nomor_laporan,
+            'no_ti' => $input_ti->kode_ti,
+            'nama_ti' => $input_ti->nama_ti,
+            'model' => $input_ti->model,
+            'tanggal' => $tanggal,
+            'approved_by' => $approved_by,
+            'revisi' => $input_ti->revisi,
+            'total_page' => $total_page,
+            'printed_at' => 'EPSON L120 10.10.47.10',
+            'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
+            'no_of_print' => $total_print,
+            'print_date' => $print_date,
+            'photos' => $photos,
+            'input_ti_approved' => $input_ti_approved,
+            'qrcodes' => $qrcodes,
+        ]);
+
+        $pdf->setPaper('a4','portrait');
+        $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
+
+        return $pdf->stream();
     }
 }

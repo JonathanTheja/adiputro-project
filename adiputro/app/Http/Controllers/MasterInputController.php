@@ -158,24 +158,24 @@ class MasterInputController extends Controller
         ]);
     }
 
-    function pdf_viewer(){
-        // return view('pdf_viewer.input2_pdf');
-        $pdf = PDF::loadView('pdf.input2', [
-            'nomor_laporan_ti' => FormReport::find(1)->nomor_laporan,
-            'nama_ti' => FormReport::find(1)->nomor_laporan,
-            'no_ti' => 'TI-001',
-            'tanggal' => '9 November 2023',
-            'approved_by' => [Department::find(1)],
-            'revisi' => 'A',
-            'total_page' => 10,
-            'printed_by' => 'John Doe / IT Department',
-            'print_date' => '15 Juli 2023',
-        ]);
-        // sleep(3);
-        $pdf->setPaper('a4','portrait');
-        $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
-        return $pdf->stream();
-    }
+    // function pdf_viewer(){
+    //     // return view('pdf_viewer.input2_pdf');
+    //     $pdf = PDF::loadView('pdf.input2', [
+    //         'nomor_laporan_ti' => FormReport::find(1)->nomor_laporan,
+    //         'nama_ti' => FormReport::find(1)->nomor_laporan,
+    //         'no_ti' => 'TI-001',
+    //         'tanggal' => '9 November 2023',
+    //         'approved_by' => [Department::find(1)],
+    //         'revisi' => 'A',
+    //         'total_page' => 10,
+    //         'printed_by' => 'John Doe / IT Department',
+    //         'print_date' => '15 Juli 2023',
+    //     ]);
+    //     // sleep(3);
+    //     $pdf->setPaper('a4','portrait');
+    //     $pdf->setOption(['dpi' => 200, 'defaultFont' => 'sans-serif']);
+    //     return $pdf->stream();
+    // }
 
     function addTI(Request $request){
         $kode_ti = $request->kode_ti;
@@ -185,7 +185,7 @@ class MasterInputController extends Controller
         $level_proses_ti = $request->level_proses_ti; //bisa banyak
         $item_component_process_entry_ti = $request->kode_komponen_ti; //bisa banyak ini harusnya item_component_process_entry
         $pembuat = Auth::user(); //user
-        $model = $request->model; //department_id
+        $model = $request->model; //department_name
         $diperiksa_oleh = $request->diperiksa_oleh; //bisa banyak
 
         $cb_ti = [];
@@ -353,8 +353,14 @@ class MasterInputController extends Controller
             'approved_by' => $approved_by,
             'revisi' => $revisi,
             'total_page' => $total_page,
-            'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
-            'print_date' => $print_date,
+            // 'printed_at' => 'EPSON L120 10.10.47.10',
+            // 'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
+            // 'no_of_print' => 1,
+            // 'print_date' => $print_date,
+            'printed_at' => '-',
+            'printed_by' => '-',
+            'no_of_print' => '-',
+            'print_date' => '-',
             'photos' => $photos,
         ]);
 
@@ -741,6 +747,7 @@ class MasterInputController extends Controller
             "input_ti_id" => $request->input_ti_id,
             "user_id" => Auth::user()->user_id
         ]);
+
         $input_ti = InputTI::find($request->input_ti_id);
         $photos = Storage::disk('public')->files("images/input/ti/".strval(date("Y-m-d H-i-s", $input_ti->created_at->timestamp)));
         $photos = array_filter($photos, function($photo) {
@@ -779,6 +786,32 @@ class MasterInputController extends Controller
 
         $cb_ti = ApprovedByTI::where('input_ti_id', $input_ti->input_ti_id)->get()->pluck('department_id');
         $input_ti_approved = InputTIApproved::where('input_ti_id', $input_ti->input_ti_id)->get();
+        $approved_by_ti = ApprovedByTI::where('input_ti_id', $input_ti->input_ti_id)->get();
+        $is_approved_by_all_departments = true;
+        foreach ($input_ti_approved as $key => $input_user) {
+            $is_approved_by_department = false;
+            foreach ($approved_by_ti as $key => $approved) {
+                //check whether approved by all departments then add input_ti_id to item_level
+                if($input_user->user->department->department_id == $approved->department_id){
+                    $is_approved_by_department = true;
+                    break;
+                }
+            }
+            $is_approved_by_all_departments = $is_approved_by_department;
+        }
+        if($is_approved_by_all_departments){
+            $form_report = FormReport::where('nomor_laporan', $input_ti->nomor_laporan)->first();
+            $item_level = ItemLevel::find($form_report->item_level_id);
+            $item_level->input_ti_id = $input_ti->input_ti_id;
+            $ancestors = $item_level->ancestors()->get();
+
+            foreach ($ancestors as $ancestor) {
+                $ancestor->input_ti_id = $input_ti->input_ti_id;
+                $ancestor->save();
+            }
+            $item_level->save();
+        }
+
         $approved_by = Department::whereIn('department_id', $cb_ti)->get();
         $pdf = PDF::loadView('pdf.input2', [
             'input_ti' => $input_ti,
@@ -790,8 +823,14 @@ class MasterInputController extends Controller
             'approved_by' => $approved_by,
             'revisi' => $input_ti->revisi,
             'total_page' => $total_page,
-            'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
-            'print_date' => $print_date,
+            // 'printed_at' => 'EPSON L120 10.10.47.10',
+            // 'printed_by' => Auth::user()->full_name.' / '.Auth::user()->department->name,
+            // 'no_of_print' => 1,
+            // 'print_date' => $print_date,
+            'printed_at' => '-',
+            'printed_by' => '-',
+            'no_of_print' => '-',
+            'print_date' => '-',
             'photos' => $photos,
             'input_ti_approved' => $input_ti_approved,
             'qrcodes' => $qrcodes,

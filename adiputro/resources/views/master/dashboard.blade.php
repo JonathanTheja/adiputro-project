@@ -57,14 +57,19 @@
             </div>
         </div>
         <hr class="border-2 border-gray-400">
-        <div class="w-full flex min-h-[60vh] mt-4">
-            <div class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit overflow-x-auto" id="sidenavExample">
+        <div class="w-full flex min-h-[60vh] mt-4 pb-4">
+            <div id="leftContent" class="w-3/12 shadow-md bg-white px-1 max-h-screen h-fit pb-4 overflow-x-auto"
+                id="sidenavExample">
+                <div class="flex min-w-[200px] w-full h-10">
+                    <div onclick="sidebarDashboard()"
+                        class="border rounded-lg bg-slate-600 hover:bg-slate-800 h-8 w-full hover:cursor-pointer">
+                    </div>
+                </div>
                 @foreach ($item_levels as $item_level)
                     <x-level-item :item="$item_level" />
                 @endforeach
             </div>
-            <div class="w-9/12 bg-slate-200 rounded-lg p-5">
-                
+            <div id="rightContent" class="w-9/12 bg-slate-200 rounded-lg p-5">
                 <div id="loadingDashboard" class="hidden h-fit">@include('loading2')</div>
                 <div id="dashboard_container" class="hidden">
                     <div class="accordion pointer-events-none" id="accordionReport">
@@ -206,9 +211,26 @@
                         </div>
                     </div>
 
-                    <h1 class="my-4">Gambar Komponen</h1>
+                    <div class="flex justify-between">
+                        <h1 class="my-4" id="pilihGambarKomponen">Gambar Komponen</h1>
+                        <h1 class="my-4 hidden" id="pilihSOP">SOP</h1>
+                        <div class="flex justify-end">
+                            <button onclick="openSOP()" id="btnGambarKomponen"
+                                class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white my-3 rounded-md px-4">
+                                SOP
+                            </button>
+                            <button onclick="openComponent()" id="btnSOP"
+                                class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white m-3 rounded-md px-4 hidden h-8">
+                                Gambar Komponen
+                            </button>
+                            <div id="containerBtnPrintSOP" class="my-3">
+                            </div>
+                        </div>
+                    </div>
                     <div id="photosLoader" class="mb-4"></div>
                     <div id="photosPagination" class="mb-4 flex justify-center"></div>
+                    <div id="photosLoaderSOP" class="mb-4 hidden"></div>
+                    <div id="photosPaginationSOP" class="mb-4 flex justify-center hidden"></div>
                     <div id="pe_container"></div>
                 </div>
             </div>
@@ -277,6 +299,7 @@
     <div id="myModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
         <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
         <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
+            <input type="text" class="hidden" id="item_level_id">
             <h2 class="text-2xl mb-4" id="item_component_number_modal"></h2>
             <p id="item_component_name_modal"></p>
             <h2 class="text-center text-3xl">Input 3 Gambar Teknik</h2>
@@ -290,7 +313,7 @@
                 onclick="removeModal()">Tutup</button>
         </div>
     </div>
-    <div id="myModal2" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
+    {{-- <div id="myModal2" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
         <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
         <div class="relative bg-white rounded-lg p-8 min-w-3/5 max-h-screen overflow-x-auto">
             <h2 class="text-2xl mb-4" id="item_level_name"></h2>
@@ -301,7 +324,7 @@
             <button id="closeModal" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 onclick="removeModal()">Tutup</button>
         </div>
-    </div>
+    </div> --}}
     <div id="myModal3D" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
         <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
         <div class="relative bg-white rounded-lg py-8 px-12 min-w-3/5 max-h-screen overflow-x-auto">
@@ -324,7 +347,7 @@
             <br>
             <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
                 onclick="refreshAllRotation()">Refresh</button>
-            <br>
+
             <button id="closeModal" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                 onclick="removeModal()">Tutup</button>
         </div>
@@ -336,9 +359,9 @@
     <script>
         let container = document.getElementById('container_stl');
         let stl_viewer = new StlViewer(document.getElementById("stl_cont"));
-        let filename = 'trail_stl.STL';
+        var folder_id = null;
         STL_INIT();
-        refreshAllRotation();
+        // refreshAllRotation();
 
         function STL_INIT() {
             document.getElementById('container_stl').innerHTML = `
@@ -347,7 +370,7 @@
             stl_viewer = new StlViewer(document.getElementById("stl_cont"));
             newModel = {
                 id: 1,
-                filename: `{{ asset('js/stl_viewer/${filename}') }}`,
+                filename: `{{ asset('storage/stl/${folder_id}/stl.stl') }}`,
                 // rotationx: rotationx,
                 // rotationy: rotationy,
                 // rotationz: rotationz,
@@ -376,6 +399,16 @@
         }
     </script>
     <script>
+        function sidebarDashboard() {
+            if ($("#leftContent").hasClass("w-3/12") && $("#rightContent").hasClass("w-9/12")) {
+                $("#leftContent").removeClass("w-3/12").addClass("w-1/12");
+                $("#rightContent").removeClass("w-9/12").addClass("w-11/12");
+            } else if ($("#leftContent").hasClass("w-1/12") && $("#rightContent").hasClass("w-11/12")) {
+                $("#leftContent").removeClass("w-1/12").addClass("w-3/12");
+                $("#rightContent").removeClass("w-11/12").addClass("w-9/12");
+            }
+        }
+
         function getItemLevelParent(item_level_id) {
             $.ajax({
                 url: `/dashboard/getItemLevelParent`,
@@ -432,12 +465,16 @@
                 success: function(response) {
                     // //fill data to form
                     $('#component_name').text(response.data.item_level.name);
-                    $("#btn_detail_ti").html(`
-                    <a href="javascript:void(0)" class="w-full" id="openModal2" onclick='showModal2(${item_level_id})'>
-                        <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
-                            SOP
-                        </button>
-                    </a>
+                    $("#btn_detail_ti").html(
+                        // `
+                    // <a href="javascript:void(0)" class="w-full" id="openModal2" onclick='showModal2(${item_level_id})'>
+                    //     <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
+                    //         SOP
+                    //     </button>
+                    // </a>
+                    // `
+                        `` +
+                        `
                     <a href="javascript:void(0)" class="w-full" id="openModal3D" onclick='showModal3D()'>
                         <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-full w-full px-4 py-2">
                             3D
@@ -461,35 +498,23 @@
 
                     $("#photosLoader").html("");
                     $("#photosPagination").html("");
-                    $.each(response.data.all_photos, function(key, value) {
-                        let id_target_left = key - 1;
-                        let id_target_right = key + 1;
-                        let boleh = false;
-                        if (key == 0) {
-                            boleh = true;
-                            id_target_left = response.data.all_photos.length - 1;
-                        }
-                        if (key == response.data.all_photos.length - 1) {
-                            id_target_right = 0;
-                        }
-                        $('#photosLoader').append(
-                            `<div class='img${key} img w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
-                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_left})'>
-                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
-                                </div>
-                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
-                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_right})'>
-                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
-                                </div>
-                            </div>
-                            `
-                        );
-                        $('#photosPagination').append(
-                            `
-                            <div id='imgPagination${key}' class='img${key} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImg(${key})'>${key+1}</div>
-                            `
-                        );
-                    })
+                    $("#photosLoaderSOP").html("");
+                    $("#photosPaginationSOP").html("");
+                    //edit all_photos bisa gambar komponen atau SOP (input 2)
+                    showPhotosComponent(response.data.all_photos);
+                    showPhotosSOP(response.data.all_photos_sop);
+                    if (response.data.input_ti_id) {
+                        $('#containerBtnPrintSOP').html(`
+                        <a href="dashboard/sop/${response.data.input_ti_id}" id="btnPrintSOP" class='hidden'>
+                            <button class="bg-gray-600 hover:bg-gray-500 ease-in-out transition text-white rounded-md px-4 h-8">
+                                Print SOP
+                            </button>
+                        </a>
+
+                        `);
+                    } else {
+                        $('#containerBtnPrintSOP').html();
+                    }
 
                     $("#pe_container").html("");
                     loadProcessEntries(response.data.process_entries, response.data.tables, response.data
@@ -501,6 +526,80 @@
                     document.getElementById("item_level_id").value = item_level_id;
                 }
             });
+        }
+
+        function showPhotosComponent(all_photos) {
+            $.each(all_photos, function(key, value) {
+                let id_target_left = key - 1;
+                let id_target_right = key + 1;
+                let boleh = false;
+                if (key == 0) {
+                    boleh = true;
+                    id_target_left = all_photos.length - 1;
+                }
+                if (key == all_photos.length - 1) {
+                    id_target_right = 0;
+                }
+                $('#photosLoader').append(
+                    `<div class='img${key} img w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+                                <div class="text-center cursor-pointer" onclick='slideImg(${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>
+                            `
+                );
+                $('#photosPagination').append(
+                    `
+                    <div id='imgPagination${key}' class='img${key} imgPagination py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImg(${key})'>${key+1}</div>
+                    `
+                );
+            })
+        }
+
+        function showPhotosSOP(all_photos) {
+            $.each(all_photos, function(key, value) {
+                let id_target_left = key - 1;
+                let id_target_right = key + 1;
+                let boleh = false;
+                if (key == 0) {
+                    boleh = true;
+                    id_target_left = all_photos.length - 1;
+                }
+                if (key == all_photos.length - 1) {
+                    id_target_right = 0;
+                }
+                $('#photosLoaderSOP').append(
+                    `<div class='imgSOP${key} imgSOP w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+                                <div class="text-center cursor-pointer" onclick='slideImgSOP(${id_target_left})'>
+                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+                                <div class="text-center cursor-pointer" onclick='slideImgSOP(${id_target_right})'>
+                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+                                </div>
+                            </div>
+                            `
+                );
+                $('#photosPaginationSOP').append(
+                    `
+                            <div id='imgPaginationSOP${key}' class='imgSOP${key} imgPaginationSOP py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-white"}' onclick='slideImgSOP(${key})'>${key+1}</div>
+                            `
+                );
+            })
+        }
+
+        function openSOP() {
+            $('#pilihSOP, #photosLoaderSOP, #photosPaginationSOP, #btnSOP, #btnPrintSOP').removeClass('hidden');
+            $('#pilihGambarKomponen, #photosLoader, #photosPagination, #btnGambarKomponen').addClass('hidden');
+        }
+
+        function openComponent() {
+            $('#pilihSOP, #photosLoaderSOP, #photosPaginationSOP, #btnSOP, #btnPrintSOP').addClass('hidden');
+            $('#pilihGambarKomponen, #photosLoader, #photosPagination, #btnGambarKomponen').removeClass('hidden');
         }
 
         function konfirmasi() {
@@ -549,6 +648,19 @@
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
 
+        function slideImgSOP(id_target) {
+            let selectedClass = "bg-blue-500";
+            let unselectedClass = "bg-white";
+            $(`.imgSOP`).addClass("hidden");
+            $(`.imgSOP${id_target}`).removeClass("hidden");
+            $(`.imgPaginationSOP`).removeClass(selectedClass);
+            $(`.imgPaginationSOP`).addClass(unselectedClass);
+            $(`#imgPaginationSOP${id_target}`).removeClass(unselectedClass);
+            $(`#imgPaginationSOP${id_target}`).addClass(selectedClass);
+            // document.getElementById(`img${id_this}`).classList.add("hidden");
+            // document.getElementById(`img${id_target}`).classList.remove("hidden");
+        }
+
         function slideImgModal(id_target) {
             let selectedClass = "bg-blue-500";
             let unselectedClass = "bg-white";
@@ -562,18 +674,18 @@
             // document.getElementById(`img${id_target}`).classList.remove("hidden");
         }
 
-        function slideImgModal2(id_target) {
-            let selectedClass = "bg-blue-500";
-            let unselectedClass = "bg-gray-300";
-            $(`.imgModal2`).addClass("hidden");
-            $(`.imgModal2_${id_target}`).removeClass("hidden");
-            $(`.imgPaginationModal2`).removeClass(selectedClass);
-            $(`.imgPaginationModal2`).addClass(unselectedClass);
-            $(`#imgPaginationModal2_${id_target}`).removeClass(unselectedClass);
-            $(`#imgPaginationModal2_${id_target}`).addClass(selectedClass);
-            // document.getElementById(`img${id_this}`).classList.add("hidden");
-            // document.getElementById(`img${id_target}`).classList.remove("hidden");
-        }
+        // function slideImgModal2(id_target) {
+        //     let selectedClass = "bg-blue-500";
+        //     let unselectedClass = "bg-gray-300";
+        //     $(`.imgModal2`).addClass("hidden");
+        //     $(`.imgModal2_${id_target}`).removeClass("hidden");
+        //     $(`.imgPaginationModal2`).removeClass(selectedClass);
+        //     $(`.imgPaginationModal2`).addClass(unselectedClass);
+        //     $(`#imgPaginationModal2_${id_target}`).removeClass(unselectedClass);
+        //     $(`#imgPaginationModal2_${id_target}`).addClass(selectedClass);
+        //     // document.getElementById(`img${id_this}`).classList.add("hidden");
+        //     // document.getElementById(`img${id_target}`).classList.remove("hidden");
+        // }
 
         function slideImgModal3(id_target) {
             let selectedClass = "bg-blue-500";
@@ -732,70 +844,72 @@
             });
         }
 
-        function showModal2(item_level_id) {
-            $.ajax({
-                url: `/master/data/getDataModal2`,
-                type: "POST",
-                cache: false,
-                data: {
-                    "item_level_id": item_level_id
-                },
-                success: function(response) {
-                    console.log(response);
-                    $("#item_level_name").text(response.data.item_level.name);
-                    $("#photosLoaderModal2").html("");
-                    $("#photosPaginationModal2").html("");
-                    $.each(response.data.photos, function(key, value) {
-                        let id_target_left = key - 1;
-                        let id_target_right = key + 1;
-                        let boleh = false;
-                        if (key == 0) {
-                            boleh = true;
-                            id_target_left = response.data.photos.length - 1;
-                        }
-                        if (key == response.data.photos.length - 1) {
-                            id_target_right = 0;
-                        }
-                        console.log(value);
-                        $('#photosLoaderModal2').append(
-                            `
-                            <div class='imgModal2_${key} imgModal2 w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
-                                <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_left})'>
-                                    <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
-                                </div>
-                                <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[500px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
-                                <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_right})'>
-                                    <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
-                                </div>
-                            </div>
-                            `
-                        );
-                        $('#photosPaginationModal2').append(
-                            `
-                            <div id='imgPaginationModal2_${key}' class='imgModal2_${key} imgPaginationModal2 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-gray-300"}' onclick='slideImgModal2(${key})'>${key+1}</div>
-                            `
-                        );
-                    })
-                    const modal = document.getElementById('myModal2');
-                    modal.classList.remove('hidden');
-                    disableScroll();
-                }
-            });
-        }
+        // function showModal2(item_level_id) {
+        //     $.ajax({
+        //         url: `/master/data/getDataModal2`,
+        //         type: "POST",
+        //         cache: false,
+        //         data: {
+        //             "item_level_id": item_level_id
+        //         },
+        //         success: function(response) {
+        //             console.log(response);
+        //             $("#item_level_name").text(response.data.item_level.name);
+        //             $("#photosLoaderModal2").html("");
+        //             $("#photosPaginationModal2").html("");
+        //             $.each(response.data.photos, function(key, value) {
+        //                 let id_target_left = key - 1;
+        //                 let id_target_right = key + 1;
+        //                 let boleh = false;
+        //                 if (key == 0) {
+        //                     boleh = true;
+        //                     id_target_left = response.data.photos.length - 1;
+        //                 }
+        //                 if (key == response.data.photos.length - 1) {
+        //                     id_target_right = 0;
+        //                 }
+        //                 console.log(value);
+        //                 $('#photosLoaderModal2').append(
+        //                     `
+    //                     <div class='imgModal2_${key} imgModal2 w-full flex items-center justify-between ${!boleh ? "hidden" : ""}'>
+    //                         <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_left})'>
+    //                             <i class="bi bi-caret-left-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+    //                         </div>
+    //                         <img src="{{ asset('storage/`+value+`') }}" alt="" class='h-[1100px]' style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;''>
+    //                         <div class="text-center cursor-pointer" onclick='slideImgModal2(${id_target_right})'>
+    //                             <i class="bi bi-caret-right-fill text-4xl rounded-lg text-white p-1 bg-gray-700"></i>
+    //                         </div>
+    //                     </div>
+    //                     `
+        //                 );
+        //                 $('#photosPaginationModal2').append(
+        //                     `
+    //                     <div id='imgPaginationModal2_${key}' class='imgModal2_${key} imgPaginationModal2 py-1 px-2 cursor-pointer m-1 rounded-lg ${boleh ? "bg-blue-500" : "bg-gray-300"}' onclick='slideImgModal2(${key})'>${key+1}</div>
+    //                     `
+        //                 );
+        //             })
+        //             const modal = document.getElementById('myModal2');
+        //             modal.classList.remove('hidden');
+        //             disableScroll();
+        //         }
+        //     });
+        // }
 
         function showModal3D() {
             const modal = document.getElementById('myModal3D');
             modal.classList.remove('hidden');
+            const item_level_id = $('#item_level_id').val();
+            folder_id = item_level_id;
             STL_INIT();
             disableScroll();
         }
 
         function removeModal() {
             const modal = document.getElementById('myModal');
-            const modal2 = document.getElementById('myModal2');
+            // const modal2 = document.getElementById('myModal2');
             const modal3D = document.getElementById('myModal3D');
             modal.classList.add('hidden');
-            modal2.classList.add('hidden');
+            // modal2.classList.add('hidden');
             modal3D.classList.add('hidden');
             enableScroll();
         }
@@ -866,9 +980,6 @@
             });
         }
 
-
-
-
         function selectDashboard2(id) {
             let selectedDashboard = document.getElementById(`sideNav${id}`);
             selectDashboard(document.getElementById(`sidemenuDashboard${id}`));
@@ -885,6 +996,7 @@
             }
             setTimeout(() => {
                 updateLevelData(id);
+                $('#item_level_id').val(id);
             }, 500);
         }
 

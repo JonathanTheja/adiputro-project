@@ -76,7 +76,7 @@
                 </a>
             `);
             $('.input_ti').css('opacity', 1);
-        }, 500);
+        }, 1000);
         document.getElementById("photos_ti").classList.add("hidden");
         document.getElementById("nomor_laporan_ti").value = "{{ $input_ti_detail->nomor_laporan }}";
         setTimeout(() => {

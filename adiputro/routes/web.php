@@ -145,6 +145,7 @@ Route::prefix('notifikasi')->group(function () {
 Route::prefix('dashboard')->group(function () {
     Route::get('/{item_level_id?}', [DashboardController::class,'dashboard']);
     Route::post('/getItemLevelParent', [DashboardController::class,'getItemLevelParent']);
+    Route::get('/sop/{input_ti_id}', [DashboardController::class,'printSOP']);
 
     Route::prefix('report')->group(function () {
         Route::post('/getCategories', [DashboardController::class,'getCategories']);

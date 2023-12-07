@@ -44,6 +44,11 @@ class ItemLevel extends Model
         return $this->belongsToMany(ProcessEntry::class,'item_level_process_entry','item_level_id','process_entry_id')->withPivot('item_level_process_entry_id','process_entry_id','item_level_id');
     }
 
+    function input_ti()
+    {
+        return $this->hasOne(InputTI::class, 'input_ti_id', 'input_ti_id');
+    }
+
     public function getMaxChildrenDepth()
     {
         $maxDepth = 0;
